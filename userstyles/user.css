@@ -1,0 +1,352 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Roboto:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7fa;
+    color: #000000;
+}
+
+header {
+    background-color: #ffffff;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: rgb(5, 5, 5);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.logo h2 {
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.logo h2 img {
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+}
+
+.medi {
+    color: #003366; /* Dark blue */
+}
+
+.supply {
+    color: #D32F2F; /* Red */
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.navigation ul {
+    list-style: none;
+    display: flex;
+    gap: 50px;
+    align-items: center;
+}
+
+.navigation ul li {
+    margin: 0;
+}
+
+.navigation ul li button {
+    background: none;
+    border: none;
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    font-family: 'Montserrat', sans-serif;
+    cursor: pointer;
+}
+
+.navigation ul li button:hover {
+    color: #ffcc00;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: #4caf50; /* Change to your desired background color */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.username {
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.menu-toggle {
+    display: none;
+    font-size: 30px;
+    cursor: pointer;
+    color: rgb(0, 0, 0);
+}
+
+main {
+    padding: 80px 40px 40px 40px; 
+    text-align: center;
+    overflow-y: auto; 
+    height: calc(100vh - 80px);
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #007bff;
+    font-family: 'Montserrat', sans-serif;
+}
+
+p {
+    font-size: 13px;
+    color: #555;
+    letter-spacing: 1px;
+}
+
+.content {
+    display: none; /* Hide all sections by default */
+}
+
+#locateContent {
+    display: block; /* Display the Locate content by default */
+}
+
+button {
+    cursor: pointer;
+}
+
+/* Optional: Styling for the active button (if you want to highlight the active section) */
+.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.pharmacy-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.pharmacy-card {
+    background-color: #ffffff;
+    border-radius: 3px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease-in-out;
+}
+
+.pharmacy-card:hover {
+    transform: translateY(-5px);
+}
+
+.pharmacy-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.pharmacy-details {
+    padding: 15px;
+}
+
+.pharmacy-name {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: #003366;
+    margin-bottom: 10px;
+}
+
+.pharmacy-address {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.pharmacy-hours {
+    font-size: 14px;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.pharmacy-email {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.pharmacy-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px; /* Optional, you can adjust the gap between buttons */
+    margin-top: 20px;
+}
+
+.pharmacy-location-button,
+.pharmacy-medicines-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 14px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: 500;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.pharmacy-location-button {
+    background-color: #ffcc00;
+    color: #fff;
+}
+
+.pharmacy-location-button:hover {
+    background-color: #e6b800;
+}
+
+.pharmacy-medicines-button {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.pharmacy-medicines-button:hover {
+    background-color: #0056b3;
+}
+
+
+@media (max-width: 768px) {
+    .navigation ul {
+        display: none;
+        flex-direction: column;
+        gap: 10px;
+        background-color: #fefefe;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .navigation ul li button {
+        font-size: 18px;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .navigation ul.active {
+        display: flex;
+    }
+
+    .user-profile {
+        display: none;
+    }
+
+    .pharmacy-cards-container {
+        grid-template-columns: 1fr; /* Show one card per row on smaller screens */
+    }
+
+    .pharmacy-card {
+        margin: 0 auto; /* Center the cards */
+    }
+
+    .pharmacy-name {
+        font-size: 18px;
+    }
+
+    .pharmacy-address,
+    .pharmacy-hours,
+    .pharmacy-email {
+        font-size: 13px;
+    }
+
+    .pharmacy-location {
+        font-size: 13px;
+    }
+}
+
+@media (min-width: 769px) {
+    .menu-toggle {
+        display: none;
+    }
+}
+
+
+.location-modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 55px; /* Positioned just below the header */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.location-modal p {
+    font-size: 12px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.modal-button {
+    background-color: #D32F2F; /* Red background */
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.modal-button:hover {
+    background-color: #9c2323; /* Darker red on hover */
+}
