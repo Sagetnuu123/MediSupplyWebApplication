@@ -1,0 +1,2217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="images/medisupplysystem_logo.png">
+    <title>Pharmacy Management Inventory</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/air-datepicker@3.4.0/air-datepicker.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/notyf@3.4.0/notyf.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="pharmacycss/pharmacy_acc.css" />
+    <!-- Add Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <h2>
+            <img src="images/medisupplysystem_logo.png" alt="Logo">
+            <span class="logo"><span class="medi">Medi</span><span class="supply">Supply</span></span>
+            <i class="fas fa-angle-left toggle-arrow" id="toggleSidebar"></i>
+        </h2>
+        <button data-target="dashboard-content"><i class="bx bxs-analyse"></i><span>Dashboard</span></button>
+        <button class="dropdown-btn" id="medicine-dropdown">
+            <i class="bx bxs-package"></i>
+            <span class="dropdown-text">Inventory</span>
+            <i class='bx bx-chevron-right dropdown-icon'></i>
+        </button>
+        <div class="dropdown-container" id="medicine-menu">
+            <button data-target="medicine-inventory"><i class="bx bx-list-ul"></i><span>Medicine List</span></button>
+            <button data-target="essentials-list"><i class="bx bx-list-check"></i><span>Essentials List</span></button>
+            <button data-target="add-medicine"><i class="bx bx-plus-medical"></i><span>Add Medicine</span></button>
+            <button data-target="add-essentials"><i class="bx bxs-box"></i><span>Add Essentials</span></button>
+        </div>
+        <button data-target="pos-content"><i class="bx bx-cart-alt"></i><span>Point of Sales</span></button>
+        <button data-target="stock-content"><i class="bx bx-cube"></i><span>Stock</span></button>
+
+        <button data-target="reservation-content"><i class="bx bx-calendar-check"></i><span>Reservation</span></button>
+        
+        <button class="dropdown-btn" id="archive-dropdown">
+            <i class="bx bx-archive"></i>
+            <span class="dropdown-text">Archive</span>
+            <i class='bx bx-chevron-right dropdown-icon'></i>
+        </button>
+        <div class="dropdown-container" id="archive-menu">
+            <button data-target="archive-medicine"><i class="bx bx-purchase-tag"></i><span>Medicine Archive</span></button>
+            <button data-target="archive-essentials"><i class="bx bxs-check-square"></i><span>Essentials Archive</span></button>
+        </div>
+
+        <button data-target="notifications-content"><i class="bx bx-bell"></i><span>Notifications</span></button>
+        <hr>
+        <button data-target="settings-content"><i class="bx bx-cog"></i><span>Settings</span></button>
+        <button class="text-danger"><i class="bx bx-log-out"></i><span>Logout</span></button>
+
+
+    </div>
+
+
+    <!-- Content -->
+    <div class="content" id="content">
+        <nav class="d-flex justify-content-between align-items-center navbar">
+            <h4>Welcome, <span id="pharmacy-name">Loading...</span>!</h4>
+
+            
+        <div class="right-section">
+            <!-- Theme Toggle (Material Icons) -->
+            <div class="dark-mode">
+                <span class="material-icons-sharp active" id="lightIcon">light_mode</span>
+                <span class="material-icons-sharp" id="darkIcon">dark_mode</span>
+            </div>
+        </div>
+                            
+        </nav>
+
+         <!-- DASHBOARD CONTENT -->
+        <div id="dashboard-content" class="menu-content">
+        <!-- Dashboard Boxes -->
+        <div class="dashboard-box">
+            <div class="box box-blue">
+                <div class="box-content">
+                    <div class="icon-container">
+                        <i class='bx bxs-group'></i>
+                    </div>
+                    <div class="text-content">
+                        <div class="title">Daily Customers</div>
+                        <div class="count" id="customer-count">Loading...</div>
+                        <button data-target="customers-content" class="details">Show Details</button>
+                    </div>                    
+                </div>
+            </div>
+
+            <div class="box box-green">
+                <div class="box-content">
+                    <div class="icon-container">
+                        <i class='bx bxs-cart-alt'></i>
+                    </div>
+                    <div class="text-content">
+                        <div class="title">Daily Total Sales</div>
+                        <div class="count" id="total-sales">Loading...</div>
+                        <button data-target="dailytotalsales-content" class="details">Show Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box box-yellow">
+                <div class="box-content">
+                    <div class="icon-container">
+                        <i class='bx bxs-wallet-alt'></i>
+                    </div>
+                    <div class="text-content">
+                        <div class="title">Daily Total Profit</div>
+                        <div class="count" id="total-profit">Loading...</div>
+                        <button data-target="dailytotalprofit-content" class="details">Show Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box box-red">
+                <div class="box-content">
+                    <div class="icon-container">
+                        <i class='bx bxs-capsule'></i>
+                    </div>
+                    <div class="text-content">
+                        <div class="title">Number of Medicines</div>
+                        <div class="count" id="medicine-count">Loading...</div>
+                        <button data-target="medicine-inventory" class="details">Show Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-box">
+            <div class="box box-purple">
+                <div class="box-content">
+                    <div class="icon-container">
+                        <i class='bx bxs-medical-case'></i>
+                    </div>
+                    <div class="text-content">
+                        <div class="title">Number of Essential Products</div>
+                        <div class="count" id="essential-product-count">Loading...</div>
+                        <button data-target="essentials-list" class="details">Show Details</button>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="box box-teal">
+                <div class="box-content">
+                    <div class="icon-container">
+                        <i class='fas fa-exclamation-triangle'></i>
+                    </div>
+                    <div class="text-content">
+                        <div class="title">Essential Out of Stock</div>
+                        <div class="count" id="essential-outofstock-count">Loading...</div>
+                        <button class="details">Show Details</button>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="box box-orange">
+                <div class="box-content">
+                    <div class="icon-container">
+                        <i class='bx bxs-box'></i>
+                    </div>
+                    <div class="text-content">
+                        <div class="title">Medicine Out of Stock</div>
+                        <div class="count" id="outofstack-count">Loading...</div>
+                        <button class="details">Show Details</button>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="box box-brown">
+                <div class="box-content">
+                    <div class="icon-container">
+                        <i class='bx bxs-calendar-event'></i>
+                    </div>
+                    <div class="text-content">
+                        <div class="title">Number of Expired Medicines</div>
+                        <div class="count" id="expired-medicine-count">Loading...</div>
+                        <button class="details">Show Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-lg-6">
+                <div class="card p-3 shadow-sm border-0 rounded-lg" style="height: 300px;">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="fw-bold" style="font-size: 15px;">Expiring List</h5>
+                        <div class="d-flex align-items-center">
+                            <span class="text-primary fw-semibold" style="font-size: 11px;">See All</span>
+                            <a href="#" class="text-secondary ms-1">
+                                <i class='bx bx-chevron-right' style="font-size: 16px;"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="custom-table-container">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th>Medicine Name</th>
+                                    <th>Expire Date</th>
+                                    <th>Quantity</th>
+                                    <th>Supplier</th>
+                                    <th>Batch Number</th>
+                                </tr>
+                            </thead>
+                            <tbody id="medicineTableBody">
+                                <!-- Table data will be inserted here dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="col-lg-6">
+                <div class="card p-3 shadow-sm border-0 rounded-lg" style="height: 300px;">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="fw-bold" style="font-size: 15px;">Recent Reserves</h5>
+                        <div class="d-flex align-items-center">
+                            <span class="text-primary fw-semibold" style="font-size: 11px;">See All</span>
+                            <a href="#" class="text-secondary ms-1">
+                                <i class='bx bx-chevron-right' style="font-size: 16px;"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="custom-table-container">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th>Medicine Name</th>
+                                    <th>Reserved No</th>
+                                    <th>Quantity</th>
+                                    <th>Status</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Paricel 15mg</td>
+                                    <td>783627834</td>
+                                    <td>40</td>
+                                    <td><span class="badge bg-success">Received</span></td>
+                                    <td>$23.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Abetis 20mg</td>
+                                    <td>88832343</td>
+                                    <td>40</td>
+                                    <td><span class="badge bg-warning text-dark">Pending</span></td>
+                                    <td>$23.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Cerox CV</td>
+                                    <td>767676344</td>
+                                    <td>40</td>
+                                    <td><span class="badge bg-danger">Cancelled</span></td>
+                                    <td>$23.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <!-- Monthly Progress -->
+            <div class="col-lg-6">
+                <div class="card p-3 shadow-sm border-0 rounded-lg" style="height: 320px;">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h5 class="fw-bold" style="font-size: 15px;">Monthly Progress</h5>
+                        <select class="form-select form-select-sm w-auto border-0 text-muted bg-transparent" id="monthly-filter" style="font-size: 12px;">
+                            <option selected>Monthly</option>
+                            <option selected>Weekly</option>
+                            <option selected>Daily</option>
+                        </select>
+                    </div>
+                    <div style="height: 260px;">
+                        <canvas id="monthlyProgressChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Today's Report -->
+            <div class="col-lg-6">
+                <div class="card p-3 shadow-sm border-0 rounded-lg" style="height: 320px; font-family: 'Inter', sans-serif;">
+                    <h5 class="fw-bold" style="font-size: 15px;">Today's Report</h5>
+                    <div class="d-flex align-items-center justify-content-between" style="height: 240px;">
+                        <!-- Doughnut Chart -->
+                        <div style="width: 50%; height: 100%; display: flex; justify-content: center; align-items: center;">
+                            <canvas id="todaysReportChart"></canvas>
+                        </div>
+                        
+                        <!-- Earnings Details -->
+                        <div style="width: 45%; display: flex; flex-direction: column; align-items: flex-start;">
+                            <span style="font-size: 12px; font-weight: 500;">Total Earning</span>
+                            <h3 class="fw-bold mb-0" style="font-size: 26px; font-family: 'Rubik', sans-serif;">₱5098.00</h3> <!-- Applied Rubik -->
+                            <span class="text-success" style="font-size: 13px; font-weight: 600; font-family: 'Rubik', sans-serif;">⬆ 35%</span> <!-- Applied Rubik -->
+                            <div class="mt-3">
+                                <div class="d-flex align-items-center mb-1">
+                                    <span class="text-primary me-2">&#9679;</span> <span style="font-size: 12px;">Sold Product</span>
+                                </div>
+                                <div class="d-flex align-items-center mb-1">
+                                    <span class="text-warning me-2">&#9679;</span> <span style="font-size: 12px;">Reserve Product</span>
+                                </div>
+                                <div class="d-flex align-items-center mb-1">
+                                    <span class="text-danger me-2">&#9679;</span> <span style="font-size: 12px;">Out of Stack</span>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <span class="text-success me-2">&#9679;</span> <span style="font-size: 12px;">Remaining Product</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+        </div>
+
+        <div id="customers-content" class="menu-content" style="display: none;">
+            <h2 class="form-title">Customers List</h2>
+
+            <div class="medicine-container">                
+                <table class="customer-table">
+                    <thead>
+                        <tr>
+                            <th>Customer</th>
+                            <th>Item</th>
+                            <th>Total Amount</th>
+                            <th>Cash Payed</th>
+                            <th>Changed</th>
+                            <th>Transaction Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customer-tbody">
+                        <!-- Table rows will be dynamically inserted here -->
+                    </tbody>
+                </table>
+
+                <!-- Pagination Controls inside the medicine-container -->
+                <div class="pagination-container">
+                    <div class="rows-per-page">
+                        <label for="rows-per-page">Rows per page:</label>
+                        <select id="customer-rows-per-page">
+                            <option value="5">5</option>
+                            <option value="10" selected>10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                        </select>
+                    </div>
+                    <div class="pagination-controls">
+                        <span id="customer-page-info"></span>
+                        <button id="customer-prev-page">«</button>
+                        <button id="customer-next-page">»</button>
+                    </div>
+                </div>
+            </div>         
+        </div>
+
+
+
+        <div id="dailytotalsales-content" class="menu-content" style="display: none;">
+            <h2 class="form-title">Daily Total Sales</h2>
+        </div>
+
+
+        <div id="dailytotalprofit-content" class="menu-content" style="display: none;">
+            <h2 class="form-title">Daily Total Sales</h2>
+        </div>
+
+
+
+        
+        <div id="medicine-inventory" class="menu-content" style="display: none;">
+            <h2 class="form-title">Medicine List</h2>
+            
+            <div class="medicine-container">
+                <div class="search-and-actions">
+                        <div class="search-wrapper">
+                            <input type="text" id="medicine-search" placeholder="Search Medicine">
+                            <i class="bx bx-search search-icon"></i>
+                        </div>
+                        <div class="filter-group">
+                        <div class="filter-dropdown" id="category-filter">
+                            <button class="filter-btn">
+                                Filter by Category
+                                <i class="bx bx-chevron-down select-icon"></i>
+                            </button>
+                            <ul class="filter-options">
+                                <li data-value="">All Categories</li>
+                                <li data-value="Antibiotics">Antibiotics</li>
+                                <li data-value="Analgesics">Analgesics</li>
+                                <li data-value="Antacids">Antacids</li>
+                                <li data-value="Antihistamines">Antihistamines</li>
+                                <li data-value="Antihypertensives">Antihypertensives</li>
+                                <li data-value="Antidepressants">Antidepressants</li>
+                                <li data-value="Anticonvulsants">Anticonvulsants</li>
+                                <li data-value="Antiemetics">Antiemetics</li>
+                                <li data-value="Antidiarrheals">Antidiarrheals</li>
+                            </ul>
+                        </div>
+                        <div class="filter-dropdown" id="formulation-filter">
+                            <button class="filter-btn">
+                                Filter by Formulation
+                                <i class="bx bx-chevron-down select-icon"></i>
+                            </button>
+                            <ul class="filter-options">
+                                <li data-value="">All Formulations</li>
+                                <li data-value="Capsule">Capsule</li>
+                                <li data-value="Lozenge">Lozenge</li>
+                                <li data-value="Suspension">Suspension</li>
+                                <li data-value="Syrup">Syrup</li>
+                                <li data-value="Tablet">Tablet</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>                
+                <table class="medicine-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Formulation</th>
+                            <th>
+                                <div class="sort-container">
+                                    Dosage
+                                    <div class="sort-buttons">
+                                        <button class="sort-button" onclick="sortTable(4, 'asc')">▲</button>
+                                        <button class="sort-button" onclick="sortTable(4, 'desc')">▼</button>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="sort-container">
+                                    Stock
+                                    <div class="sort-buttons">
+                                        <button class="sort-button" onclick="sortTable(5, 'asc')">▲</button>
+                                        <button class="sort-button" onclick="sortTable(5, 'desc')">▼</button>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="sort-container">
+                                    Price
+                                    <div class="sort-buttons">
+                                        <button class="sort-button" onclick="sortTable(6, 'asc')">▲</button>
+                                        <button class="sort-button" onclick="sortTable(6, 'desc')">▼</button>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="sort-container">
+                                    Expiry Date
+                                    <div class="sort-buttons">
+                                        <button class="sort-button" onclick="sortTable(7, 'asc')">▲</button>
+                                        <button class="sort-button" onclick="sortTable(7, 'desc')">▼</button>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="medicine-tbody">
+                        <!-- Table rows will be dynamically inserted here -->
+                    </tbody>
+                </table>
+
+                <!-- Pagination Controls inside the medicine-container -->
+                <div class="pagination-container">
+                    <div class="rows-per-page">
+                        <label for="rows-per-page">Rows per page:</label>
+                        <select id="rows-per-page">
+                            <option value="5">5</option>
+                            <option value="10" selected>10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                        </select>
+                    </div>
+                    <div class="pagination-controls">
+                        <span id="page-info"></span>
+                        <button id="prev-page">«</button>
+                        <button id="next-page">»</button>
+                    </div>
+                </div>
+            </div>           
+            </div>
+            
+            
+
+        <div id="essentials-list" class="menu-content" style="display: none;">
+            <h2 class="form-title">Essentials List</h2>
+            
+            <div class="medicine-container">
+                <div class="search-and-actions">
+                        <div class="essential-search-wrapper">
+                            <input type="text" id="essentials-search" placeholder="Search Product">
+                            <i class="bx bx-search search-icon"></i>
+                        </div>
+                        <div class="filter-group">
+                        <div class="essential-filter-dropdown" id="essential-category-filter">
+                            <button class="essential-filter-btn">
+                                Filter by Category
+                                <i class="bx bx-chevron-down essential-select-icon"></i>
+                            </button>
+                            <ul class="essential-filter-options">
+                                <li data-value="">All Categories</li>
+                                <li data-value="Personal Care Products">Personal Care Products</li>
+                                <li data-value="Baby Care Products">Baby Care Products</li>
+                                <li data-value="Feminine Care & Hygiene">Feminine Care & Hygiene</li>
+                                <li data-value="Health & Wellness">Health & Wellness</li>
+                                <li data-value="First Aid & Wound Care">First Aid & Wound Care</li>
+                                <li data-value="Medical & Home Care Equipment">Medical & Home Care Equipment</li>
+                                <li data-value="-Over-the-Counter Medical Supplies">Over-the-Counter Medical Supplies</li>
+                                <li data-value="Home Essentials & Household Items">Home Essentials & Household Items</li>
+                                <li data-value="Adult & Senior Care">Adult & Senior Care</li>
+                                <li data-value="Sexual Health & Family Planning">Sexual Health & Family Planning</li>
+                            </ul>
+                        </div>
+                        <div class="essential-filter-dropdown" id="unit-filter">
+                            <button class="essential-filter-btn">
+                                Filter by Unit
+                                <i class="bx bx-chevron-down essential-select-icon"></i>
+                            </button>
+                            <ul class="essential-filter-options">
+                                <li data-value="">All Unit</li>
+                                <li data-value="g">g</li>
+                                <li data-value="kg">kg</li>
+                                <li data-value="mL">mL</li>
+                                <li data-value="L">L</li>
+                                <li data-value="pc">pc</li>
+                                <li data-value="pc per pack">pc per pack</li>
+                                <li data-value="pack">pack</li>
+                                <li data-value="box">box</li>
+                                <li data-value="bottle">bottle</li>
+                                <li data-value="tube">tube</li>
+                                <li data-value="can">can</li>
+                                <li data-value="jar">jar</li>
+                                <li data-value="roll">roll</li>
+                                <li data-value="sachet">sachet</li>
+                                <li data-value="pair">pair</li>
+                                <li data-value="set">set</li>
+                                <li data-value="sheet">sheet</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>                
+                <table class="medicine-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Brand Name</th>
+                            <th>Category</th>
+                            <th>
+                                <div class="sort-container">
+                                    Size/Unit
+                                    <div class="sort-buttons">
+                                        <button class="essential-sort-button" data-column="4" data-order="asc" onclick="sortessentialTable(4, 'asc', this)">▲</button>
+                                        <button class="essential-sort-button" data-column="4" data-order="desc" onclick="sortessentialTable(4, 'desc', this)">▼</button>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="sort-container">
+                                    Stock
+                                    <div class="sort-buttons">
+                                        <button class="essential-sort-button" data-column="5" data-order="asc" onclick="sortessentialTable(5, 'asc', this)">▲</button>
+                                        <button class="essential-sort-button" data-column="5" data-order="desc" onclick="sortessentialTable(5, 'desc', this)">▼</button>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="sort-container">
+                                    Price
+                                    <div class="sort-buttons">
+                                        <button class="essential-sort-button" data-column="6" data-order="asc" onclick="sortessentialTable(6, 'asc', this)">▲</button>
+                                        <button class="essential-sort-button" data-column="6" data-order="desc" onclick="sortessentialTable(6, 'desc', this)">▼</button>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="sort-container">
+                                    Expiry Date
+                                    <div class="sort-buttons">
+                                        <button class="essential-sort-button" data-column="7" data-order="asc" onclick="sortessentialTable(7, 'asc', this)">▲</button>
+                                        <button class="essential-sort-button" data-column="7" data-order="desc" onclick="sortessentialTable(7, 'desc', this)">▼</button>
+                                    </div>
+                                </div>
+                            </th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="essential-tbody">
+                        <!-- Table rows will be dynamically inserted here -->
+                    </tbody>
+                </table>
+
+                <!-- Pagination Controls inside the medicine-container -->
+                <div class="pagination-container">
+                    <div class="rows-per-page">
+                        <label for="rows-per-page">Rows per page:</label>
+                        <select id="essential-rows-per-page">
+                            <option value="5">5</option>
+                            <option value="10" selected>10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                        </select>
+                    </div>
+                    <div class="pagination-controls">
+                        <span id="essential-page-info"></span>
+                        <button id="essential-prev-page">«</button>
+                        <button id="essential-next-page">»</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="add-medicine" class="menu-content" style="display: none;">
+            <h2 class="form-title">Add Medicine Product</h2>
+            <form class="product-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Brand Name:<span class="asterisk">*</span></label>
+                        <input type="text" id="brand-name" name="brand-name" placeholder="Enter Brand Name">
+                        <span class="error-input-message" id="brand-name-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Generic Name <span class="optional-text">(optional)</span></label>
+                        <input type="text" id="generic-name" placeholder="Enter Generic Name">
+                    </div>
+                    <div class="form-group">
+                        <label>Medicine Image <span class="asterisk">*</span></label>
+                        <input type="file"id="medicine-image" multiple onchange="handleImageUpload()">
+                        <span class="error-input-message" id="medicine-image-error"></span>
+                        <div id="image-preview-container"></div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Medicine Category <span class="asterisk">*</span></label>
+                        <div class="custom-dropdown" id="medicine-category">
+                            <div class="selected-option">Choose Medicine Category</div>
+                            <ul class="dropdown-options">
+                                <li data-value="Antibiotics">Antibiotics</li>
+                                <li data-value="Analgesics">Analgesics</li>
+                                <li data-value="Antacids">Antacids</li>
+                                <li data-value="Antihistamines">Antihistamines</li>
+                                <li data-value="Antihypertensives">Antihypertensives</li>
+                                <li data-value="Antidepressants">Antidepressants</li>
+                                <li data-value="Anticonvulsants">Anticonvulsants</li>
+                                <li data-value="Antiemetics">Antiemetics</li>
+                                <li data-value="Antidiarrheals">Antidiarrheals</li>
+                            </ul>
+                            <i class="bx bx-chevron-down select-icon"></i>
+                        </div>
+                        <span class="error-input-message" id="medicine-category-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Dosage/Strength <span class="asterisk">*</span></label>
+                        <div class="custom-dropdown" id="dosage-strength-dropdown">
+                            <div class="selected-option">Choose Dosage/Strength</div>
+                            <ul class="dropdown-options">
+                                <li data-value="1 mg">1 mg</li>
+                                <li data-value="2 mg">2 mg</li>
+                                <li data-value="5 mg">5 mg</li>
+                                <li data-value="10 mg">10 mg</li>
+                                <li data-value="20 mg">20 mg</li>
+                                <li data-value="25 mg">25 mg</li>
+                                <li data-value="50 mg">50 mg</li>
+                                <li data-value="100 mg">100 mg</li>
+                                <li data-value="200 mg">200 mg</li>
+                                <li data-value="250 mg">250 mg</li>
+                                <li data-value="500 mg">500 mg</li>
+                                <li data-value="750 mg">750 mg</li>
+                                <li data-value="1000 mg (1g)">1000 mg (1g)</li>
+                            </ul>
+                        <i class="bx bx-chevron-down select-icon"></i>
+                    </div>
+                    <span class="error-input-message" id="dosage-strength-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Prescription Required? <span class="asterisk">*</span></label>
+                        <div class="custom-dropdown" id="prescription-required">
+                            <div class="selected-option">Choose Yes or No</div>
+                            <ul class="dropdown-options">
+                                <li data-value="Yes">Yes</li>
+                                <li data-value="No">No</li>
+                            </ul>
+                        <i class="bx bx-chevron-down select-icon"></i>
+                    </div>
+                    <span class="error-input-message" id="prescription-required-error"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Formulation/Type <span class="asterisk">*</span></label>
+                        <div class="custom-dropdown" id="formulation-type">
+                            <div class="selected-option">Choose Formulation/Type</div>
+                            <ul class="dropdown-options">
+                                <li data-value="Capsule">Capsule</li>
+                                <li data-value="Lozenge">Lozenge</li>
+                                <li data-value="Suspension">Suspension</li>
+                                <li data-value="Syrup">Syrup</li>
+                                <li data-value="Tablet">Tablet</li>
+                            </ul>
+                            <i class="bx bx-chevron-down select-icon"></i>
+                        </div>
+                        <span class="error-input-message" id="formulation-type-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Dosage Frequency <span class="asterisk">*</span></label>
+                        <div class="custom-dropdown" id="dosage-frequency">
+                            <div class="selected-option">Choose Dosage Frequency</div>
+                            <ul class="dropdown-options">
+                                <li data-value="1x a day (once daily)">1x a day (once daily) </li>
+                                <li data-value="2x a day (every 12 hours)">2x a day (every 12 hours)</li>
+                                <li data-value="3x a day (every 8 hours)">3x a day (every 8 hours)</li>
+                                <li data-value="4x a day (every 6 hours)">4x a day (every 6 hours)</li>
+                                <li data-value="Every 4 hours (daily)">Every 4 hours (daily)</li>
+                                <li data-value="Every 6 hours (daily)">Every 6 hours (daily)</li>
+                                <li data-value="Every 8 hours  (daily)">Every 8 hours  (daily)</li>
+                                <li data-value="Every 12 hours (daily)">Every 12 hours (daily)</li>
+                                <li data-value="Before meals (30 minutes before meals)">Before meals (30 minutes before meals)</li>
+                                <li data-value="After meals  (After eating)">After meals  (After eating)</li>
+                                <li data-value="Bedtime (Once before sleeping)">Bedtime (Once before sleeping)</li>
+                            </ul>
+                        <i class="bx bx-chevron-down select-icon"></i>
+                    </div>
+                    <span class="error-input-message" id="dosage-frequency-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Contraindications <span class="optional-text">(optional)</span></label>
+                        <div class="custom-dropdown" id="contraindications">
+                            <div class="selected-option">Choose Contraindications</div>
+                            <ul class="dropdown-options">
+                                <li><input type="checkbox" value="Asthma"> Asthma</li>
+                                <li><input type="checkbox" value="Breastfeeding Mothers"> Breastfeeding Mothers</li>
+                                <li><input type="checkbox" value="Diabetes"> Diabetes</li>
+                                <li><input type="checkbox" value="Glaucoma"> Glaucoma</li>
+                                <li><input type="checkbox" value="Heart Disease"> Heart Disease</li>
+                                <li><input type="checkbox" value="Hypertension"> Hypertension</li>
+                                <li><input type="checkbox" value="Kidney Disease"> Kidney Disease</li>
+                                <li><input type="checkbox" value="Liver Disease"> Liver Disease</li>
+                                <li><input type="checkbox" value="Penicillin Allergy"> Penicillin Allergy</li>
+                                <li><input type="checkbox" value="Peptic Ulcer Disease"> Peptic Ulcer Disease</li>
+                                <li><input type="checkbox" value="Pregnancy"> Pregnancy</li>
+                                <li><input type="checkbox" value="Seizure Disorders"> Seizure Disorders</li>
+                                <li><input type="checkbox" value="Sulfa Allergy"> Sulfa Allergy</li>
+                            </ul>
+                        <i class="bx bx-chevron-down select-icon"></i>
+                    </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Description/Usage <span class="asterisk">*</span></label>
+                        <textarea id="description-usage" placeholder="Enter Note"></textarea>
+                        <span class="error-input-message" id="description-usage-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Storage Conditions <span class="optional-text">(optional)</span></label>
+                        <textarea id="storage-conditions" placeholder="Enter Note"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Side Effects & Warnings <span class="optional-text">(optional)</span></label>
+                        <textarea id="side-effects" placeholder="Enter Note"></textarea>
+                    </div>
+                </div>
+
+                <h3 class="add-stock-title">Stock </h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Stock Quantity <span class="asterisk">*</span></label>
+                        <input type="number" id="stock-quantity" placeholder="Enter Stock Quantity">
+                        <span class="error-input-message" id="stock-quantity-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Reorder Level <span class="asterisk">*</span></label>
+                        <input type="number" id="reorder-level" placeholder="Enter Reorder Level">
+                        <span class="error-input-message" id="reorder-level-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Expiration Date <span class="asterisk">*</span></label>
+                        <div class="input-date-container">
+                            <input type="text" id="expiration-date" placeholder="YYYY-MM-DD" readonly>
+                            <button type="button" class="date-picker-btn">
+                                <i class="fas fa-calendar-alt"></i>
+                            </button>
+                        </div>
+                        <span class="error-input-message" id="expiration-date-error"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Batch Number <span class="asterisk">*</span></label>
+                        <input type="number" id="batch-number" placeholder="Enter Batch Number">
+                        <span class="error-input-message" id="batch-number-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Supplier/Manufacturer <span class="optional-text">(optional)</span></label>
+                        <input type="text" id="supplier" placeholder="Enter Supplier/Manufacturer">
+                    </div>
+                    <div class="form-group">
+                        <label>Barcode/QR Code <span class="asterisk">*</span></label>
+                        <button type="button" class="generate-qr-btn" onclick="generateQR()">Generate QR Code</button>
+                        <span class="error-input-message" id="qr-code-error"></span>
+                    </div>                    
+                </div>
+
+                <h3 class="add-stock-title">Pricing Details </h3>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Purchase Price <span class="asterisk">*</span></label>
+                        <input type="number" id="purchase-price" placeholder="Enter Purchase Price">
+                        <span class="error-input-message" id="purchase-price-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Selling Price <span class="asterisk">*</span></label>
+                        <input type="number" id="selling-price" placeholder="Enter Selling Price">
+                        <span class="error-input-message" id="selling-price-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Discount Price <span class="optional-text">(optional)</span></label>
+                        <input type="number" id="discount-price" placeholder="Enter Selling Price">
+                    </div>
+                </div>
+
+                <div class="qr-code-section">
+                    <label>QR Code Will Display Here </label>
+                    <div id="qr-code-container">
+                        <img id="qr-code-img" src="">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="save-btn" id="save-btn">Save</button>
+                    <button type="button" class="clear-btn">Clear</button>
+                </div>
+            </form>
+        </div>
+
+
+        <div id="add-essentials" class="menu-content" style="display: none;">
+            <h2 class="form-title">Add Essentials Product</h2>
+            <form class="essential-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Product Name <span class="asterisk">*</span></label>
+                        <input type="text" id="product-name" placeholder="Enter Product Name">
+                        <span class="error-input-message" id="product-name-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Brand Name <span class="asterisk">*</span></label>
+                        <input type="text" id="essential-brand-name" placeholder="Enter Brand Name">
+                        <span class="error-input-message" id="essential-brand-name-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Product Image <span class="asterisk">*</span></label>
+                        <input type="file"id="product-image" multiple onchange="essentialhandleImageUpload()">
+                        <span class="error-input-message" id="product-image-error"></span>
+                        <div id="product-image-preview-container"></div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Category <span class="asterisk">*</span></label>
+                        <div class="custom-dropdown" id="product-category">
+                            <div class="selected-option">Choose Category</div>
+                            <ul class="dropdown-options">
+                                <li data-value="Personal Care Products">Personal Care Products</li>
+                                <li data-value="Baby Care Products">Baby Care Products</li>
+                                <li data-value="Feminine Care & Hygiene">Feminine Care & Hygiene</li>
+                                <li data-value="Health & Wellness">Health & Wellness</li>
+                                <li data-value="First Aid & Wound Care">First Aid & Wound Care</li>
+                                <li data-value="Medical & Home Care Equipment">Medical & Home Care Equipment</li>
+                                <li data-value="-Over-the-Counter Medical Supplies">Over-the-Counter Medical Supplies</li>
+                                <li data-value="Home Essentials & Household Items">Home Essentials & Household Items</li>
+                                <li data-value="Adult & Senior Care">Adult & Senior Care</li>
+                                <li data-value="Sexual Health & Family Planning">Sexual Health & Family Planning</li>
+                            </ul>
+                            <i class="bx bx-chevron-down select-icon"></i>
+                        </div>
+                        <span class="error-input-message" id="product-category-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Size:<span class="asterisk">*</span></label>
+                        <input type="number" id="size" placeholder="Enter Size">
+                        <span class="error-input-message" id="size-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Unit of Measure <span class="asterisk">*</span></label>
+                        <div class="custom-dropdown" id="unit-of-measure">
+                            <div class="selected-option">Choose Unit of Measure</div>
+                            <ul class="dropdown-options">
+                                <li data-value="g">g</li>
+                                <li data-value="kg">kg</li>
+                                <li data-value="mL">mL</li>
+                                <li data-value="L">L</li>
+                                <li data-value="pc">pc</li>
+                                <li data-value="pc per pack">pc per pack</li>
+                                <li data-value="pack">pack</li>
+                                <li data-value="box">box</li>
+                                <li data-value="bottle">bottle</li>
+                                <li data-value="tube">tube</li>
+                                <li data-value="can">can</li>
+                                <li data-value="jar">jar</li>
+                                <li data-value="roll">roll</li>
+                                <li data-value="sachet">sachet</li>
+                                <li data-value="pair">pair</li>
+                                <li data-value="set">set</li>
+                                <li data-value="sheet">sheet</li>
+                            </ul>
+                            <i class="bx bx-chevron-down select-icon"></i>
+                        </div>
+                        <span class="error-input-message" id="unit-of-measure-error"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Description/Usage <span class="asterisk">*</span></label>
+                        <textarea id="essential-description-usage" placeholder="Enter Note"></textarea>
+                        <span class="error-input-message" id="essential-description-usage-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Storage Instructions <span class="optional-text">(optional)</span></label>
+                        <textarea id="storage-instructions" placeholder="Enter Note"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Contraindications <span class="optional-text">(optional)</span></label>
+                        <div class="custom-dropdown" id="essential-contraindications">
+                            <div class="selected-option">Choose Contraindications</div>
+                            <ul class="dropdown-options">
+                                <li><input type="checkbox" value="Allergic Reactions"> Allergic Reactions</li>
+                                <li><input type="checkbox" value="Sensitive Skin Conditions"> Sensitive Skin Conditions</li>
+                                <li><input type="checkbox" value="Open Wounds or Cuts"> Open Wounds or Cuts</li>
+                                <li><input type="checkbox" value="Skin Sensitivity"> Skin Sensitivity</li>
+                                <li><input type="checkbox" value="Pregnancy & Breastfeeding"> Pregnancy & Breastfeeding</li>
+                                <li><input type="checkbox" value="Kidney or Liver Disease"> Kidney or Liver Disease</li>
+                                <li><input type="checkbox" value="Drug Interactions"> Drug Interactions</li>
+                                <li><input type="checkbox" value="Severe Skin Irritation"> Severe Skin Irritation</li>
+                                <li><input type="checkbox" value="Asthma/Breathing Issues"> Asthma/Breathing Issues</li>
+                            </ul>
+                        <i class="bx bx-chevron-down select-icon"></i>
+                    </div>
+                    </div>
+                </div>
+
+                <h3 class="add-stock-title">Stock </h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Stock Quantity <span class="asterisk">*</span></label>
+                        <input type="number" id="essential-stock-quantity" placeholder="Enter Stock Quantity">
+                        <span class="error-input-message" id="essential-stock-quantity-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Reorder Level <span class="asterisk">*</span></label>
+                        <input type="number" id="essential-reorder-level" placeholder="Enter Reorder Level">
+                        <span class="error-input-message" id="essential-reorder-level-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Expiration Date <span class="asterisk">*</span></label>
+                        <div class="input-date-container">
+                            <input type="text" id="essential-expiration-date" placeholder="YYYY-MM-DD" readonly>
+                            <button type="button" class="date-picker-btn">
+                                <i class="fas fa-calendar-alt"></i>
+                            </button>
+                        </div>
+                        <span class="error-input-message" id="essential-expiration-date-error"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Batch Number <span class="asterisk">*</span></label>
+                        <input type="number" id="essential-batch-number" placeholder="Enter Batch Number">
+                        <span class="error-input-message" id="essential-batch-number-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Supplier/Manufacturer <span class="optional-text">(optional)</span></label>
+                        <input type="text" id="essential-supplier" placeholder="Enter Supplier/Manufacturer">
+                    </div>
+                    <div class="form-group">
+                        <label>Barcode/QR Code <span class="asterisk">*</span></label>
+                        <button type="button" class="generate-qr-btn" onclick="essential_generateQR()">Generate QR Code</button>
+                        <span class="error-input-message" id="essential-qr-code-error"></span>
+                    </div>                    
+                </div>
+
+                <h3 class="add-stock-title">Pricing Details </h3>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Purchase Price <span class="asterisk">*</span></label>
+                        <input type="number" id="essential-purchase-price" placeholder="Enter Purchase Price">
+                        <span class="error-input-message" id="essential-purchase-price-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Selling Price <span class="asterisk">*</span></label>
+                        <input type="number" id="essential-selling-price" placeholder="Enter Selling Price">
+                        <span class="error-input-message" id="essential-selling-price-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Discount Price <span class="optional-text">(optional)</span></label>
+                        <input type="number" id="essential-discount-price" placeholder="Enter Selling Price">
+                    </div>
+                </div>
+
+                <div class="qr-code-section">
+                    <label>QR Code Will Display Here</label>
+                    <div id="essential-qr-code-container">
+                        <img id="essential-qr-code-img" src="">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="essential-save-btn" id="essential-save-btn">Save</button>
+                    <button type="button" class="essential-clear-btn">Clear</button>
+                </div>
+            </form>
+        </div>
+        
+
+       <!-- POS Content -->
+        <div id="pos-content" class="menu-content" style="display: none;">
+            <h2 class="form-title">Point of Sales</h2>
+            <div id="pos-container" class="pos-system">
+                <div id="product-section" class="product-section">
+                    <div class="search-section">
+                    <input type="text" id="search-bar" placeholder="🔍 Search products...">
+                     </div>
+                    <div class="category-buttons">
+                        <button id="medicine-btn" class="category-btn active">Medicine Products</button>
+                        <button id="essentials-btn" class="category-btn">Essential Products</button>
+                    </div>
+                    <div id="product-container" class="product-container">
+                        <!-- Products will be loaded here -->
+                    </div>
+                </div>
+                <div id="cart-section" class="cart-section">
+                    <div class="cart-header">
+                        <h3 class="cart-title">
+                            <i class="fas fa-shopping-cart"></i> Cart Items
+                        </h3>
+                    </div>
+                    <div class="cart-column-header">
+                        <span class="column-name">Name</span>
+                        <span class="column-quantity">Qty</span>
+                        <span class="column-price">Price</span>
+                        <span class="column-remove"></span>
+                    </div>
+                    <div id="cart-container" class="cart-container">
+                        <!-- Cart items will be displayed here -->
+                    </div>
+                    <div class="price-section">
+                        <div class="total-quantity-row">
+                            <span class="total-label">Total Quantity:</span>
+                            <span id="total-quantity" class="total-amount">0</span>
+                        </div>
+                        <div class="total-price-row">
+                            <span class="total-label">Total:</span>
+                            <span id="total-price" class="total-amount">₱0.00</span>
+                        </div> 
+                        <div class="total-payed-row">
+                            <span class="total-label">Cash Payed:</span>
+                            <input type="number" id="total-payed" class="total-amount" />
+                        </div> 
+                        <div class="total-change-row">
+                            <span class="total-label">Change:</span>
+                            <span id="total-change" class="total-amount">₱0.00</span>
+                        </div>                        
+                    <button id="checkout-btn">Proceed to Checkout</button>
+                </div>
+                </div>
+            </div>                     
+        </div>
+
+        <div id="stock-content" class="menu-content" style="display: none;">
+            <h2 class="form-title">Stock Management</h2>
+
+            <div id="stock-main-container" class="stock-main-container">
+                <div class="stock-header">
+                    <div class="search-bar-container">
+                        <input type="text" id="stock-search-bar" placeholder="🔍 Search Medicines" class="stock-search-bar">
+                        <button id="clear-search-btn" class="clear-search-btn" style="display:none;">
+                            <i class="bx bx-x"></i> <!-- "X" Icon for clear -->
+                        </button>
+                    </div>
+                    <div id="medicine-count-container" class="medicine-count-container">
+                        <span id="posted-medicine-list" class="medicine-count">0 Medicines Posted</span>
+                    </div>
+                    <div class="stock-alerts-container">
+                        <span id="stock-alerts" class="stock-alerts-icon">
+                            <i class="bx bx-bell"></i>
+                            <span class="alert-exclamation">!</span>
+                        </span>
+                    </div>
+                </div>
+
+            <div id="stock-cards-container" class="stock-cards-container">
+                <!-- Stock Card Template will be rendered here dynamically -->
+                <div id="loading-indicator" class="loading-indicator">Loading medicines...</div>
+            </div>
+
+        </div>
+
+
+        <div id="stock-main-container" class="stock-main-container">
+            <div class="stock-header">
+                <div class="search-bar-container">
+                    <input type="text" id="product-search-bar" placeholder="🔍 Search Products" class="stock-search-bar">
+                    <button id="product-clear-search-btn" class="clear-search-btn" style="display:none;">
+                        <i class="bx bx-x"></i> <!-- "X" Icon for clear -->
+                    </button>
+                </div>
+                <div class="stock-alerts-container">
+                    <span id="product-stock-alerts" class="stock-alerts-icon">
+                        <i class="bx bx-bell"></i>
+                        <span class="alert-exclamation">!</span>
+                    </span>
+                </div>
+            </div>
+
+        <div id="product-stock-cards-container" class="stock-cards-container">
+            <!-- Stock Card Template will be rendered here dynamically -->
+            <div id="product-loading-indicator" class="loading-indicator">Loading products...</div>
+        </div>
+
+    </div>
+        </div>
+
+
+
+        <div id="reservation-content" class="menu-content" style="display: none;">
+            <h2 class="form-title">Reservation</h2>
+        </div>
+
+        <div id="archive-medicine" class="menu-content" style="display: none;">
+            <h2 class="form-title">Medicine Archive</h2>
+
+            <div class="medicine-container">
+                <div class="search-and-actions">
+                        <div class="archive-search-wrapper">
+                            <input type="text" id="medicinearchive-search" placeholder="Search Medicine">
+                            <i class="bx bx-search search-icon"></i>
+                        </div>
+                </div>                
+                <table class="medicine-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Formulation</th>
+                            <th>Dosage</th>
+                            <th>Stock</th>
+                            <th>Price</th>
+                            <th>Expiry Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="archivemedicine-tbody">
+                        <!-- Table rows will be dynamically inserted here -->
+                    </tbody>
+                </table>
+
+                <!-- Pagination Controls inside the medicine-container -->
+                <div class="pagination-container">
+                    <div class="rows-per-page">
+                        <label for="rows-per-page">Rows per page:</label>
+                        <select id="archive-rows-per-page">
+                            <option value="5">5</option>
+                            <option value="10" selected>10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                        </select>
+                    </div>
+                    <div class="pagination-controls">
+                        <span id="archive-page-info"></span>
+                        <button id="archive-prev-page">«</button>
+                        <button id="archive-next-page">»</button>
+                    </div>
+                </div>
+            </div>         
+        </div>
+        
+        <div id="archive-modal" class="archive-modal">
+            <div class="archive-modal-content">
+                <h3>Are you sure you want to archive this medicine?</h3>
+                <p id="medicine-name"></p> <!-- Medicine name will appear here -->
+                <div class="archive-modal-actions">
+                    <button id="cancel-archive" class="archive-cancel-btn">Cancel</button>
+                    <button id="confirm-archive" class="archive-btn">Archive</button>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- View Medicine Modal -->
+        <div id="view-medicine-archive-modal" class="view-modal">
+            <div class="view-modal-content">
+                <div class="view-modal-header">
+                    <div class="modal-header-left">
+                        <h2 id="view-archive-brand-name"></h2>
+                        <div class="batch-number">Batch Number: <span id="batch-archive-value"></span></div>
+                    </div>
+                    <div class="modal-header-right">
+                        <img id="view-archive-medicine-image" src="" alt="Medicine Image">
+                    </div>
+                </div>
+
+                <div class="view-medicine-details">
+                    <div class="info-row">
+                        <div class="info-item"><label>Generic Name</label> <span id="view-archive-generic-name"></span></div>
+                        <div class="info-item"><label>Dosage/Strength</label> <span id="view-archive-dosage"></span></div>
+                        <div class="info-item"><label>Dosage Frequency</label> <span id="view-archive-dosagefrequency"></span></div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-item"><label>Medicine Category</label> <span id="view-archive-medicine-category"></span></div>
+                        <div class="info-item"><label>Formulation/Type</label> <span id="view-archive-formulation"></span></div>
+                        <div class="info-item"><label>Prescription Required</label> <span id="view-archive-prescription"></span></div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-item"><label>Description/Usage</label> <span id="view-archive-description"></span></div>
+                        <div class="info-item"><label>Storage Conditions</label> <span id="view-archive-storage-conditions"></span></div>
+                        <div class="info-item"><label>Contraindications</label> <span id="view-archive-contraindications"></span></div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-item"><label>Side Effects & Warnings</label> <span id="view-archive-sideeffects"></span></div>
+                    </div>
+                </div>
+
+                 <!-- Stock and Pricing Details -->
+                <div class="stock-pricing-container">
+                    <div class="stock-details">
+                        <h3>Stock</h3>
+                        <div class="stock-row">
+                            <div class="info-item"><label>Stock Quantity</label> <span id="view-archive-stock-quantity"></span></div>
+                            <div class="info-item"><label>Reorder Level</label> <span id="view-archive-reorder-level"></span></div>
+                        </div>
+                        <div class="stock-row">
+                            <div class="info-item"><label>Supplier/Manufacturer</label> <span id="view-archive-supplier"></span></div>
+                            <div class="info-item"><label>Expiration Date</label> <span id="view-archive-expiry-date"></span></div>
+                        </div>
+                    </div>
+                    <div class="pricing-details">
+                        <h3>Pricing Details</h3>
+                        <div class="stock-row">
+                        <div class="info-item"><label>Purchase Price</label> <span id="view-archive-purchase-price"></span></div>
+                        <div class="info-item"><label>Selling Price</label> <span id="view-archive-selling-price"></span></div>
+                    </div>
+                        <div class="info-item"><label>Discounted Price</label> <span id="view-archive-discounted-price"></span></div>
+                    </div>
+                </div>
+
+                <div class="view-modal-footer">
+                    <button class="close-btn" onclick="closeViewArchiveModal()">Close</button>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div id="archive-essentials" class="menu-content" style="display: none;">
+            <h2 class="form-title">Essentials Archive</h2>
+
+            <div class="medicine-container">
+                <div class="search-and-actions">
+                        <div class="archive-essential-search-wrapper">
+                            <input type="text" id="archive-essentials-search" placeholder="Search Product">
+                            <i class="bx bx-search search-icon"></i>
+                        </div>
+                </div>                
+                <table class="medicine-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Brand Name</th>
+                            <th>Category</th>
+                            <th>Size/Unit</th>
+                            <th>Stock</th>
+                            <th>Price</th>
+                            <th>Expiry Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="archive-essential-tbody">
+                        <!-- Table rows will be dynamically inserted here -->
+                    </tbody>
+                </table>
+
+                <!-- Pagination Controls inside the medicine-container -->
+                <div class="pagination-container">
+                    <div class="rows-per-page">
+                        <label for="rows-per-page">Rows per page:</label>
+                        <select id="archive-essential-rows-per-page">
+                            <option value="5">5</option>
+                            <option value="10" selected>10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                        </select>
+                    </div>
+                    <div class="pagination-controls">
+                        <span id="archive-essential-page-info"></span>
+                        <button id="archive-essential-prev-page">«</button>
+                        <button id="archive-essential-next-page">»</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="archive-essential-modal" class="archive-modal">
+            <div class="archive-modal-content">
+                <h3>Are you sure you want to archive this product?</h3>
+                <p id="essential-medicine-name"></p> <!-- Medicine name will appear here -->
+                <div class="archive-modal-actions">
+                    <button id="essential-cancel-archive" class="archive-cancel-btn">Cancel</button>
+                    <button id="essential-confirm-archive" class="archive-btn">Archive</button>
+                </div>
+            </div>
+        </div>
+
+
+         <!-- View Medicine Modal -->
+         <div id="view-product-archive-modal" class="view-modal">
+            <div class="view-modal-content">
+            <div class="view-modal-header">
+                <div class="modal-header-left">
+                    <h2 id="view-archive-product-name"></h2>
+                    <div class="batch-number">Batch Number: <span id="batch-essential-archive-value"></span></div>
+                </div>
+                <div class="modal-header-right">
+                    <img id="view-archive-product-image" src="" alt="Medicine Image">
+                </div>
+            </div>
+
+            <div class="view-medicine-details">
+                <div class="info-row">
+                    <div class="info-item"><label>Brand Name</label> <span id="view-archive-essential-brand-name"></span></div>
+                    <div class="info-item"><label>Product Category</label> <span id="view-archive-product-category"></span></div>
+                    <div class="info-item"><label>Size/Unit</label> <span id="view-archive-size-unit"></span></div>
+                </div>
+                <div class="info-row">
+                    <div class="info-item"><label>Description</label> <span id="view-archive-product-description"></span></div>
+                    <div class="info-item"><label>Storage Instructions</label> <span id="view-archive-storage-instructions"></span></div>
+                    <div class="info-item"><label>Contraindications</label> <span id="view-archive-product-contraindicatins"></span></div>
+                </div>
+            </div>
+
+             <!-- Stock and Pricing Details -->
+            <div class="stock-pricing-container">
+                <div class="stock-details">
+                    <h3>Stock</h3>
+                    <div class="stock-row">
+                        <div class="info-item"><label>Stock Quantity</label> <span id="view-archive-product-stock-quantity"></span></div>
+                        <div class="info-item"><label>Reorder Level</label> <span id="view-archive-product-reorder-level"></span></div>
+                    </div>
+                    <div class="stock-row">
+                        <div class="info-item"><label>Supplier/Manufacturer</label> <span id="view-archive-product-supplier"></span></div>
+                        <div class="info-item"><label>Expiration Date</label> <span id="view-archive-product-expiry-date"></span></div>
+                    </div>
+                </div>
+                <div class="pricing-details">
+                    <h3>Pricing Details</h3>
+                    <div class="stock-row">
+                    <div class="info-item"><label>Purchase Price</label> <span id="view-archive-product-purchase-price"></span></div>
+                    <div class="info-item"><label>Selling Price</label> <span id="view-archive-product-selling-price"></span></div>
+                </div>
+                    <div class="info-item"><label>Discounted Price</label> <span id="view-archive-product-discounted-price"></span></div>
+                </div>
+            </div>
+
+                <div class="view-modal-footer">
+                    <button class="close-btn" onclick="closeViewEssentialArchiveModal()">Close</button>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div id="archive-restore-modal" class="archive-modal">
+            <div class="archive-modal-content">
+                <h3>Are you sure you want to restore this product?</h3>
+                <p id="medicine-name-restore"></p> <!-- Medicine name will appear here -->
+                <div class="archive-modal-actions">
+                    <button id="cancel-archive-restore" class="archive-cancel-btn">Cancel</button>
+                    <button id="confirm-archive-restore" class="archive-btn">Archive</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="essential-archive-restore-modal" class="archive-modal">
+            <div class="archive-modal-content">
+                <h3>Are you sure you want to restore this product?</h3>
+                <p id="product-name-restore"></p> <!-- Medicine name will appear here -->
+                <div class="archive-modal-actions">
+                    <button id="cancel-essential-archive-restore" class="archive-cancel-btn">Cancel</button>
+                    <button id="confirm-essential-archive-restore" class="archive-btn">Archive</button>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div id="reports-content" class="menu-content" style="display: none;">
+            <h2>Reports</h2>
+            <p>Content for Reports...</p>
+        </div>
+
+        <!-- Notification Content -->
+        <div id="notifications-content" class="menu-content" style="display: none; font-family: 'Inter', sans-serif; font-size: 12px;">
+            <div class="notification-header-container" style="display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="font-size: 18px; font-weight: 500; margin-top: 15px; font-family: 'Rubik', sans-serif;">Notifications</h2>
+                <button class="create-btn">Create Notification</button>
+            </div>
+            <div class="users-container">
+                <h3 style="font-size: 14px; font-weight: 600;">List of users</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox"></th>
+                            <th>Name</th>
+                            <th>Gender</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>Michelle Heston</td>
+                            <td>Female</td>
+                            <td>0801-1122-333</td>
+                            <td>michelleheston@gmail.com</td>
+                            <td>
+                                <button class="menu-button" onclick="toggleUserMenu(event)"><i class='bx bx-dots-vertical-rounded'></i></button>
+                                <div class="dropdown-menu hidden">
+                                    <button onclick="editUser()">Edit</button>
+                                    <button onclick="removeUser()">Remove</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <div id="settings-content" class="menu-content" style="display: none;">
+            <h2>Settings</h2>
+            <p>Content for Settings...</p>
+        </div>
+        
+        
+
+        <!-- Modal for updating stock -->
+        <div id="update-stock-modal" class="stock-modal" style="display: none;">
+            <div class="stock-modal-content">
+                <span class="stock-close-btn" onclick="stockcloseModal()">&times;</span>
+                <h3>Update Stock for <span id="medicine-name"></span></h3>
+                <form id="update-stock-form">
+                    <label for="new-stock-quantity">Batch Number:</label>
+                    <input type="number" id="new-batch-number" required>
+
+                    <label for="new-stock-quantity">Stock Quantity:</label>
+                    <input type="number" id="new-stock-quantity" required>
+        
+                    <label for="new-reorder-level">Reorder Level:</label>
+                    <input type="number" id="new-reorder-level" required>
+        
+                    <label for="new-expiry-date">Expiry Date:</label>
+                    <input type="date" id="new-expiry-date" required>
+        
+                    <button type="submit">Submit Update</button>
+                </form>
+            </div>
+        </div>
+        
+
+        <!-- Modal for updating stock -->
+        <div id="update-product-stock-modal" class="stock-modal" style="display: none;">
+            <div class="stock-modal-content">
+                <span class="stock-close-btn" onclick="productstockcloseModal()">&times;</span>
+                <h3>Update Stock for <span id="product-name"></span></h3>
+                <form id="update-product-stock-form">
+                    <label for="new-stock-quantity">Batch Number:</label>
+                    <input type="number" id="new-essential-batch-number" required>
+
+                    <label for="new-stock-quantity">Stock Quantity:</label>
+                    <input type="number" id="new-essential-stock-quantity" required>
+        
+                    <label for="new-reorder-level">Reorder Level:</label>
+                    <input type="number" id="new-essential-reorder-level" required>
+        
+                    <label for="new-expiry-date">Expiry Date:</label>
+                    <input type="date" id="new-essential-expiry-date" required>
+        
+                    <button type="submit">Submit Update</button>
+                </form>
+            </div>
+        </div>
+        
+
+
+
+        <!-- Edit Medicine Modal -->
+        <div id="edit-medicine-modal" class="modal-overlay" style="display: none;">
+            <div class="modal-box">
+                <div class="modal-header">
+                    <h2>Edit Medicine List</h2>
+                    <button class="close-modal" onclick="closeEditModal()">&times;</button>
+                </div>
+                <div class="modal-content">
+                    <form id="edit-medicine-form">
+
+                    <div class="input-padding">
+
+                    <div class="edit-form-row">
+                        <div class="edit-form-group">
+                            <label>Brand Name<span class="asterisk">*</span></label>
+                            <input type="text" id="edit-brand-name">
+                            <span class="error-input-message" id="edit-brand-name-error"></span>
+                        </div>
+                        <div class="edit-form-group">
+                            <label>Generic Name<span class="optional-text">(optional)</span></label>
+                            <input type="text" id="edit-generic-name">
+                            <span class="error-input-message" id="edit-generic-name-error"></span>
+                        </div>
+                        <div class="edit-form-group">
+                            <label>Medicine Image<span class="asterisk">*</span></label>
+                            <input type="file"id="edit-medicine-image" multiple onchange="handleeditImageUpload()">
+                            <span class="error-input-message" id="edit-medicine-image-error"></span>
+                            <div id="edit-image-preview-container"></div>
+                        </div>
+                    </div>
+
+                    <div class="edit-form-row">
+                        <div class="edit-form-group">
+                            <label>Category<span class="asterisk">*</span></label>  
+                            <div class="custom-dropdown" id="edit-medicine-category">
+                                <div class="selected-option">Choose Medicine Category</div>
+                                <ul class="dropdown-options">
+                                    <li data-value="Antibiotics">Antibiotics</li>
+                                    <li data-value="Analgesics">Analgesics</li>
+                                    <li data-value="Antacids">Antacids</li>
+                                    <li data-value="Antihistamines">Antihistamines</li>
+                                    <li data-value="Antihypertensives">Antihypertensives</li>
+                                    <li data-value="Antidepressants">Antidepressants</li>
+                                    <li data-value="Anticonvulsants">Anticonvulsants</li>
+                                    <li data-value="Antiemetics">Antiemetics</li>
+                                    <li data-value="Antidiarrheals">Antidiarrheals</li>
+                                </ul>
+                                <i class="bx bx-chevron-down select-icon"></i>
+                            </div>
+                            <span class="error-input-message" id="edit-category-error"></span>
+                        </div>
+                        <div class="edit-form-group">
+                            <label>Dosage/Strength<span class="asterisk">*</span></label>
+                            <div class="custom-dropdown" id="edit-dosage-strength-dropdown">
+                                <div class="selected-option">Choose Dosage/Strength</div>
+                                <ul class="dropdown-options">
+                                    <li data-value="1 mg">1 mg</li>
+                                    <li data-value="2 mg">2 mg</li>
+                                    <li data-value="5 mg">5 mg</li>
+                                    <li data-value="10 mg">10 mg</li>
+                                    <li data-value="20 mg">20 mg</li>
+                                    <li data-value="25 mg">25 mg</li>
+                                    <li data-value="50 mg">50 mg</li>
+                                    <li data-value="100 mg">100 mg</li>
+                                    <li data-value="200 mg">200 mg</li>
+                                    <li data-value="250 mg">250 mg</li>
+                                    <li data-value="500 mg">500 mg</li>
+                                    <li data-value="750 mg">750 mg</li>
+                                    <li data-value="1000 mg (1g)">1000 mg (1g)</li>
+                                </ul>
+                            <i class="bx bx-chevron-down select-icon"></i>
+                        </div>
+                        <span class="error-input-message" id="edit-dosage-strength-error"></span>
+                        </div>
+                        <div class="edit-form-group">
+                            <label>Prescription Required<span class="asterisk">*</span></label>
+                            <div class="custom-dropdown" id="edit-prescription-required">
+                                <div class="selected-option">Choose Yes or No</div>
+                                <ul class="dropdown-options">
+                                    <li data-value="Yes">Yes</li>
+                                    <li data-value="No">No</li>
+                                </ul>
+                            <i class="bx bx-chevron-down select-icon"></i>
+                        </div>
+                        <span class="error-input-message" id="edit-prescription-required-error"></span>
+                        </div>
+                    </div>
+
+                    <div class="edit-form-row">
+                        <div class="edit-form-group">
+                            <label>Formulation/Type<span class="asterisk">*</span></label>
+                            <div class="custom-dropdown" id="edit-formulation-type">
+                                <div class="selected-option">Choose Formulation/Type</div>
+                                <ul class="dropdown-options">
+                                    <li data-value="Capsule">Capsule</li>
+                                    <li data-value="Lozenge">Lozenge</li>
+                                    <li data-value="Suspension">Suspension</li>
+                                    <li data-value="Syrup">Syrup</li>
+                                    <li data-value="Tablet">Tablet</li>
+                                </ul>
+                                <i class="bx bx-chevron-down select-icon"></i>
+                            </div>
+                            <span class="error-input-message" id="edit-formulation-type-error"></span>
+                        </div>
+                        <div class="edit-form-group">
+                            <label>Dosage Frequency<span class="asterisk">*</span></label>
+                            <div class="custom-dropdown" id="edit-dosage-frequency">
+                                <div class="selected-option">Choose Dosage Frequency</div>
+                                <ul class="dropdown-options">
+                                    <li data-value="1x a day (once daily)">1x a day (once daily) </li>
+                                    <li data-value="2x a day (every 12 hours)">2x a day (every 12 hours)</li>
+                                    <li data-value="3x a day (every 8 hours)">3x a day (every 8 hours)</li>
+                                    <li data-value="4x a day (every 6 hours)">4x a day (every 6 hours)</li>
+                                    <li data-value="Every 4 hours (daily)">Every 4 hours (daily)</li>
+                                    <li data-value="Every 6 hours (daily)">Every 6 hours (daily)</li>
+                                    <li data-value="Every 8 hours  (daily)">Every 8 hours  (daily)</li>
+                                    <li data-value="Every 12 hours (daily)">Every 12 hours (daily)</li>
+                                    <li data-value="Before meals (30 minutes before meals)">Before meals (30 minutes before meals)</li>
+                                    <li data-value="After meals  (After eating)">After meals  (After eating)</li>
+                                    <li data-value="Bedtime (Once before sleeping)">Bedtime (Once before sleeping)</li>
+                                </ul>
+                            <i class="bx bx-chevron-down select-icon"></i>
+                        </div>
+                        <span class="error-input-message" id="edit-dosage-frequency-error"></span>
+                        </div>
+                        <div class="edit-form-group">
+                            <label>Contraindications<span class="optional-text">(optional)</span></label>
+                            <div class="custom-dropdown" id="edit-contraindications">
+                                <div class="selected-option">Choose Contraindications</div>
+                                <ul class="dropdown-options">
+                                    <li><input type="checkbox" value="Asthma"> Asthma</li>
+                                    <li><input type="checkbox" value="Breastfeeding Mothers"> Breastfeeding Mothers</li>
+                                    <li><input type="checkbox" value="Diabetes"> Diabetes</li>
+                                    <li><input type="checkbox" value="Glaucoma"> Glaucoma</li>
+                                    <li><input type="checkbox" value="Heart Disease"> Heart Disease</li>
+                                    <li><input type="checkbox" value="Hypertension"> Hypertension</li>
+                                    <li><input type="checkbox" value="Kidney Disease"> Kidney Disease</li>
+                                    <li><input type="checkbox" value="Liver Disease"> Liver Disease</li>
+                                    <li><input type="checkbox" value="Penicillin Allergy"> Penicillin Allergy</li>
+                                    <li><input type="checkbox" value="Peptic Ulcer Disease"> Peptic Ulcer Disease</li>
+                                    <li><input type="checkbox" value="Pregnancy"> Pregnancy</li>
+                                    <li><input type="checkbox" value="Seizure Disorders"> Seizure Disorders</li>
+                                    <li><input type="checkbox" value="Sulfa Allergy"> Sulfa Allergy</li>
+                                </ul>
+                            <i class="bx bx-chevron-down select-icon"></i>
+                        </div>
+                        </div>
+                    </div>
+                    
+                    <div class="edit-form-row">
+                        <div class="edit-form-group">
+                            <label>Description/Usage<span class="asterisk">*</span></label>
+                            <textarea id="edit-description-usage" placeholder="Enter Note"></textarea>
+                            <span class="error-input-message" id="edit-description-usage-error"></span>
+                        </div>
+                        <div class="edit-form-group">
+                            <label>Storage Conditions<span class="optional-text">(optional)</span></label>
+                            <textarea id="edit-storage-conditions" placeholder="Enter Note"></textarea>
+                        </div>
+                        <div class="edit-form-group">
+                            <label>Side Effects & Warnings<span class="optional-text">(optional)</span></label>
+                            <textarea id="edit-side-effects" placeholder="Enter Note"></textarea>
+                        </div>
+                    </div>
+
+                    <h3 class="add-stock-title">Stock</h3>
+
+                    <div class="edit-form-row">
+                        <div class="edit-form-group">
+                            <label>Stock Quantity<span class="asterisk">*</span></label>
+                            <input type="number" id="edit-stock-quantity">
+                            <span class="error-input-message" id="edit-stock-quantity-error"></span>
+                        </div>
+                        <div class="edit-form-group">
+                            <label>Reorder Level<span class="asterisk">*</span></label>
+                            <input type="number" id="edit-reorder-level">
+                            <span class="error-input-message" id="edit-reorder-level-error"></span>
+                        </div>
+                        <div class="edit-form-group">
+                            <label>Expiration Date<span class="asterisk">*</span></label>
+                            <div class="edit-input-date-container">
+                                <input type="text" id="edit-expiration-date" placeholder="YYYY-MM-DD" readonly>
+                                <button type="button" class="edit-date-picker-btn">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </button>
+                            </div>
+                            <span class="error-input-message" id="edit-expiration-date-error"></span>
+                        </div>                        
+                    </div>
+
+                    <div class="edit-form-row">
+                        <div class="edit-form-group">
+                            <label>Batch Number<span class="asterisk">*</span></label>
+                            <input type="text" id="edit-batch-number">
+                            <span class="error-input-message" id="edit-batch-number-error"></span>
+                        </div>
+                        <div class="edit-form-group">
+                            <label>Supplier<span class="optional-text">(optional)</span></label>
+                            <input type="text" id="edit-supplier">
+                        </div>
+                        <div class="edit-form-group">
+                            <label>Barcode/QR Code<span class="asterisk">*</span></label>
+                            <button type="button" class="edit-generate-qr-btn" onclick="generateeditQR()">Generate QR Code</button>
+                            <span class="error-input-message" id="edit-qr-code-error"></span>
+                        </div>
+                    </div>
+
+                    <h3 class="add-stock-title">Pricing Details</h3>
+
+                    <div class="edit-form-row">
+                        <div class="edit-form-group">
+                            <label>Purchase Price<span class="asterisk">*</span></label>
+                            <input type="number" id="edit-purchase-price">
+                            <span class="error-input-message" id="edit-purchase-price-error"></span>
+                        </div>
+                        <div class="edit-form-group">
+                            <label>Selling Price<span class="asterisk">*</span></label>
+                            <input type="number" id="edit-selling-price">
+                            <span class="error-input-message" id="edit-selling-price-error"></span>
+                        </div>
+                        <div class="edit-form-group">
+                            <label>Discount Price<span class="optional-text">(optional)</span></label>
+                            <input type="number" id="edit-discount-price">
+                        </div>
+                    </div>
+                </div>
+
+                        <div class="edit-qr-code-section">
+                            <label>QR Code Will Display Here:</label>
+                            <div id="edit-qr-code-container">
+                                <img id="edit-qr-code-img" src="">
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="edit-delete-btn" onclick="resetEditForm()">
+                                <i class="bx bx-trash-alt"></i> Remove
+                            </button>
+                            <div class="edit-actions">
+                                <button type="button" class="edit-cancel-btn" onclick="closeEditModal()">Cancel</button>
+                                <button type="submit" class="edit-save-btn">Save Changes</button>
+                            </div>
+                        </div>
+                        
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Edit Medicine Modal -->
+        <div id="edit-essential-modal" class="modal-overlay" style="display: none;">
+            <div class="modal-box">
+                <div class="modal-header">
+                    <h2>Edit Product List</h2>
+                    <button class="close-modal" onclick="closeEssentialEditModal()">&times;</button>
+                </div>
+                <div class="modal-content">
+                    <form id="edit-product-form">
+
+                    <div class="input-padding">
+
+                    <div class="edit-form-row">
+                        <div class="edit-form-group">
+                            <label>Product Name <span class="asterisk">*</span></label>
+                            <input type="text" id="edit-product-name" placeholder="Enter Product Name">
+                            <span class="error-input-message" id="edit-product-name-error"></span>
+                        </div>
+                        <div class="edit-form-group">
+                            <label>Brand Name <span class="asterisk">*</span></label>
+                            <input type="text" id="edit-essential-brand-name" placeholder="Enter Brand Name">
+                            <span class="error-input-message" id="edit-essential-brand-name-error"></span>
+                        </div>
+                        <div class="edit-form-group">
+                            <label>Product Image <span class="asterisk">*</span></label>
+                            <input type="file"id="edit-product-image" multiple onchange="essentialhandleeditImageUpload()">
+                            <span class="error-input-message" id="edit-product-image-error"></span>
+                            <div id="edit-product-image-preview-container"></div>    
+                        </div>
+                    </div>
+
+                    <div class="edit-form-row">
+                        <div class="edit-form-group">
+                            <label>Category<span class="asterisk">*</span></label>  
+                            <div class="custom-dropdown" id="edit-product-category">
+                                <div class="selected-option">Choose Category</div>
+                                <ul class="dropdown-options">
+                                    <li data-value="Personal Care Products">Personal Care Products</li>
+                                    <li data-value="Baby Care Products">Baby Care Products</li>
+                                    <li data-value="Feminine Care & Hygiene">Feminine Care & Hygiene</li>
+                                    <li data-value="Health & Wellness">Health & Wellness</li>
+                                    <li data-value="First Aid & Wound Care">First Aid & Wound Care</li>
+                                    <li data-value="Medical & Home Care Equipment">Medical & Home Care Equipment</li>
+                                    <li data-value="-Over-the-Counter Medical Supplies">Over-the-Counter Medical Supplies</li>
+                                    <li data-value="Home Essentials & Household Items">Home Essentials & Household Items</li>
+                                    <li data-value="Adult & Senior Care">Adult & Senior Care</li>
+                                    <li data-value="Sexual Health & Family Planning">Sexual Health & Family Planning</li>
+                                </ul>
+                                <i class="bx bx-chevron-down select-icon"></i>
+                            </div>
+                            <span class="error-input-message" id="edit-product-category-error"></span>    
+                        </div>
+                        <div class="edit-form-group">
+                            <label>Size:<span class="asterisk">*</span></label>
+                            <input type="number" id="edit-size" placeholder="Enter Size">
+                            <span class="error-input-message" id="edit-size-error"></span>    
+                        </div>
+                        <div class="edit-form-group">
+                            <label>Unit of Measure <span class="asterisk">*</span></label>
+                            <div class="custom-dropdown" id="edit-unit-of-measure">
+                                <div class="selected-option">Choose Unit of Measure</div>
+                                <ul class="dropdown-options">
+                                    <li data-value="g">g</li>
+                                    <li data-value="kg">kg</li>
+                                    <li data-value="mL">mL</li>
+                                    <li data-value="L">L</li>
+                                    <li data-value="pc">pc</li>
+                                    <li data-value="pc per pack">pc per pack</li>
+                                    <li data-value="pack">pack</li>
+                                    <li data-value="box">box</li>
+                                    <li data-value="bottle">bottle</li>
+                                    <li data-value="tube">tube</li>
+                                    <li data-value="can">can</li>
+                                    <li data-value="jar">jar</li>
+                                    <li data-value="roll">roll</li>
+                                    <li data-value="sachet">sachet</li>
+                                    <li data-value="pair">pair</li>
+                                    <li data-value="set">set</li>
+                                    <li data-value="sheet">sheet</li>
+                                </ul>
+                                <i class="bx bx-chevron-down select-icon"></i>
+                            </div>
+                            <span class="error-input-message" id="edit-unit-of-measure-error"></span>    
+                        </div>
+                    </div>
+
+                    <div class="edit-form-row">
+                        <div class="edit-form-group">
+                            <label>Description/Usage <span class="asterisk">*</span></label>
+                            <textarea id="edit-essential-description-usage" placeholder="Enter Note"></textarea>
+                            <span class="error-input-message" id="edit-essential-description-usage-error"></span>    
+                        </div>
+                        <div class="edit-form-group">
+                            <label>Storage Instructions <span class="optional-text">(optional)</span></label>
+                            <textarea id="edit-storage-instructions" placeholder="Enter Note"></textarea>    
+                        </div>
+                        <div class="edit-form-group">
+                            <label>Contraindications <span class="optional-text">(optional)</span></label>
+                            <div class="custom-dropdown" id="edit-essential-contraindications">
+                                <div class="selected-option">Choose Contraindications</div>
+                                <ul class="dropdown-options">
+                                    <li><input type="checkbox" value="Allergic Reactions"> Allergic Reactions</li>
+                                    <li><input type="checkbox" value="Sensitive Skin Conditions"> Sensitive Skin Conditions</li>
+                                    <li><input type="checkbox" value="Open Wounds or Cuts"> Open Wounds or Cuts</li>
+                                    <li><input type="checkbox" value="Skin Sensitivity"> Skin Sensitivity</li>
+                                    <li><input type="checkbox" value="Pregnancy & Breastfeeding"> Pregnancy & Breastfeeding</li>
+                                    <li><input type="checkbox" value="Kidney or Liver Disease"> Kidney or Liver Disease</li>
+                                    <li><input type="checkbox" value="Drug Interactions"> Drug Interactions</li>
+                                    <li><input type="checkbox" value="Severe Skin Irritation"> Severe Skin Irritation</li>
+                                    <li><input type="checkbox" value="Asthma/Breathing Issues"> Asthma/Breathing Issues</li>
+                                </ul>
+                            <i class="bx bx-chevron-down select-icon"></i>
+                        </div>
+                        </div>
+                    </div>
+
+                    <h3 class="add-stock-title">Stock </h3>
+                    
+                    <div class="edit-form-row">
+                        <div class="edit-form-group">
+                            <label>Stock Quantity <span class="asterisk">*</span></label>
+                            <input type="number" id="edit-essential-stock-quantity" placeholder="Enter Stock Quantity">
+                            <span class="error-input-message" id="edit-essential-stock-quantity-error"></span>
+                        </div>
+                        <div class="edit-form-group">
+                            <label>Reorder Level <span class="asterisk">*</span></label>
+                            <input type="number" id="edit-essential-reorder-level" placeholder="Enter Reorder Level">
+                            <span class="error-input-message" id="edit-essential-reorder-level-error"></span>    
+                        </div>
+                        <div class="edit-form-group">
+                            <label>Expiration Date <span class="asterisk">*</span></label>
+                            <div class="edit-input-date-container">
+                                <input type="text" id="edit-essential-expiration-date" placeholder="YYYY-MM-DD" readonly>
+                                <button type="button" class="edit-date-picker-btn">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </button>
+                            </div>
+                            <span class="error-input-message" id="edit-essential-expiration-date-error"></span>    
+                        </div>
+                    </div>
+
+                    <div class="edit-form-row">
+                        <div class="edit-form-group">
+                            <label>Batch Number <span class="asterisk">*</span></label>
+                            <input type="number" id="edit-essential-batch-number" placeholder="Enter Batch Number">
+                            <span class="error-input-message" id="edit-essential-batch-number-error"></span>    
+                        </div>
+                        <div class="edit-form-group">
+                            <label>Supplier/Manufacturer <span class="optional-text">(optional)</span></label>
+                            <input type="text" id="edit-essential-supplier" placeholder="Enter Supplier/Manufacturer">    
+                        </div>
+                        <div class="edit-form-group">
+                            <label>Barcode/QR Code <span class="asterisk">*</span></label>
+                            <button type="button" class="generate-qr-btn" onclick="edit_essential_generateQR()">Generate QR Code</button>
+                            <span class="error-input-message" id="edit-essential-qr-code-error"></span>    
+                        </div>                        
+                    </div>
+
+                    <h3 class="add-stock-title">Pricing Details </h3>
+
+                    <div class="edit-form-row">
+                        <div class="edit-form-group">
+                            <label>Purchase Price <span class="asterisk">*</span></label>
+                            <input type="number" id="edit-essential-purchase-price" placeholder="Enter Purchase Price">
+                            <span class="error-input-message" id="edit-essential-purchase-price-error"></span>
+                        </div>
+                        <div class="edit-form-group">
+                            <label>Selling Price <span class="asterisk">*</span></label>
+                            <input type="number" id="edit-essential-selling-price" placeholder="Enter Selling Price">
+                            <span class="error-input-message" id="edit-essential-selling-price-error"></span>    
+                        </div>
+                        <div class="edit-form-group">
+                            <label>Discount Price <span class="optional-text">(optional)</span></label>
+                            <input type="number" id="edit-essential-discount-price" placeholder="Enter Selling Price">
+                        </div>
+                    </div>
+
+                            <div class="edit-qr-code-section">
+                                <label>QR Code Will Display Here</label>
+                                <div id="edit-essential-qr-code-container">
+                                    <img id="edit-essential-qr-code-img" src="">
+                                </div>
+                            </div>    
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="edit-delete-btn" onclick="resetEditEssentialForm()">
+                                <i class="bx bx-trash-alt"></i> Remove
+                            </button>
+                            <div class="edit-actions">
+                                <button type="button" class="edit-cancel-btn" onclick="closeEssentialEditModal()">Cancel</button>
+                                <button type="submit" class="edit-essential-save-btn">Save Changes</button>
+                            </div>
+                        </div>                                     
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+       <!-- View Medicine Modal -->
+        <div id="view-medicine-modal" class="view-modal">
+            <div class="view-modal-content">
+                <div class="view-modal-header">
+                    <div class="modal-header-left">
+                        <h2 id="view-brand-name"></h2>
+                        <div class="batch-number">Batch Number: <span id="batch-value"></span></div>
+                    </div>
+                    <div class="modal-header-right">
+                        <img id="view-medicine-image" src="" alt="Medicine Image">
+                    </div>
+                </div>
+
+                <div class="view-medicine-details">
+                    <div class="info-row">
+                        <div class="info-item"><label>Generic Name</label> <span id="view-generic-name"></span></div>
+                        <div class="info-item"><label>Dosage/Strength</label> <span id="view-dosage"></span></div>
+                        <div class="info-item"><label>Dosage Frequency</label> <span id="view-dosagefrequency"></span></div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-item"><label>Medicine Category</label> <span id="view-medicine-category"></span></div>
+                        <div class="info-item"><label>Formulation/Type</label> <span id="view-formulation"></span></div>
+                        <div class="info-item"><label>Prescription Required</label> <span id="view-prescription"></span></div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-item"><label>Description/Usage</label> <span id="view-description"></span></div>
+                        <div class="info-item"><label>Storage Conditions</label> <span id="view-storage-conditions"></span></div>
+                        <div class="info-item"><label>Contraindications</label> <span id="view-contraindications"></span></div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-item"><label>Side Effects & Warnings</label> <span id="view-sideeffects"></span></div>
+                    </div>
+                </div>
+
+                 <!-- Stock and Pricing Details -->
+                <div class="stock-pricing-container">
+                    <div class="stock-details">
+                        <h3>Stock</h3>
+                        <div class="stock-row">
+                            <div class="info-item"><label>Stock Quantity</label> <span id="view-stock-quantity"></span></div>
+                            <div class="info-item"><label>Reorder Level</label> <span id="view-reorder-level"></span></div>
+                        </div>
+                        <div class="stock-row">
+                            <div class="info-item"><label>Supplier/Manufacturer</label> <span id="view-supplier"></span></div>
+                            <div class="info-item"><label>Expiration Date</label> <span id="view-expiry-date"></span></div>
+                        </div>
+                    </div>
+                    <div class="pricing-details">
+                        <h3>Pricing Details</h3>
+                        <div class="stock-row">
+                        <div class="info-item"><label>Purchase Price</label> <span id="view-purchase-price"></span></div>
+                        <div class="info-item"><label>Selling Price</label> <span id="view-selling-price"></span></div>
+                    </div>
+                        <div class="info-item"><label>Discounted Price</label> <span id="view-discounted-price"></span></div>
+                    </div>
+                </div>
+
+                <div class="view-modal-footer">
+                    <button class="close-btn" onclick="closeViewModal()">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- View Medicine Modal -->
+        <div id="view-product-modal" class="view-modal">
+            <div class="view-modal-content">
+                <div class="view-modal-header">
+                    <div class="modal-header-left">
+                        <h2 id="view-product-name"></h2>
+                        <div class="batch-number">Batch Number: <span id="batch-essential-value"></span></div>
+                    </div>
+                    <div class="modal-header-right">
+                        <img id="view-product-image" src="" alt="Medicine Image">
+                    </div>
+                </div>
+
+                <div class="view-medicine-details">
+                    <div class="info-row">
+                        <div class="info-item"><label>Brand Name</label> <span id="view-essential-brand-name"></span></div>
+                        <div class="info-item"><label>Product Category</label> <span id="view-product-category"></span></div>
+                        <div class="info-item"><label>Size/Unit</label> <span id="view-size-unit"></span></div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-item"><label>Description</label> <span id="view-product-description"></span></div>
+                        <div class="info-item"><label>Storage Instructions</label> <span id="view-storage-instructions"></span></div>
+                        <div class="info-item"><label>Contraindications</label> <span id="view-product-contraindicatins"></span></div>
+                    </div>
+                </div>
+
+                 <!-- Stock and Pricing Details -->
+                <div class="stock-pricing-container">
+                    <div class="stock-details">
+                        <h3>Stock</h3>
+                        <div class="stock-row">
+                            <div class="info-item"><label>Stock Quantity</label> <span id="view-product-stock-quantity"></span></div>
+                            <div class="info-item"><label>Reorder Level</label> <span id="view-product-reorder-level"></span></div>
+                        </div>
+                        <div class="stock-row">
+                            <div class="info-item"><label>Supplier/Manufacturer</label> <span id="view-product-supplier"></span></div>
+                            <div class="info-item"><label>Expiration Date</label> <span id="view-product-expiry-date"></span></div>
+                        </div>
+                    </div>
+                    <div class="pricing-details">
+                        <h3>Pricing Details</h3>
+                        <div class="stock-row">
+                        <div class="info-item"><label>Purchase Price</label> <span id="view-product-purchase-price"></span></div>
+                        <div class="info-item"><label>Selling Price</label> <span id="view-product-selling-price"></span></div>
+                    </div>
+                        <div class="info-item"><label>Discounted Price</label> <span id="view-product-discounted-price"></span></div>
+                    </div>
+                </div>
+
+                <div class="view-modal-footer">
+                    <button class="close-btn" onclick="closeViewProductModal()">Close</button>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Modal for Receipt -->
+        <div id="receipt-modal" class="receipt-modal">
+            <div class="receipt-modal-content">
+                <span class="receipt-close-btn">&times;</span>
+                <div id="receipt-content">
+                    <!-- Logo -->
+                    <div class="receipt-logo">
+                        <img src="images/medisupplysystem_logo.png" alt="Medisupply Logo">
+                    </div>
+                    <!-- System and Pharmacy Info -->
+                    <h2>Medisupply</h2>
+                    <div id="receipt-pharmacy-name"></div> <!-- Pharmacy Name -->
+                    <div id="transaction-date"></div> <!-- Date -->
+                    <div id="transaction-time"></div> <!-- Time -->
+                    
+                    <!-- Purchased Items -->
+                    <h3 class="receipt-items-title">Purchased Items:</h3> 
+                    <div id="items-list"></div>
+
+                    <div class="total-summary">
+                        <p><strong>Total Quantity:</strong> <span id="total-quantity-receipt"></span></p>
+                        <p><strong>Total Price:</strong> <span class="amount"><span class="peso-sign">₱</span><span id="total-price-receipt"></span></span></p>
+                        <p><strong>Cash Paid:</strong> <span class="amount"><span class="peso-sign">₱</span><span id="cash-paid-receipt"></span></span></p>
+                        <p><strong>Change:</strong> <span class="amount"><span class="peso-sign">₱</span><span id="change-receipt"></span></span></p>
+                    </div>                    
+
+                    <div class="receipt-footer">
+                        <p>Medisupply Pharmacy</p>
+                        <p>1234 Pharmacy St., City, Country</p>
+                        <p><a href="mailto:support@medisupplyweb.com">support@medisupply.com</a> | <a href="tel:+123456789">+1 234 567 89</a></p>
+                        <p>Visit us: <a href="http://www.medisupply.com">www.medisupply.com</a></p>
+                    </div>                    
+
+                    <button id="save-receipt-btn" class="save-receipt-btn">Save Receipt</button>
+                    <button id="print-receipt-btn" class="print-receipt-btn">Print Receipt</button>
+
+
+                </div>
+            </div>
+        </div>
+
+
+
+        
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3.4.0/notyf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/air-datepicker@3.4.0/air-datepicker.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- For Database Script-->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+
+    <script>
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyB6_5jc_rz4vrkInjXsQFSXnFYuV2XOZGQ",
+        authDomain: "medisupplysystem.firebaseapp.com",
+        databaseURL: "https://medisupplysystem-default-rtdb.firebaseio.com",
+        projectId: "medisupplysystem",
+        storageBucket: "medisupplysystem.firebasestorage.app",
+        messagingSenderId: "176583885465",
+        appId: "1:176583885465:web:fdd04158416e8ce6002e08"
+    };
+
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const storage = firebase.storage();
+
+    // Example usage
+    console.log("Firestore initialized:", db);
+
+    </script>
+    <!-- End of Database Script-->
+
+    <script src="pharmacyjs/pharmacy_acc.js"></script>
+    <script src="pharmacyjs/pharmacynav.js"></script>
+    <script src="pharmacyjs/savemedicinedata.js"></script>
+    <script src="pharmacyjs/pharmacyessential.js"></script>
+    <script src="pharmacyjs/displaymedicinetable.js"></script>
+    <script src="pharmacyjs/searchmedicine.js"></script>
+    <script src="pharmacyjs/sortmedicine.js"></script>
+    <script src="pharmacyjs/filterby.js"></script>
+    <script src="pharmacyjs/displayessential.js"></script>
+    <script src="pharmacyjs/searchproduct.js"></script>
+    <script src="pharmacyjs/filterbyessential.js"></script>
+    <script src="pharmacyjs/sortproduct.js"></script>
+    <script src="pharmacyjs/editupdatemedicine.js"></script>
+    <script src="pharmacyjs/essentialedit.js"></script>
+    <script src="pharmacyjs/viewmedicine.js"></script>
+    <script src="pharmacyjs/viewproduct.js"></script>
+    <script src="pharmacyjs/categorypos.js"></script>
+    <script src="pharmacyjs/savereceipt.js"></script>
+    <script src="pharmacyjs/customercount.js"></script>
+    <script src="pharmacyjs/dailytotalsales.js"></script>
+    <script src="pharmacyjs/totalprofit.js"></script>
+    <script src="pharmacyjs/medoutofstock.js"></script>
+    <script src="pharmacyjs/numbermedicines.js"></script>
+    <script src="pharmacyjs/essentialproductcount.js"></script>
+    <script src="pharmacyjs/essentialoutofstock.js"></script>
+    <script src="pharmacyjs/numberexpiredmed.js"></script>
+    <script src="pharmacyjs/customertable.js"></script>
+    <script src="pharmacyjs/firstfiveexpmedicines.js"></script>
+    <script src="pharmacyjs/stockmanagement.js"></script>
+    <script src="pharmacyjs/postedmedcount.js"></script>
+    <script src="pharmacyjs/porductstock.js"></script>
+    <script src="pharmacyjs/medicinearchive.js"></script>
+    <script src="pharmacyjs/displaymedicinearchive.js"></script>
+    <script src="pharmacyjs/archiveviewmedicine.js"></script>
+    <script src="pharmacyjs/archiveessential.js"></script>
+    <script src="pharmacyjs/displayessentialarchive.js"></script>
+    <script src="pharmacyjs/viewarchiveproduct.js"></script>
+    <script src="pharmacyjs/searcharchivemedicine.js"></script>
+    <script src="pharmacyjs/searchessentialarchive.js"></script>
+    <script src="pharmacyjs/restoremedicine.js"></script>
+    <script src="pharmacyjs/restoreessential.js"></script>
+</body>
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediSupply - Pharmacy Registration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+    <link rel="stylesheet" href="styles/display_register.css" />
+    <link rel="icon" type="image/png" href="images/medisupplysystem_logo.png">
+</head>
+<body>
+    <!-- Header -->
+    <header class="page-header"></header>
+    
+    <div class="background-cover">
+        <img src="images/background_register_pharmacy.jpg" alt="Background" class="background-image">
+    </div>    
+
+     <!-- Add Pharmacy Modal -->
+     <div class="modal always-visible">
+        <div class="modal-content">
+
+            <div class="modal-close">
+                <button class="modal-back-btn" onclick="goBack()">
+                    <img src="images/back_arrow.png" alt="Back Icon" class="back-icon"> Back to Edit
+                </button>
+            </div>
+            
+            
+        <div class="modal-body">
+            <div class="modal-header"> 
+                <img src="images/medisupplysystem_logo.png" alt="Logo" class="logo-img">
+                <h3>PHARMACY REGISTRATION</h3>
+            </div> 
+            
+            <p class="modal-subtext">
+                Please ensure the accuracy of the information provided. Do not share your registration details with anyone for security purposes.
+            </p>
+
+            <div class="modal-info-text">
+                CONFIRM INFORMATION
+            </div>
+
+            <form id="confirm_pharmacy-form">
+             <!-- Pharmacy Details Section -->
+             <div class="pharmacy-details">
+                <!-- Profile Picture -->
+                <div class="profile-picture">
+                    <img id="med-picture" src="images/default_profile.png" alt="Profile Picture">
+                </div>
+
+                <!-- Pharmacy Name -->
+                <h2 id="pharmacy-name" class="pharmacy-name">Pharmacy Name</h2>
+                <!-- Pharmacy Information -->
+                <div class="details-container">
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <label class="detail-label">License Number</label>
+                        <div class="detail-data" id="license-number"></div>
+                    </div>
+                    <div class="detail-item">
+                        <label class="detail-label">Owner's Name</label>
+                        <div class="detail-data" id="owners-name"></div>
+                    </div>
+                    <div class="detail-item">
+                        <label class="detail-label">Owner's Address</label>
+                        <div class="detail-data" id="owners-address"></div>
+                    </div>
+                    <div class="detail-item">
+                        <label class="detail-label">Email</label>
+                        <div class="detail-data" id="email"></div>
+                    </div>
+                    <div class="detail-item">
+                        <label class="detail-label">Pharmacy Type</label>
+                        <div class="detail-data" id="pharmacy-type"></div>
+                    </div>
+                    <div class="detail-item">
+                        <label class="detail-label">Street</label>
+                        <div class="detail-data" id="street"></div>
+                    </div>
+                    <div class="detail-item">
+                        <label class="detail-label">Barangay</label>
+                        <div class="detail-data" id="barangay"></div>
+                    </div>
+                    <div class="detail-item">
+                        <label class="detail-label">Municipality</label>
+                        <div class="detail-data" id="municipality"></div>
+                    </div>
+                    <div class="detail-item">
+                        <label class="detail-label">Province</label>
+                        <div class="detail-data" id="province"></div>
+                    </div>
+                    <div class="detail-item">
+                        <label class="detail-label">Zipcode</label>
+                        <div class="detail-data" id="zipcode"></div>
+                    </div>
+                    <div class="detail-item">
+                        <label class="detail-label">Contact Number/Hotline</label>
+                        <div class="detail-data" id="contact-num"></div>
+                    </div>
+                    <div class="detail-item">
+                        <label class="detail-label">Opening Hours</label>
+                        <div class="detail-data"><span id="start"></span> - <span id="close"></span></div>
+                    </div>
+                    <div class="detail-item">
+                        <label class="detail-label">Days Open</label>
+                        <div class="detail-data" id="days-open"></div>
+                    </div>
+                    <div class="detail-item">
+                        <label class="detail-label">TIN Number</label>
+                        <div class="detail-data" id="TIN"></div>
+                    </div>
+                    <div class="detail-item">
+                        <label class="detail-label">Business Permit</label>
+                        <div class="detail-data" id="business-permit"></div>
+                    </div>
+                    <div class="detail-item">
+                        <label class="detail-label">License Expiry</label>
+                        <div class="detail-data" id="expiry-date"></div>
+                    </div>
+                    <div class="detail-item">
+                        <label class="detail-label">Registration Date</label>
+                        <div class="detail-data" id="date-registration"></div>
+                    </div>
+                    <div class="detail-item">
+                        <label class="detail-label">Status</label>
+                        <div class="detail-data" id="status"></div>
+                    </div>
+                </div>
+                <p class="section-description">
+                    Set Location: Our system currently supports only pharmacies located in 
+                    district areas, specifically within the municipalities of Loon and Calape.
+                </p>
+                
+                <button id="set-location-btn" class="select-submit-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="white" viewBox="0 0 24 24">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 4.42 5.7 10.92 6.39 11.71.35.39.96.39 1.31 0C13.3 19.92 19 13.42 19 9c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5 14.5 7.62 14.5 9 13.38 11.5 12 11.5z"></path>
+                    </svg>
+                    Set Location on Map
+                </button>   
+                <p id="location-error" style="color: red; font-size: 14px; display: none;"></p>             
+
+                <!-- Hidden fields for latitude and longitude -->
+                <input type="hidden" id="latitude" name="latitude">
+                <input type="hidden" id="longitude" name="longitude">
+
+                <!-- Map Modal -->
+                <div id="map-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="map-close-btn" id="close-map">&times;</span>
+                        <h3>Select Pharmacy Location</h3>
+                        <div id="map" style="width: 100%; height: 400px;"></div>
+                        <button id="save-location" class="submit-btn">
+                            <span class="spinner" id="save-location-spinner"></span>
+                            Save Location
+                        </button>
+                    </div>
+                </div>
+
+                <div class="button-container">
+                    <button type="submit" class="submit-btn" id="submit-btn">
+                        <span class="spinner" id="spinner"></span> 
+                        <span class="btn-text">Confirm Registration</span>
+                    </button>
+                </div>  
+                </div>
+
+            </form>
+
+            </div>
+
+           
+        </div>
+            
+        </div>
+    </div>
+
+    <!-- Custom Confirmation Modal -->
+    <div id="confirmBackModal" class="custom-modal-container">
+        <div class="custom-modal-content">
+            <h3>Go Back to Edit?</h3>
+            <p>If you noticed some incorrect details? No problem! 
+                You can go back and make changes before confirming your registration.</p>
+            <div class="custom-modal-footer">
+                <button class="cancel-btn" onclick="closeConfirmModal()">Still Continue</button>
+                <button class="confirm-btn" onclick="redirectToHome()">Do it Later</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Confirmation Modal -->
+    <div id="confirmRegistrationBackModal" class="custom-modal-container">
+        <div class="custom-modal-content">
+            <h3>Confirm Pharmacy Registration</h3>
+            <p>Are you sure you want to proceed with this pharmacy registration? 
+                Are you sure you want to proceed? Once confirmed, changes can’t be undone.</p>
+            <div class="custom-modal-footer">
+                <button class="cancel-btn" onclick="closeConfirmRegistrationModal()">Cancel</button>
+                <button class="confirm-btn" onclick="confirmAndProcessRegistration()">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbhoOE7Whrb7xjICYORqGywzoPocaJOB0&callback=initMap" async defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+
+    <!-- For Database Script-->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+
+    <script>
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyB6_5jc_rz4vrkInjXsQFSXnFYuV2XOZGQ",
+        authDomain: "medisupplysystem.firebaseapp.com",
+        databaseURL: "https://medisupplysystem-default-rtdb.firebaseio.com",
+        projectId: "medisupplysystem",
+        storageBucket: "medisupplysystem.firebasestorage.app",
+        messagingSenderId: "176583885465",
+        appId: "1:176583885465:web:fdd04158416e8ce6002e08"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const storage = firebase.storage();
+
+    // Example usage
+    console.log("Firestore initialized:", db);
+
+    </script>
+    <!-- End of Database Script-->
+
+    
+    
+    <script src="js/display_register.js"></script> <!-- Link to external JS -->
+</body>
+</html>

@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.4/css/boxicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+    <link rel="stylesheet" href="styles/indexstyle.css">
+    <link rel="icon" type="image/png" href="images/medisupplysystem_logo.png">
+    <title>MediSupply Pharmacy Account</title>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="#" class="logo">
+            <img src="images/medisupplysystem_logo.png" alt="Logo" class="logo-img">
+            <div class="logo-name"><span>Medi</span>Supply</div>
+        </a>
+        <ul class="side-menu">
+            <li class="active"><button><i class='bx bxs-dashboard'></i>Dashboard</button></li>
+            <li><button><i class='bx bx-clinic'></i> Pharmacy</button></li>
+            <li><button><i class='bx bx-user'></i> Users</button></li>
+            <li><button><i class='bx bx-bell'></i> Notification</button></li>
+            <li><button><i class='bx bx-archive'></i> Archive</button></li>
+        </ul>
+
+    </div>
+    <!-- End of Sidebar -->
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <nav>
+            <i class='bx bx-menu'></i>           
+            <button class="notif">
+                <i class='bx bx-bell'></i>
+                <span class="count">2</span>
+            </button>
+
+            <div class="profile" id="profile">
+                <div id="profile-initials" class="profile-img-placeholder"></div>
+                <div class="dropdown-menu" id="dropdown-menu">
+
+                    <div class="profile-info">
+                        <div id="profile-initials-dropdown" class="profile-img-placeholder"></div>
+                        <div class="profile-details">
+                            <span class="profile-name" id="profile-name"></span>
+                            <span class="profile-text">Administrator</span> 
+                        </div>
+                    </div>
+
+                    <div class="profile-tab">
+                        <button id="accountSettingsButton"><i class='bx bx-cog'></i>Account Settings</button>
+                        <div class="separator"></div>
+                        <button class="logout"><i class='bx bx-log-out'></i> Log out</button>
+                    </div>
+
+                </div>
+            </div> 
+
+        </nav>
+        <!-- End of Navbar -->
+
+         <!-- Account Settings Modal -->
+        <div class="modal" id="accountSettingsModal">
+            <div class="modal-content">
+                <div class="modal-close">
+                    <span class="modalclose" id="closeAccountModal">&times;</span>
+                </div>
+                
+                <div class="account-modal">
+                    <div class="account-modal-header">
+                        <h2>Account Settings</h2>
+                    </div>
+                    
+                    <div class="modal-tabs">
+                        <div class="tab active" data-tab-target="profile">Edit Profile</div>
+                        <div class="tab" data-tab-target="system-settings">System Settings</div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="tab-content active" id="profile">
+                            <div class="profile-container">
+                                <div class="user-details">
+                                    <div class="input-group">
+                                        <label for="firstName">First Name</label>
+                                        <input type="text" id="firstName" name="firstName" value="Charlie">
+                                        <div class="error-message" id="firstName-error"></div>
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="lastName">Last Name</label>
+                                        <input type="text" id="lastName" name="lastName" value="Sagetarios">
+                                        <div class="error-message" id="lastName-error"></div>
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="useremail">Email Address</label>
+                                        <input type="email" id="useremail" name="email" value="charlie.sagetarios@example.com">
+                                        <div class="error-message" id="email-error"></div>
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="current-password">Current Password</label>
+                                        <input type="password" id="current-password" name="current-password" value="charlie.sagetarios@example.com">
+                                        <div class="error-message" id="current-password-error"></div>
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="new-password">New Password</label>
+                                        <input type="password" id="new-password" name="new-password">
+                                        <div class="error-message" id="new-password-error"></div>
+                                    </div>
+                                    <div class="input-group">
+                                        <label for="confirm-new-password">Confirm New Password</label>
+                                        <input type="password" id="confirm-new-password" name="confirm-new-password">
+                                        <div class="error-message" id="confirm-new-password-error"></div>
+                                    </div>
+                                    <button class="save-edit-btn">
+                                        <span class="spinner" id="profile-spinner" style="display: none;"></span>
+                                        <span class="btn-text">Save Changes</span>
+                                    </button>
+                                </div>
+                            </div>                            
+                        </div>
+                        <div class="tab-content" id="system-settings">
+                            <h2>System Settings</h2>
+                            <p>Customize your system preferences below.</p>
+                            
+                            <div class="theme-settings">
+                                <span>Light / Dark Mode</span>
+                                <input type="checkbox" id="theme-toggle" hidden>
+                                <label for="theme-toggle" class="theme-toggle"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+
+            </div>
+        </div>
+
+
+
+        <main>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard_content">
+
+            <div class="header main-header">
+            <div class="header">
+                <div class="left">
+                    <h1> Dashboard</h1>
+                </div>
+            </div>
+            </div>
+
+            <!-- Insights -->
+            <ul class="insights">
+                <li class="dashboard-box">
+                    <i class='bx bx-line-chart'></i>
+                    <span class="info">
+                        <h3 id="registered-pharmacy-count">0</h3>
+                        <p>Number of Registered Pharmacy</p>
+                    </span>
+                </li>
+                <li class="dashboard-box">
+                    <i class='bx bx-hourglass'></i>
+                    <span class="info">
+                        <h3 id="pending-pharmacy-count">0</h3>
+                        <p>Number of Pending Pharmacy</p>
+                    </span>
+                </li>
+                <li class="dashboard-box">
+                    <i class='bx bx-block'></i>
+                    <span class="info">
+                        <h3 id="inactive-pharmacy-count">0</h3>
+                        <p>Number of Inactive Pharmacy</p>
+                    </span>
+                </li>
+                <li class="dashboard-box">
+                    <i class='bx bx-user'></i>
+                    <span class="info">
+                        <h3 id="user-count">0</h3> <!-- ID added to update the count dynamically -->
+                        <p>Number of Registered Users</p>
+                    </span>
+                </li>                
+            </ul>
+            <!-- End of Insights -->
+    </div>
+    <!-- End of Dashboard Content-->
+
+            <!-- Pharmacy Content -->
+            <div class="managemedicine_content">
+
+
+                <div class="header main-header">
+                    <div class="header">
+                        <div class="left">
+                            <h1>Pharmacy</h1>
+                        </div>                             
+                    </div>  
+                </div>
+
+                <div class="tab-container">
+                    <div class="bottom-data">
+                        <div class="orders">
+                            
+                            <!-- Navigation Bar for Classification -->
+                            <div class="pharmacy-nav-container">
+                                <div class="pharmacy-nav">
+                                    <span class="tab active" data-tab="registered">Registered Pharmacy</span>
+                                    <span class="tab" data-tab="pending">Pending Pharmacy</span>
+                                    <span class="tab" data-tab="inactive">Inactive</span>
+                                </div>
+                                <button class="add-pharmacy-btn" id="openModal">
+                                    <i class='bx bx-plus-medical'></i>
+                                    Add New Pharmacy
+                                </button>
+                            </div>
+                            
+                            <div class="header">
+                                <div class="search-bar">
+                                    <i class='bx bx-search'></i>
+                                    <input type="text" id="search-input" placeholder="Search a pharmacy" />
+                                    <i class='bx bx-x clear-icon' id="clear-search"></i>
+                                </div>                        
+                                
+                                <div class="filter-sort">
+                                    <select id="sortBy">
+                                        <option value="" disabled selected>Sort by</option>
+                                        <option value="asc">Date (Oldest First)</option>
+                                        <option value="desc">Date (Newest First)</option>
+                                    </select>
+                                </div>
+                            </div>                                        
+                
+                            <div class="table-container">
+                            <!-- Table for Registered Pharmacy -->
+                            <table id="registerPharmacyTable">
+                                <thead>
+                                    <tr>
+                                        <th>Pharmacy Name</th>
+                                        <th>Pharmacy Email</th>
+                                        <th>Business Address</th>
+                                        <th>Registration Date</th>
+                                        <th>Opening Date & Time</th>
+                                        <th>Status</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="registertableBody">
+                                    <!-- Data will be inserted here dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                
+                            <!-- Table for Pending Pharmacy -->
+                            <table id="pendingPharmacyTable" style="display: none;">
+                                <thead>
+                                    <tr>
+                                        <th>Pharmacy Name</th>
+                                        <th>Pharmacy Email</th>
+                                        <th>Business Address</th>
+                                        <th>Registration Date</th>
+                                        <th>Opening Date & Time</th>
+                                        <th>Status</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="pendingtableBody">
+                                    <!-- Data will be inserted here dynamically -->
+                                </tbody>
+                            </table>
+
+                            <!-- Table for Inactive Pharmacy -->
+                            <table id="inactivePharmacyTable" style="display: none;">
+                                <thead>
+                                    <tr>
+                                        <th>Pharmacy Name</th>
+                                        <th>Pharmacy Email</th>
+                                        <th>Business Address</th>
+                                        <th>Registration Date</th>
+                                        <th>Opening Date & Time</th>
+                                        <th>Status</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="inactivetableBody">
+                                    <!-- Data will be inserted here dynamically -->
+                                </tbody>
+                            </table>
+                
+                            <div class="pagination-container">
+                                <div class="rows-per-page">
+                                    Rows per page:
+                                    <select id="rowsPerPage">
+                                        <option value="5" selected>5</option>
+                                        <option value="10">10</option>
+                                        <option value="15">15</option>
+                                    </select>
+                                </div>
+                                <div class="pagination-info">
+                                    <span id="pagination-text">1-5 of 30 items</span>
+                                </div>
+                                <div class="pagination-controls">
+                                    <button id="prevPage" disabled>&lt;</button>
+                                    <button id="nextPage">&gt;</button>
+                                </div>
+                            </div>
+                
+                        </div>
+                    </div>
+                </div>
+
+            <!-- Add Pharmacy Modal -->
+        <div class="modal" id="addPharmacyModal">
+            <div class="modal-content">
+
+            <div class="modal-close">
+                <span class="modalclose" id="closeModal">&times;</span>
+            </div>
+                
+            <div class="modal-body">
+                <div class="modal-header"> 
+                    <img src="images/medisupplysystem_logo.png" alt="Logo" class="logo-img">
+                    <h3>PHARMACY REGISTRATION</h3>
+                </div>                
+
+                <form id="add_pharmacy-form">
+
+                    <div class="form-section">
+                        <h3 class="section-title">Pharmacy Details</h3> <!-- Category Title -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="pharmacy-name">Pharmacy Name<span class="required-asterisk">*</span></label>
+                                <div class="form-container">
+                                <input type="text" id="pharmacy-name" required>
+                            </div>
+                            <small id="pharmacy-error" class="error-message"></small>
+                            </div>                            
+                            <div class="form-group">
+                                <label for="owner-name">Owner's Full Name<span class="required-asterisk">*</span></label>
+                                <div class="form-container">
+                                <input type="text" id="owner-name" required>
+                            </div>
+                            <small id="owners-error" class="error-message"></small>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-number">Phone Number/Hotline<span class="required-asterisk">*</span></label>
+                                <div class="form-container">
+                                <input type="text" id="contact-number" required>
+                            </div>
+                            <small id="contact-error" class="error-message"></small>
+                        </div>
+                        </div>
+                    </div>      
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="owners-address">
+                                Owner's Address <span class="italic-text">(Barangay, Municipality, Province)</span>
+                                <span class="required-asterisk">*</span>
+                            </label>
+                            <div class="form-container">
+                            <input type="text" id="owners-address" required>
+                        </div>  
+                        <small id="owners-address-error" class="error-message"></small> 
+                    </div>                     
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                        <label for="email">Pharmacy Email<span class="required-asterisk">*</span></label>
+                        <div class="form-container">
+                        <input type="email" id="email" required>
+                        </div>
+                        <small id="pharmacy-email-error" class="error-message"></small> 
+                    </div>
+                    </div>
+
+                    <div class="form-row">
+                    <div class="form-group">
+                        <label for="pharmacy-type">Pharmacy Type<span class="required-asterisk">*</span></label>
+                        <select id="pharmacy-type" placeholder="Pharmacy Type"  required>
+                            <option value="" disabled selected class="disabled-option"></option>
+                            <option value="Community Pharmacy">Community Pharmacy </option>
+                            <option value="Clinical Pharmacy">Clinical Pharmacy</option>
+                            <option value="Industrial Pharmacy">Industrial Pharmacy </option>
+                            <option value="Compounding Pharmacy">Compounding Pharmacy </option>
+                            <option value="Consulting Pharmacy">Consulting Pharmacy</option>
+                            <option value="Regulatory Pharmacy">Regulatory Pharmacy</option>
+                        </select>
+                    </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="section-title">Business Address</h3> <!-- Category Title -->
+                        <p class="section-description">
+                            Note: Our system currently supports only pharmacies located in district areas, specifically within the municipalities of Loon and Calape.
+                        </p>
+                        <div class="form-row">
+                        <div class="form-group">
+                            <label for="business-address">
+                                Province
+                                <span class="italic-text">(Select Province First)</span>
+                                <span class="required-asterisk">*</span></label>
+                            <div class="form-container">
+                                <select id="province" onchange="loadCities()">
+                                    <option value="" disabled selected class="disabled-option"></option>
+                                    <option value="Bohol">Bohol</option>
+                                </select>
+                            </div>
+                            <small id="province-error" class="error-message"></small> 
+                            </div>
+                        </div>
+                        <div class="form-row">
+                        <div class="form-group">
+                            <label for="business-address">
+                                Municipality
+                                <span class="italic-text">(Select Province First)</span>
+                                <span class="required-asterisk">*</span></label>
+                            <div class="form-container">
+                                <select id="municipality" onchange="loadBarangays()" disabled>
+                                    <option value="" disabled selected class="disabled-option"></option>
+                                </select>
+                            </div>
+                            <small id="municipality-error" class="error-message"></small> 
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="business-address">
+                                    Barangay
+                                    <span class="italic-text">(Select Province First)</span>
+                                    <span class="required-asterisk">*</span></label>
+                                <div class="form-container">
+                                    <select id="barangay" disabled>
+                                        <option value="" disabled selected class="disabled-option"></option>
+                                    </select>
+                                </div>
+                                <small id="barangay-error" class="error-message"></small> 
+                                </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                            <label for="business-address">Street<span class="required-asterisk">*</span></label>
+                            <div class="form-container">
+                            <input type="text" id="street" required>
+                            </div>
+                            <small id="street-error" class="error-message"></small> 
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                            <label for="zip-code">Zip Code<span class="required-asterisk">*</span></label>
+                            <div class="form-container">
+                            <input type="text" id="zipcode" required>
+                            </div>
+                            <small id="zipcode-error" class="error-message"></small> 
+                            </div>
+                        </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3 class="section-title">Pharmacy Accreditation Details</h3> <!-- Category Title -->
+                        <div class="form-row">
+                            <div class="form-group">
+                            <label for="tax-id">Tax Identification Number<span class="required-asterisk">*</span></label>
+                            <div class="form-container">
+                            <input type="text" id="tax-id" required>
+                            </div>
+                            <small id="tax-error" class="error-message"></small> 
+                            </div>
+                            <div class="form-group">
+                            <label for="cert-number">Permit Number<span class="required-asterisk">*</span></label>
+                            <div class="form-container">
+                            <input type="text" id="cert-number" required>
+                            </div>
+                            <small id="certification-error" class="error-message"></small> 
+                            </div>
+                            <div class="form-group">
+                            <label for="license-number">License Number<span class="required-asterisk">*</span></label>
+                            <div class="form-container">
+                            <input type="text" id="license-number" required>
+                            </div>
+                            <small id="license-error" class="error-message"></small>
+                            </div>
+                        </div>
+                        </div>
+
+                <div class="form-row">
+                <div class="form-group">
+                <label for="license-expiry">License Expiry Date<span class="required-asterisk">*</span></label>
+                <input type="date" id="license-expiry" required>
+                </div>
+                <div class="form-group">
+                <label for="date-of-registration">Date of Registration<span class="required-asterisk">*</span></label>
+                <input type="date" id="date-of-registration" required>
+                </div>
+            </div>
+
+                <div class="form-section">
+                    <h3 class="section-title">Opening Days</h3> <!-- Category Title -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="daysfrom">From
+                                <span class="italic-text">(Select starting day)</span>
+                                <span class="required-asterisk">*</span>
+                            </label>
+                            <select id="daysfrom">
+                                <option value="" disabled selected class="disabled-option">Select Days</option>
+                                <option value="Monday">Monday</option>
+                                <option value="Tuesday">Tuesday</option>
+                                <option value="Wednesday">Wednesday</option>
+                                <option value="Thursday">Thursday</option>
+                                <option value="Friday">Friday</option>
+                                <option value="Saturday">Saturday</option>
+                                <option value="Sunday">Sunday</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="daysto">To
+                                <span class="italic-text">(Select ending day)</span>
+                                <span class="required-asterisk">*</span>
+                            </label>
+                            <select id="daysto">
+                                <option value="" disabled selected class="disabled-option">Select Days</option>
+                                <option value="Monday">Monday</option>
+                                <option value="Tuesday">Tuesday</option>
+                                <option value="Wednesday">Wednesday</option>
+                                <option value="Thursday">Thursday</option>
+                                <option value="Friday">Friday</option>
+                                <option value="Saturday">Saturday</option>
+                                <option value="Sunday">Sunday</option>
+                            </select>
+                        </div>
+                    </div>
+                
+                    <div class="form-row">  
+                        <div class="form-group">
+                            <label for="start">
+                                Start
+                                <span class="italic-text">(HH:MM AM/PM)</span>
+                                <span class="required-asterisk">*</span>
+                            </label>
+                            <input type="time" id="start" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="close">
+                                Close
+                                <span class="italic-text">(HH:MM AM/PM)</span>
+                                <span class="required-asterisk">*</span>
+                            </label>
+                            <input type="time" id="close" required>
+                        </div>
+                    </div>
+                </div>                
+                
+
+                <div class="form-section">
+                    <h3 class="section-title">Security & Profile Settings</h3> <!-- Category Title -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="password">Set Password<span class="required-asterisk">*</span></label>
+                        <div class="form-container">
+                            <input type="password" id="password" required onkeyup="validatePassword(); checkPasswordStrength();">
+                            <i id="eye-icon" class="fas fa-eye-slash" onclick="togglePassword('password', this)"></i>
+                        </div>
+                        <small id="password-strength" class="error-message"></small>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password<span class="required-asterisk">*</span></label>
+                        <div class="form-container">
+                            <input type="password" id="confirm-password" required onkeyup="validatePassword()">
+                            <i id="eye-icon" class="fas fa-eye-slash" onclick="togglePassword('confirm-password', this)"></i>
+                        </div>
+                        <small id="password-error" class="error-message"></small>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="status">Account Status<span class="required-asterisk">*</span></label>
+                        <select id="status" placeholder="Select Options"  required>
+                            <option value="" disabled selected class="disabled-option">Select Options</option>
+                            <option value="Registered">Registered</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                    <label for="medicine-picture">Upload Pharmacy Profile<span class="required-asterisk">*</span></label>
+                    <input type="file" id="medicine-picture" accept="image/*" required>
+                    </div>
+                </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title">Setting Location</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <p class="section-description">
+                            Set Location: Our system currently supports only pharmacies located in 
+                            district areas, specifically within the municipalities of Loon and Calape.
+                        </p>
+                        
+                        <button id="set-location-btn" class="select-submit-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="white" viewBox="0 0 24 24">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 4.42 5.7 10.92 6.39 11.71.35.39.96.39 1.31 0C13.3 19.92 19 13.42 19 9c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5 14.5 7.62 14.5 9 13.38 11.5 12 11.5z"></path>
+                            </svg>
+                            Set Location on Map
+                        </button>   
+                        <p id="location-error" 
+                        style="color: red; font-size: 14px; display: none; text-align: center; width: 100%; margin-top: 5px;">
+                        </p>             
+        
+                        <!-- Hidden fields for latitude and longitude -->
+                        <input type="hidden" id="latitude" name="latitude">
+                        <input type="hidden" id="longitude" name="longitude">
+        
+                        <!-- Map Modal -->
+                        <div id="map-modal" class="modal">
+                            <div class="modal-content">
+                                <span class="map-close-btn" id="close-map">&times;</span>
+                                <h3>Select Pharmacy Location</h3>
+                                <div id="map" style="width: 100%; height: 400px;"></div>
+                                <button id="save-location" class="submit-btn">
+                                    <span class="spinner" id="save-location-spinner"></span>
+                                    Save Location
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                </div>
+
+                <div class="button-container">
+                    <button type="submit" class="submit-btn" id="submit-btn">
+                        <span class="spinner" id="spinner"></span> Add Pharmacy
+                    </button>
+                </div>                
+                </form>
+            </div>
+                
+            </div>
+        </div>
+
+
+        <!-- Edit Pharmacy Modal -->
+        <div class="modal" id="editPharmacyModal" >
+            <div class="modal-content">
+
+            <div class="modal-close">
+                <span class="modalclose" id="closeEditModal">&times;</span>
+            </div>
+                
+            <div class="modal-body">
+                <div class="modal-header"> 
+                    <img src="images/medisupplysystem_logo.png" alt="Logo" class="logo-img">
+                    <h3>UPDATE PHARMACY</h3>
+                </div>                
+
+                <form id="edit_pharmacy-form">
+
+                    <div class="form-section">
+                        <h3 class="section-title">Pharmacy Details</h3> <!-- Category Title -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="edit-pharmacy-name">Pharmacy Name<span class="required-asterisk">*</span></label>
+                                <div class="form-container">
+                                <input type="text" id="edit-pharmacy-name" required>
+                            </div>
+                            <small id="edit-pharmacy-error" class="error-message"></small>
+                            </div>                            
+                            <div class="form-group">
+                                <label for="edit-owner-name">Owner's Full Name<span class="required-asterisk">*</span></label>
+                                <div class="form-container">
+                                <input type="text" id="edit-owner-name" required>
+                            </div>
+                            <small id="edit-owner-error" class="error-message"></small>
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-contact-number">Phone Number/Hotline<span class="required-asterisk">*</span></label>
+                                <div class="form-container">
+                                <input type="text" id="edit-contact-number" required>
+                            </div>
+                            <small id="edit-contact-number-error" class="error-message"></small>
+                            </div>
+                        </div>
+                    </div>   
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="edit-owners-address">
+                                Owner's Address <span class="italic-text">(Barangay, Municipality, Province)</span>
+                                <span class="required-asterisk">*</span>
+                            </label>
+                            <div class="form-container">
+                            <input type="text" id="edit-owners-address" required>
+                        </div>
+                        <small id="edit-owners-address-error" class="error-message"></small>
+                        </div>                        
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                        <label for="edit-email">Pharmacy Email<span class="required-asterisk">*</span></label>
+                        <div class="form-container">
+                        <input type="email" id="edit-email" required>
+                        </div>
+                        <small id="edit-pharmacy-email-error" class="error-message"></small>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                    <div class="form-group">
+                        <label for="edit-pharmacy-type">Pharmacy Type<span class="required-asterisk">*</span></label>
+                        <select id="edit-pharmacy-type" placeholder="Pharmacy Type"  required>
+                            <option value="" disabled selected class="disabled-option">Select Pharmacy Type</option>
+                            <option value="Community Pharmacy">Community Pharmacy </option>
+                            <option value="Clinical Pharmacy">Clinical Pharmacy</option>
+                            <option value="Industrial Pharmacy">Industrial Pharmacy </option>
+                            <option value="Compounding Pharmacy">Compounding Pharmacy </option>
+                            <option value="Consulting Pharmacy">Consulting Pharmacy</option>
+                            <option value="Regulatory Pharmacy">Regulatory Pharmacy</option>
+                        </select>
+                    </div>
+                    </div>
+
+                <div class="form-section">
+                <h3 class="section-title">Business Address</h3> <!-- Category Title -->
+                <p class="section-description">
+                    Note: Our system currently supports only pharmacies located in district areas, specifically within the municipalities of Loon and Calape.
+                </p>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="edit-business-address">
+                            Province
+                            <span class="italic-text">(Select Province First)</span>
+                            <span class="required-asterisk">*</span></label>
+                        <div class="form-container">
+                            <select id="edit-province" onchange="loadEditCities()">
+                                <option value="" disabled selected class="disabled-option"></option>
+                                <option value="Bohol">Bohol</option>
+                            </select>
+                        </div>
+                        <small id="edit-province-error" class="error-message"></small>
+                        </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="edit-business-address">
+                            Municipality
+                            <span class="italic-text">(Select Province First)</span>
+                            <span class="required-asterisk">*</span></label>
+                        <div class="form-container">
+                            <select id="edit-municipality" onchange="loadEditBarangays()" disabled>
+                                <option value="" disabled selected class="disabled-option"></option>
+                            </select>
+                        </div>
+                        <small id="edit-municipality-error" class="error-message"></small>
+                        </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="edit-business-address">
+                            Barangay
+                            <span class="italic-text">(Select Province First)</span>
+                            <span class="required-asterisk">*</span></label>
+                        <div class="form-container">
+                            <select id="edit-barangay" disabled>
+                                <option value="" disabled selected class="disabled-option"></option>
+                            </select>
+                        </div>
+                        <small id="edit-barangay-error" class="error-message"></small>
+                        </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                    <label for="edit-business-address">Street<span class="required-asterisk">*</span></label>
+                    <div class="form-container">
+                    <input type="text" id="edit-street" required>
+                    </div>
+                    <small id="edit-street-error" class="error-message"></small>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                    <label for="edit-zip-code">Zip Code<span class="required-asterisk">*</span></label>
+                    <div class="form-container">
+                    <input type="text" id="edit-zipcode" required>
+                    </div>
+                    <small id="edit-zipcode-error" class="error-message"></small>
+                    </div>
+                </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title">Pharmacy Accreditation Details</h3> <!-- Category Title -->
+                <div class="form-row">
+                    <div class="form-group">
+                    <label for="edit-tax-id">Tax Identification Number<span class="required-asterisk">*</span></label>
+                    <div class="form-container">
+                    <input type="text" id="edit-tax-id" required>
+                    </div>
+                    <small id="edit-tax-id-error" class="error-message"></small>
+                    </div>
+                    <div class="form-group">
+                    <label for="edit-cert-number">Permit Number<span class="required-asterisk">*</span></label>
+                    <div class="form-container">
+                    <input type="text" id="edit-cert-number" required>
+                    </div>
+                    <small id="edit-certification-number-error" class="error-message"></small>
+                    </div>
+                    <div class="form-group">
+                    <label for="edit-license-number">License Number<span class="required-asterisk">*</span></label>
+                    <div class="form-container">
+                    <input type="text" id="edit-license-number" required>
+                    </div>
+                    <small id="edit-license-number-error" class="error-message"></small>
+                    </div>
+                </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                    <label for="edit-license-expiry">License Expiry Date<span class="required-asterisk">*</span></label>
+                    <input type="date" id="edit-license-expiry" required>
+                    </div>
+                    <div class="form-group">
+                    <label for="edit-date-of-registration">Date of Registration<span class="required-asterisk">*</span></label>
+                    <input type="date" id="edit-date-of-registration" required>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title">Opening Days</h3> <!-- Category Title -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="edit-daysfrom">From
+                                <span class="italic-text">(Select starting day)</span>
+                                <span class="required-asterisk">*</span>
+                            </label>
+                            <select id="edit-daysfrom">
+                                <option value="" disabled selected class="disabled-option">Select Days</option>
+                                <option value="Monday">Monday</option>
+                                <option value="Tuesday">Tuesday</option>
+                                <option value="Wednesday">Wednesday</option>
+                                <option value="Thursday">Thursday</option>
+                                <option value="Friday">Friday</option>
+                                <option value="Saturday">Saturday</option>
+                                <option value="Sunday">Sunday</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-daysto">To
+                                <span class="italic-text">(Select ending day)</span>
+                                <span class="required-asterisk">*</span>
+                            </label>
+                            <select id="edit-daysto">
+                                <option value="" disabled selected class="disabled-option">Select Days</option>
+                                <option value="Monday">Monday</option>
+                                <option value="Tuesday">Tuesday</option>
+                                <option value="Wednesday">Wednesday</option>
+                                <option value="Thursday">Thursday</option>
+                                <option value="Friday">Friday</option>
+                                <option value="Saturday">Saturday</option>
+                                <option value="Sunday">Sunday</option>
+                            </select>
+                        </div>
+                    </div>
+                
+                    <div class="form-row">  
+                        <div class="form-group">
+                            <label for="edit-start">
+                                Start
+                                <span class="italic-text">(HH:MM AM/PM)</span>
+                                <span class="required-asterisk">*</span>
+                            </label>
+                            <input type="time" id="edit-start" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-close">
+                                Close
+                                <span class="italic-text">(HH:MM AM/PM)</span>
+                                <span class="required-asterisk">*</span>
+                            </label>
+                            <input type="time" id="edit-close" required>
+                        </div>
+                    </div>
+                </div>                
+                
+
+                <div class="form-section">
+                    <h3 class="section-title">Security & Profile Settings</h3> <!-- Category Title -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="edit-password">Set Password<span class="required-asterisk">*</span></label>
+                        <div class="form-container">
+                            <input type="password" id="edit-password" required onkeyup="validateEditPassword(); checkEditPasswordStrength();">
+                            <i id="eye-icon" class="fas fa-eye-slash" onclick="togglePassword('edit-password', this)"></i>
+                        </div>
+                        <small id="edit-password-strength" class="error-message"></small>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="edit-confirm-password">Confirm Password<span class="required-asterisk">*</span></label>
+                        <div class="form-container">
+                            <input type="password" id="edit-confirm-password" required onkeyup="validateEditPassword()">
+                            <i id="eye-icon" class="fas fa-eye-slash" onclick="togglePassword('edit-confirm-password', this)"></i>
+                        </div>
+                        <small id="edit-password-error" class="error-message"></small>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="edit-status">Account Status<span class="required-asterisk">*</span></label>
+                        <select id="edit-status" placeholder="Select Options"  required>
+                            <option value="" disabled selected class="disabled-option">Select Options</option>
+                            <option value="Registered">Registered</option>
+                            <option value="Pending" disabled selected>Pending</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-medicine-picture">Upload Pharmacy Profile<span class="required-asterisk">*</span></label>
+                        <input type="file" id="edit-medicine-picture" accept="image/*">
+                    </div>                    
+                </div>
+                </div>
+
+                <div class="button-container">
+                    <button type="submit" class="submit-btn" id="submit-btn">
+                        <span class="spinner" id="edit-spinner"></span> Save Changes
+                    </button>
+                </div>                
+                </form>
+            </div>
+                
+            </div>
+        </div>
+
+
+        <!-- View Modal -->
+        <div id="viewModal" class="view-modal">
+            <div class="view-modal-content">
+                <div class="view-modal-header">
+                    <div class="header-bg"></div>
+                    <img id="view-med-picture" class="profile-picture" src="default-image.png" alt="Pharmacy Image">
+                    <h2 id="view-pharmacy-name">Pharmacy Name</h2>
+                    <p><strong>Email: </strong> <span id="view-email"></span></p>
+                    <span class="view-close" onclick="closeViewModal()">&times;</span>
+                </div>
+                <div class="view-modal-body">
+                    <h3 class="view-section-title">Pharmacy Details</h3>
+                    <div class="row">
+                        <p data-label="Owner's Name:"><span id="view-owners-name"></span></p>
+                        <p data-label="Owner's Address:"><span id="view-owners-address"></span></p>
+                    </div> 
+                    <div class="row">
+                        <p data-label="Business Address:"> <span id="view-address"></span></p>
+                        <p data-label="Pharmacy Type:"> <span id="view-pharmacy-type"></span></p>
+                    </div>
+                    <div class="row">
+                        <p data-label="Zip Code:"> <span id="view-zipcode"></span></p>
+                        <p data-label="TIN Number:"> <span id="view-tin"></span></p>
+                    </div>                   
+                    <div class="row">
+                        <p data-label="License Number:"> <span id="view-license-number"></span></p>
+                        <p data-label="License Expiry Date:"> <span id="view-expiry-date"></span></p>
+                    </div>
+                    <div class="row">
+                        <p data-label="Permit Number:"> <span id="view-business-permit"></span></p>
+                        <p data-label="Date Registered:"> <span id="view-date-registration"></span></p>
+                    </div>
+                    <div class="row">
+                        <p data-label="Status:"> <span id="view-status"></span></p>
+                    </div>
+                </div>
+                <!-- New Footer Section -->
+                <div class="view-modal-footer">
+                    <p class="contact-info">📞 Hotline: <span id="view-contact-number"></span></p>
+                    <p class="operating-hours">🕒 Open <span id="view-days-open"></span> at <span id="view-operating-hours"></span></p>
+                </div>
+            </div>
+        </div>
+
+
+</div>
+<!-- End of Pharmacy Content-->
+
+            <!-- User Content -->
+            <div class="manageuser_content">
+
+                <div class="header main-header">
+                <div class="header">
+                    <div class="left">
+                        <h1>Users</h1>
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-container">
+                <div class="bottom-data">
+                    <div class="orders">
+
+                        <div class="user_search_sort-container">
+                        <div class="header">
+                            <div class="search-bar">
+                                <i class='bx bx-search'></i>
+                                <input type="text" id="search-user-input" placeholder="Search a User" />
+                                <i class='bx bx-x clear-icon' id="clear-user-search"></i>
+                            </div>                        
+                            
+                            <div class="filter-sort">
+                                <select id="user_filterByGender">
+                                    <option value="" disabled selected>Filter by Gender</option>
+                                    <option value="">All</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                                <select id="user_filterByAgeRange">
+                                    <option value="" disabled selected>Filter by Age Range</option>
+                                    <option value="">All</option>
+                                    <option value="18-25">18-25</option>
+                                    <option value="26-35">26-35</option>
+                                    <option value="36-45">36-45</option>
+                                    <option value="46+">46+</option>
+                                </select>
+                            </div>                                                        
+                        </div>   
+                    </div>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>FullName</th>
+                                    <th>Email</th>
+                                    <th>Password</th>
+                                    <th>Gender</th>
+                                    <th>Age</th>
+                                    <th>PhoneNumber</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableuserBody">
+                                <!-- Data from Firestore will be inserted here -->
+                            </tbody>
+                        </table>
+
+                        <div class="pagination-container">
+                            <div class="rows-per-page">
+                                Rows per page:
+                                <select id="user-rowsPerPage">
+                                    <option value="5" selected>5</option>
+                                    <option value="10">10</option>
+                                    <option value="15">15</option>
+                                </select>
+                            </div>
+                            <div class="pagination-info">
+                                <span id="user-pagination-text">1-5 of 30 items</span>
+                            </div>
+                            <div class="pagination-controls">
+                                <button id="userprevPage" disabled>&lt;</button>
+                                <button id="usernextPage">&gt;</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>    
+            </div>
+            </div>
+            <!-- End of User Content-->
+
+            <!-- Archive Content -->
+        <div class="managearchive_content">
+
+            <div class="header main-header">
+            <div class="header">
+                <div class="left">
+                    <h1>Archive</h1>
+                </div>
+            </div>
+        </div>
+            
+            <div class="data-container">
+                    <div class="bottom-data">
+                        <div class="orders">
+
+                            <div class="user_search_sort-container">
+                            <div class="header">
+                                <div class="search-bar">
+                                    <i class='bx bx-search'></i>
+                                    <input type="text" id="archive-search-input" placeholder="Search a pharmacy" />
+                                    <i class='bx bx-x clear-icon' id="clear-archive-search"></i>
+                                </div>                        
+                                
+                                <div class="filter-sort">
+                                    <select id="archive_sortBy">
+                                        <option value="" disabled selected>Sort by</option>
+                                        <option value="asc">Date (Oldest First)</option>
+                                        <option value="desc">Date (Newest First)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                            <!-- Table for Archieve Pharmacy -->
+                            <table id="archivePharmacyTable">
+                                <thead>
+                                    <tr>
+                                        <th>Pharmacy Name</th>
+                                        <th>Pharmacy Email</th>
+                                        <th>Business Address</th>
+                                        <th>Registration Date</th>
+                                        <th>Opening Date & Time</th>
+                                        <th>Date Deleted</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="archivetableBody">
+                                    <!-- Data will be inserted here dynamically -->
+                                </tbody>
+                            </table>
+
+                            <div class="pagination-container">
+                                <div class="rows-per-page">
+                                    Rows per page:
+                                    <select id="archive-rowsPerPage">
+                                        <option value="5" selected>5</option>
+                                        <option value="10">10</option>
+                                        <option value="15">15</option>
+                                    </select>
+                                </div>
+                                <div class="pagination-info">
+                                    <span id="archive-pagination-text">1-5 of 30 items</span>
+                                </div>
+                                <div class="pagination-controls">
+                                    <button id="archiveprevPage" disabled>&lt;</button>
+                                    <button id="archivenextPage">&gt;</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                </div>
+                <!-- End of Archive Content-->
+
+                <!-- Start of Notification Content-->
+                <div class="notification_content">
+
+                    <div class="header main-header">
+                        <div class="header">
+                            <div class="left">
+                                <h1>Notification</h1>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="notification_wrapper">
+                        <h3 class="notification-title">See Your Notifications Here</h3>
+                        <div class="notifications-list">
+                            <!-- Notifications will be added here dynamically -->
+                        </div>
+                        <button class="see-more-btn">See More</button>
+                    </div>
+                    
+                    
+                </div>
+                <!-- End of Notification Content-->
+
+</main>
+
+</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbhoOE7Whrb7xjICYORqGywzoPocaJOB0&callback=initMap" async defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+
+    <!-- For Database Script-->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+
+    <script>
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyB6_5jc_rz4vrkInjXsQFSXnFYuV2XOZGQ",
+        authDomain: "medisupplysystem.firebaseapp.com",
+        databaseURL: "https://medisupplysystem-default-rtdb.firebaseio.com",
+        projectId: "medisupplysystem",
+        storageBucket: "medisupplysystem.firebasestorage.app",
+        messagingSenderId: "176583885465",
+        appId: "1:176583885465:web:fdd04158416e8ce6002e08"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const storage = firebase.storage();
+
+    // Example usage
+    console.log("Firestore initialized:", db);
+
+    </script>
+    <!-- End of Database Script-->
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/index.js"></script>
+</body>
+
+</html>

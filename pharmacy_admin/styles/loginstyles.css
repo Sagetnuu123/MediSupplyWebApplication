@@ -1,0 +1,183 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet');
+
+    :root {
+    --danger: #D32F2F;
+    --dark: #003366;
+    }
+
+    * {
+    font-family: 'Montserrat', sans-serif;
+    }
+
+    body {
+        background-color: #f0f0f0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    /* Page Header */
+    .page-header {
+        height: 150px;
+        background-color: #FFC107;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+    }
+
+    /* Background Cover */
+    .background-cover {
+        position: fixed;
+        top: 150px;
+        left: 0;
+        width: 100%;
+        height: calc(100vh - 150px);
+        z-index: 1;
+    }
+
+    .background-cover img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .back-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        font-size: 14px;
+        color: transparent;
+        background: none;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        color: var(--dark);
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        z-index: 10;
+    }
+    .back-button:focus {
+        color: black;
+        text-decoration: underline;
+    }
+    .back-icon {
+        width: 17px;
+        height: 17px;
+    }
+    .login-container {
+        width: 350px;
+        background: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        overflow: hidden;
+        text-align: center;
+        position: relative;
+        padding: 10px;
+        z-index: 10;
+        margin-top: 50px;
+    }
+    .header {
+        background: #a88787;
+        padding: 20px;
+    }
+    .header img {
+        width: 50px;
+    }
+    .logo {
+        color: var(--danger);
+        font-size: 13px;
+        text-decoration: none;
+        display: block;
+        margin-top: 5px;
+    }
+    .logo .logo-name span { 
+        color: var(--dark);
+    }
+    .form-container {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .form-container label {
+        align-self: flex-start;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    .form-container input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        text-align: left;
+        box-sizing: border-box;
+        margin-bottom: 15px;
+    }
+    .password-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+    .password-container input {
+        flex: 1; /* Makes input take full width */
+        height: 40px; /* Ensures uniform height */
+        margin-bottom: 0; /* Prevents extra spacing inside password container */
+    }
+    .toggle-text {
+        position: absolute;
+        right: 15px;
+        font-size: 14px;
+        color: #007bff;
+        cursor: pointer;
+        user-select: none;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+    }
+    .toggle-text:hover {
+        text-decoration: underline;
+    }
+    .login-btn {
+        background: #FFC107;
+        border: none;
+        padding: 10px;
+        width: 100%;
+        cursor: pointer;
+        font-size: 16px;
+        border-radius: 5px;
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px; /* Ensures spacing when spinner is visible */
+        position: relative;
+    }
+    
+    .spinner {
+        display: none;
+        width: 16px;
+        height: 16px;
+        border: 3px solid #fff;
+        border-top: 3px solid transparent;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+    }
+    
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }    
+    .footer {
+        background: #f5f5f5;
+        padding: 10px;
+        font-size: 12px;
+    }

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediSupply - Login</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+    <link rel="icon" type="image/png" href="images/medisupplysystem_logo.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+    <link rel="stylesheet" href="styles/loginstyles.css" />
+</head>
+<body>
+
+    <header class="page-header"></header>
+
+    <!-- Background Cover -->
+    <div class="background-cover">
+        <img src="images/background_register_pharmacy.jpg" alt="Background" class="background-image">
+    </div>
+
+    <button class="back-button" onclick="goBack()">
+        <img src="images/back_arrow.png" alt="Back Icon" class="back-icon"> Back To Home
+    </button>
+    
+    <div class="login-container">
+        <div class="header">
+            <img src="images/medisupplysystem_logo.png" alt="Logo">
+            <a href="#" class="logo">
+                <div class="logo-name"><span>Medi</span>Supply</div>
+            </a>
+        </div>
+        <div class="form-container">
+            <label for="username">Pharmacy Email:</label>
+            <input type="text" id="username" placeholder="Enter pharmacy email">
+            
+            <label for="password">Password:</label>
+            <div class="password-container">
+                <input type="password" id="password" placeholder="Enter password">
+                <span id="toggle-password" class="toggle-text">Show</span>
+            </div>            
+            <button class="login-btn" id="login-btn">
+                <span class="spinner" id="login-spinner"></span> Log in
+            </button>            
+        </div>
+        <div class="footer">Copyright © 2024 MediSupply System<br>  All Rights Reserved</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+
+    <!-- For Database Script-->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+
+    <script>
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyB6_5jc_rz4vrkInjXsQFSXnFYuV2XOZGQ",
+        authDomain: "medisupplysystem.firebaseapp.com",
+        databaseURL: "https://medisupplysystem-default-rtdb.firebaseio.com",
+        projectId: "medisupplysystem",
+        storageBucket: "medisupplysystem.firebasestorage.app",
+        messagingSenderId: "176583885465",
+        appId: "1:176583885465:web:fdd04158416e8ce6002e08"
+    };
+
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const storage = firebase.storage();
+
+    // Example usage
+    console.log("Firestore initialized:", db);
+
+    </script>
+    <!-- End of Database Script-->
+
+    <script src="js/login.js"></script>
+</body>
+</html>

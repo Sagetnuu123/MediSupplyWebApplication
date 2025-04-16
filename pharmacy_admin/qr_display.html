@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Scanner</title>
+    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #reader {
+            width: 100%;
+            max-width: 300px;
+            margin: auto;
+        }
+        #medicine-info {
+            display: none;
+            margin-top: 20px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Scan Medicine QR Code</h2>
+    <div id="reader"></div>
+
+    <div id="medicine-info">
+        <h3>Medicine Details</h3>
+        <img id="medicine-img" src="" alt="Medicine Image">
+        <p><strong>Brand Name:</strong> <span id="brand-name"></span></p>
+        <p><strong>Category:</strong> <span id="category"></span></p>
+        <p><strong>Formulation Type:</strong> <span id="formulation-type"></span></p>
+        <p><strong>Dosage Strength:</strong> <span id="dosage-strength"></span></p>
+        <p><strong>Dosage Frequency:</strong> <span id="dosage-frequency"></span></p>
+        <p><strong>Description/Usage:</strong> <span id="description-usage"></span></p>
+        <p><strong>Batch Number:</strong> <span id="batch-number"></span></p>
+        <p><strong>Supplier/Manufacturer:</strong> <span id="supplier"></span></p>
+        <p><strong>Expiry Date:</strong> <span id="expiry-date"></span></p>
+    </div>
+
+    <script>
+        function onScanSuccess(qrMessage) {
+            try {
+                const medicineData = JSON.parse(qrMessage);
+
+                document.getElementById("medicine-info").style.display = "block";
+
+                if (medicineData.image) {
+                    document.getElementById("medicine-img").src = medicineData.image;
+                }
+
+                document.getElementById("brand-name").textContent = medicineData.brandName || "N/A";
+                document.getElementById("category").textContent = medicineData.category || "N/A";
+                document.getElementById("formulation-type").textContent = medicineData.formulationType || "N/A";
+                document.getElementById("dosage-strength").textContent = medicineData.dosageStrength || "N/A";
+                document.getElementById("dosage-frequency").textContent = medicineData.dosageFrequency || "N/A";
+                document.getElementById("description-usage").textContent = medicineData.descriptionUsage || "N/A";
+                document.getElementById("batch-number").textContent = medicineData.batchNumber || "N/A";
+                document.getElementById("supplier").textContent = medicineData.supplier || "N/A";
+                document.getElementById("expiry-date").textContent = medicineData.expiryDate || "N/A";
+
+            } catch (error) {
+                alert("Invalid QR Code. Please scan a valid medicine QR code.");
+            }
+        }
+
+        function onScanError(errorMessage) {
+            console.log("QR Scan Error:", errorMessage);
+        }
+
+        const html5QrCode = new Html5Qrcode("reader");
+        html5QrCode.start(
+            { facingMode: "environment" }, 
+            { fps: 10, qrbox: { width: 250, height: 250 } },
+            onScanSuccess,
+            onScanError
+        );
+    </script>
+
+</body>
+</html>

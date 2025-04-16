@@ -1,5 +1,21 @@
 {
   "projects": {
     "default": "medisupplysystem"
-  }
+  },
+  "targets": {
+    "medisupplysystem": {
+      "hosting": {
+        "admin": [
+          "medisupplysystem-admin"
+        ],
+        "pharmacy": [
+          "medisupplysystem-pharmacy"
+        ],
+        "users": [
+          "medisupplysystem-user"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }

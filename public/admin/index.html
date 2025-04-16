@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="icon" type="image/png" href="images/medisupplysystem_logo.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+    <link rel="stylesheet" href="styles/login.css">
+    <title>MediSupply Admin  Login</title>
+    <style>
+        body {
+            background-image: url('images/background_body.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="container main">
+        <div class="row">
+
+            <div class="col-md-6 side-image rounded-2 d-flex justify-content-center align-items-center flex-column left-box"
+                style="background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.6)), url('images/background_login.jpg'); background-size: cover; background-position: center;">          
+                <div class="featured-image mb-3">
+                    <img src="images/medisupplysystem_logo.png" class="img-fluid" style="width: 150px;">
+                </div>
+                <a href="#" class="logo">
+                    <i class='bx bx-code-alt'></i>
+                    <div class="logo-name"><span>Medi</span>Supply</div>
+                </a>
+                <small class="text-black text-wrap text-center mt-2" style="width: 25rem; font-family: 'Poppins', Courier, monospace;">
+                    MediSupply connects users to nearby pharmacies, providing real-time stock updates and easy medicine reservations.
+                </small>
+                
+            </div>
+
+            <div class="col-md-6 right">
+                
+                <div class="input-box">
+                   
+                   <header>Admin Log in to MediSupply</header>
+                   <form id="signup-form">
+                   <div class="input-field">
+                        <input type="text" class="input" id="email" required="" autocomplete="off">
+                        <label for="email">Pharmacy Email</label> 
+                    </div> 
+                    <div class="input-field">
+                        <input type="password" class="input" id="password" required="">
+                        <label for="password">Password</label>
+                        <span class="toggle-password" onclick="togglePassword()">
+                            <i id="eye-icon" class="fas fa-eye-slash"></i>
+                        </span>
+                    </div>                    
+                    <div class="input-field">
+                        <button type="submit" class="submit">
+                            <span class="spinner"></span>
+                            <span class="btn-text">Login</span>
+                        </button>
+                    </div>  
+                    </form>
+                    <div id="notification-container"></div>
+                </div>  
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+<script>
+    // Firebase Configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyB6_5jc_rz4vrkInjXsQFSXnFYuV2XOZGQ",
+        authDomain: "medisupplysystem.firebaseapp.com",
+        databaseURL: "https://medisupplysystem-default-rtdb.firebaseio.com",
+        projectId: "medisupplysystem",
+        storageBucket: "medisupplysystem.firebasestorage.app",
+        messagingSenderId: "176583885465",
+        appId: "1:176583885465:web:fdd04158416e8ce6002e08"
+    };
+
+    // Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+
+</script>
+    <script src="js/login.js"></script>
+</body>
+</html>

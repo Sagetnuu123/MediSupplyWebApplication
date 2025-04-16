@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediSupply - Pharmacy Registration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+    <link rel="stylesheet" href="styles/notes.css" />
+    <link rel="icon" type="image/png" href="images/medisupplysystem_logo.png">
+</head>
+<body>
+    <!-- Header -->
+    <header class="page-header"></header>
+    
+    <div class="background-cover">
+        <img src="images/background_register_pharmacy.jpg" alt="Background" class="background-image">
+    </div>    
+
+   <!-- Multi-step Modal -->
+        <div class="modal-container" id="multiStepModal">
+            <div class="modal-content">
+                <button class="back-button" onclick="closeModal()">
+                    <img src="images/back_arrow.png" alt="Back Icon" class="back-icon"> Back
+                </button>
+                <h2 class="modal-title">Steps on MediSupply Registration </h2>
+                <p id="modal-text">Step 1: Provide a 1 copy of your business license, business permit 
+                    and Taxpayment Identification Number (TIN) for verification.</p>
+                
+                <!-- Step Progress Bar -->
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress" id="progress"></div>
+                        <div class="step active"><span>&#10003;</span></div>
+                        <div class="step">2</div>
+                        <div class="step">3</div>
+                    </div>
+                </div>
+                
+                <!-- Navigation Buttons -->
+                <div class="modal-footer">
+                    <button id="prevBtn" onclick="prevStep()" disabled>Previous</button>
+                    <button id="nextBtn" onclick="nextStep()">
+                        <div style="display: flex; align-items: center;">
+                            <span id="spinner" class="spinner"></span>
+                            <span id="nextBtnText">Next</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Custom Confirmation Modal -->
+        <div id="confirmBackModal" class="custom-modal-container">
+            <div class="custom-modal-content">
+                <h3>Continue or Exit?</h3>
+                <p>Are you sure you don't want to proceed with the registration? You can continue now or complete the registration later when you're ready.</p>
+                <div class="custom-modal-footer">
+                    <button class="cancel-btn" onclick="closeConfirmModal()">Still Continue</button>
+                    <button class="confirm-btn" onclick="redirectToHome()">Do it Later</button>
+                </div>
+            </div>
+        </div>
+
+    
+    <script src="js/notes.js"></script> <!-- Link to external JS -->
+</body>
+</html>
