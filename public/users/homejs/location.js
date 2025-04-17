@@ -261,13 +261,13 @@ function showMedicineModal(medicines) {
         medicineCard.classList.add("medicine-card");
 
         const prescriptionTag = medicine.prescriptionRequired === 'Yes'
-        ? `<span class="prescription-required">Prescription Required</span>`
+        ? `<span class="prescription-required">PRESCRIPTION REQUIRED</span>`
         : '';
 
         medicineCard.innerHTML = `
           ${prescriptionTag}
             <img src="${medicine.medicineImageBase64}" alt="${medicine.brandName}" class="medicine-img">
-            <div>
+            <div class="medicine-card-content">
                 <h5>${medicine.brandName}</h5>
                 <p><strong>Usage:</strong> ${medicine.descriptionUsage}</p>
                 <p><strong>Dosage:</strong> ${medicine.dosageFrequency} ${medicine.dosageStrength}</p>
