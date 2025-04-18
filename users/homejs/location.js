@@ -261,7 +261,7 @@ function showMedicineModal(medicines) {
         medicineCard.classList.add("medicine-card");
 
         const prescriptionTag = medicine.prescriptionRequired === 'Yes'
-        ? `<span class="prescription-required">Prescription Required</span>`
+        ? `<span class="prescription-required">PRESCRIPTION REQUIRED</span>`
         : '';
 
         medicineCard.innerHTML = `
