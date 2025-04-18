@@ -434,7 +434,7 @@
         
         .medicine-modal {
             position: fixed;
-            top: -75%; /* Initially off-screen */
+            top: -100vh; /* Initially off-screen */
             left: 0;
             width: 100%;
             height: 75vh;
