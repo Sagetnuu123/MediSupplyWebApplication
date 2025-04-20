@@ -150,7 +150,7 @@ function displayPharmacyInfo(pharmacies) {
                     <div class="info-text">${pharmacy.address}</div>
                     <div class="info-label">Distance:</div>
                     <div class="info-text">${pharmacy.distance.toFixed(2)} km away</div>
-                    <button class="see-medicine-btn" data-pharmacy-name="${pharmacy.name}" data-pharmacy-email="${pharmacy.email}">See Shops Here</button>
+                    <button class="see-medicine-btn" data-pharmacy-name="${pharmacy.name}" data-pharmacy-email="${pharmacy.email}" data-pharmacy-picture="${pharmacy.picture}"> <i class='bx bx-store' style="margin-right: 8px;"></i>Go To Shop</button>
                 </div>
             </div>
         `;
@@ -162,7 +162,8 @@ function displayPharmacyInfo(pharmacies) {
         button.addEventListener('click', async (event) => {
             const pharmacyName = event.target.getAttribute('data-pharmacy-name');
             const pharmacyEmail = event.target.getAttribute('data-pharmacy-email');
-            await displayMedicines(pharmacyEmail, pharmacyName);
+            const pharmacyPicture = event.target.getAttribute('data-pharmacy-picture');
+            await displayMedicines(pharmacyEmail, pharmacyName, pharmacyPicture);
         });
     });
 }
@@ -235,7 +236,7 @@ authmodal.addEventListener("click", (event) => {
 
 
 
-async function displayMedicines(pharmacyEmail, pharmacyName) {
+async function displayMedicines(pharmacyEmail, pharmacyName, pharmacyPicture) {
     const snapshot = await db.collection("post_medicine_storage")
         .where("pharmacyEmail", "==", pharmacyEmail)
         .where("pharmacyName", "==", pharmacyName)
@@ -246,18 +247,24 @@ async function displayMedicines(pharmacyEmail, pharmacyName) {
     if (medicines.length === 0) {
         showNoMedicinesMessage();
     } else {
-        showMedicineModal(medicines, pharmacyName);
+        showMedicineModal(medicines, pharmacyName, pharmacyPicture, pharmacyEmail);
     }
 }
 
-function showMedicineModal(medicines, pharmacyName) {
+function showMedicineModal(medicines, pharmacyName, pharmacyPicture, pharmacyEmail) {
     const modal = document.getElementById("medicine-modal");
     const modalContent = document.getElementById("modal-content");
 
     modalContent.innerHTML = `
             <div class="pharmacy-header-bar">
-                <h3 class="pharmacy-name-display">${pharmacyName}</h3>
-                <button class="see-info-btn">See More Pharmacy Info</button>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <img src="${pharmacyPicture}" alt="Pharmacy Image" style="width: 35px; height: 35px; object-fit: cover; border-radius: 8px;">
+                    <h3 class="pharmacy-name-display">${pharmacyName} - Medicine Products</h3>
+                </div>
+                <button class="see-info-btn">
+                <i class='bx bx-info-circle' style="margin-right: 6px;"></i>
+                See More Pharmacy Info
+                </button>
             </div>
             <div class="medicine-modal-header">
                 <div class="search-bar-wrapper">
@@ -340,8 +347,8 @@ function showMedicineModal(medicines, pharmacyName) {
 
     const infoBtn = modalContent.querySelector('.see-info-btn');
     infoBtn.addEventListener('click', () => {
-        alert(`More info about ${pharmacyName}`);
-        // You can open a new modal, fetch more info, or navigate somewhere here
+        const url = `pharmacy_info.html?name=${encodeURIComponent(pharmacyName)}&email=${encodeURIComponent(pharmacyEmail)}`;
+    window.open(url, '_blank');
     });
 
 

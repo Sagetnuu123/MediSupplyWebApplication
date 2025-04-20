@@ -1,0 +1,99 @@
+<!-- pharmacy_info.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pharmacy Info</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+        }
+        .info-section {
+            max-width: 700px;
+            margin: auto;
+        }
+        h2 {
+            text-align: center;
+        }
+        .info-group {
+            margin-bottom: 15px;
+        }
+        .label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="info-section" id="pharmacy-info">
+        <h2>Loading Pharmacy Info...</h2>
+    </div>
+
+    <!-- Firebase SDK (v8) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+    <script>
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyB6_5jc_rz4vrkInjXsQFSXnFYuV2XOZGQ",
+            authDomain: "medisupplysystem.firebaseapp.com",
+            databaseURL: "https://medisupplysystem-default-rtdb.firebaseio.com",
+            projectId: "medisupplysystem",
+            storageBucket: "medisupplysystem.firebasestorage.app",
+            messagingSenderId: "176583885465",
+            appId: "1:176583885465:web:fdd04158416e8ce6002e08"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Get query params
+        const urlParams = new URLSearchParams(window.location.search);
+        const email = urlParams.get('email');
+        const name = urlParams.get('name');
+
+        async function loadPharmacyInfo() {
+            const container = document.getElementById("pharmacy-info");
+
+            try {
+                const snapshot = await db.collection("register_pharmacy")
+                    .where("email", "==", email)
+                    .where("pharmacy_name", "==", name)
+                    .get();
+
+                if (snapshot.empty) {
+                    container.innerHTML = "<h2>Pharmacy not found.</h2>";
+                    return;
+                }
+
+                const data = snapshot.docs[0].data();
+
+                container.innerHTML = `
+                    <h2>${data.pharmacy_name}</h2>
+                    <div class="info-group"><span class="label">License Number:</span> ${data.license_number}</div>
+                    <div class="info-group"><span class="label">Owner:</span> ${data.owners_name}</div>
+                    <div class="info-group"><span class="label">Owner's Address:</span> ${data.owners_address}</div>
+                    <div class="info-group"><span class="label">Email:</span> ${data.email}</div>
+                    <div class="info-group"><span class="label">Type:</span> ${data.pharmacy_type}</div>
+                    <div class="info-group"><span class="label">Address:</span> ${data.street}, ${data.barangay}, ${data.municipality}, ${data.province}, ${data.zipcode}</div>
+                    <div class="info-group"><span class="label">Contact Number:</span> ${data.contact_num}</div>
+                    <div class="info-group"><span class="label">Open Time:</span> ${data.start}</div>
+                    <div class="info-group"><span class="label">Close Time:</span> ${data.close}</div>
+                    <div class="info-group"><span class="label">Days Open:</span> ${data.days_open_from} to ${data.days_open_to}</div>
+                    <div class="info-group"><span class="label">TIN:</span> ${data.TIN}</div>
+                    <div class="info-group"><span class="label">Business Permit:</span> ${data.business_permit}</div>
+                    <div class="info-group"><span class="label">License Expiry:</span> ${data.expiry_date}</div>
+                    <div class="info-group"><span class="label">Registration Date:</span> ${data.date_registration}</div>
+                `;
+            } catch (err) {
+                console.error("Error fetching pharmacy data:", err);
+                container.innerHTML = "<h2>Error loading data.</h2>";
+            }
+        }
+
+        loadPharmacyInfo();
+    </script>
+</body>
+</html>

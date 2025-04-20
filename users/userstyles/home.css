@@ -337,6 +337,10 @@
             outline: none;
             box-shadow: 0 0 5px rgba(0, 123, 255, 0.7);
         }
+
+        .see-medicine-btn i {
+            font-size: 14px;
+        }        
         .reserve-btn {
             background: linear-gradient(135deg, #28a745, #218838); /* Green gradient */
             color: #fff;
@@ -501,6 +505,11 @@
             background-color: #0056b3;
         }        
         
+        .see-info-btn i {
+            font-size: 15px;
+            vertical-align: middle;
+        }
+
         .medicine-modal-header {
             position: sticky;
             top: 0;
@@ -807,8 +816,9 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         @media (max-width: 1024px) {
-            .medicine-modal-content {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+            .medicine-cards-container {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+                gap: 15px;
             }
         }
 
@@ -820,16 +830,21 @@
         }
 
         @media (max-width: 768px) {
-            .medicine-modal-content {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Adjust number of cards per row */
+            .medicine-cards-container {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            }
+        
+            .search-bar, .filter-dropdown {
+                font-size: 11px;
+                padding: 8px 12px;
             }
         
             .medicine-card h5 {
-                font-size: 14px; /* Adjust text size */
+                font-size: 10px; /* Adjust text size */
             }
         
             .medicine-card p {
-                font-size: 12px; /* Adjust text size */
+                font-size: 10px; /* Adjust text size */
             }
             .procedure-container {
                 flex-direction: column;
@@ -842,6 +857,32 @@
         
             .procedure-title {
                 font-size: 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .medicine-cards-container {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 12px;
+                padding: 0 10px 20px 10px;
+            }
+
+            .medicine-card {
+                padding-bottom: 10px;
+            }
+        
+            .medicine-card p, .price, .brand-name {
+                font-size: 10px;
+            }
+        
+            .reserve-btn {
+                padding: 8px 12px;
+                font-size: 10px;
+            }
+        
+            .see-info-btn {
+                font-size: 10px;
+                padding: 6px 10px;
             }
         }
         
@@ -1290,4 +1331,77 @@
             }
         }
 
+        /* Contact US CSS */
+        .contact-text {
+            position: absolute;
+            bottom: 20px;
+            left: 30px;
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            max-width: 50%; 
+            font-family: 'Montserrat', sans-serif;
+            font-size: 26px;
+            letter-spacing: 2px;
+        }
+
+        .contact-cards {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin-top: 40px;
+            gap: 20px;
+        }
+        
+        .contact-card {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(5px);
+            border-radius: 10px;
+            padding: 30px 25px;
+            width: 300px;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .contact-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        }
+        
+        .contact-card i {
+            font-size: 36px;
+            color: #007BFF;
+            margin-bottom: 15px;
+        }
+        
+        .contact-card h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .contact-card p, 
+        .contact-card a {
+            font-size: 16px;
+            color: #333;
+            text-decoration: none;
+        }
+        
+        .contact-card a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .contact-cards {
+                flex-direction: column;
+                align-items: center;
+            }
+        
+            .contact-card {
+                width: 80%;
+            }
+        }
         
