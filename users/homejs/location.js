@@ -246,56 +246,146 @@ async function displayMedicines(pharmacyEmail, pharmacyName) {
     if (medicines.length === 0) {
         showNoMedicinesMessage();
     } else {
-        showMedicineModal(medicines);
+        showMedicineModal(medicines, pharmacyName);
     }
 }
 
-function showMedicineModal(medicines) {
+function showMedicineModal(medicines, pharmacyName) {
     const modal = document.getElementById("medicine-modal");
     const modalContent = document.getElementById("modal-content");
 
-    modalContent.innerHTML = ""; // Clear previous content
-
-    medicines.forEach(medicine => {
-        const medicineCard = document.createElement("div");
-        medicineCard.classList.add("medicine-card");
-
-        const prescriptionTag = medicine.prescriptionRequired === 'Yes'
-        ? `<span class="prescription-required">PRESCRIPTION REQUIRED</span>`
-        : '';
-
-        medicineCard.innerHTML = `
-          ${prescriptionTag}
-            <img src="${medicine.medicineImageBase64}" alt="${medicine.brandName}" class="medicine-img">
-            <div>
-                <h5>${medicine.brandName}</h5>
-                <p><strong>Usage:</strong> ${medicine.descriptionUsage}</p>
-                <p><strong>Dosage:</strong> ${medicine.dosageFrequency} ${medicine.dosageStrength}</p>
-                <p><strong>Price:</strong> ₱${medicine.sellingPrice}</p>
-                <button class="reserve-btn" data-pharmacy-name="${medicine.name}" data-pharmacy-email="${medicine.email}">Reserve Here</button>
+    modalContent.innerHTML = `
+            <div class="pharmacy-header-bar">
+                <h3 class="pharmacy-name-display">${pharmacyName}</h3>
+                <button class="see-info-btn">See More Pharmacy Info</button>
             </div>
-        `;
-        modalContent.appendChild(medicineCard);
+            <div class="medicine-modal-header">
+                <div class="search-bar-wrapper">
+                    <input type="text" id="searchInput" class="search-bar" placeholder="Search for a medicine...">
+                    <span id="clearSearchBtn" class="clear-search-btn" title="Clear">×</span>
+                </div>
+                <select id="filterCategory" class="filter-dropdown">
+                    <option value="all">All Categories</option>
+                </select>
+            </div>
+            <div class="medicine-cards-container"></div>
+    `;
+
+    const cardsContainer = modalContent.querySelector(".medicine-cards-container");
+
+    // Populate category filter dropdown dynamically
+    const categorySet = new Set(medicines.map(med => med.medicineCategory));
+    const filterSelect = document.getElementById("filterCategory");
+    categorySet.forEach(category => {
+        const option = document.createElement("option");
+        option.value = category;
+        option.textContent = category;
+        filterSelect.appendChild(option);
+    });
+
+    function renderCards(filteredMedicines) {
+        cardsContainer.innerHTML = "";
+
+        if (filteredMedicines.length === 0) {
+            cardsContainer.innerHTML = `<div class="no-medicines-message"><p>No matching medicines found.</p></div>`;
+            return;
+        }
+
+        filteredMedicines.forEach(medicine => {
+            const medicineCard = document.createElement("div");
+            medicineCard.classList.add("medicine-card");
+
+            const prescriptionTag = medicine.prescriptionRequired === 'Yes'
+                ? `<span class="prescription-required">PRESCRIPTION REQUIRED</span>`
+                : '';
+
+            medicineCard.innerHTML = `
+                ${prescriptionTag}
+                <img src="${medicine.medicineImageBase64}" alt="${medicine.brandName}" class="medicine-img">
+                <div class="medicine-info">
+                    <div class="medicine-header">
+                        <h5 class="brand-name">${medicine.brandName}</h5>
+                        <span class="price">₱${medicine.sellingPrice}</span>
+                    </div>
+                    <p><strong>Item Category:</strong> ${medicine.medicineCategory}</p>
+                    <p><strong>Usage:</strong> ${medicine.descriptionUsage}</p>
+                    <p><strong>Dosage:</strong> ${medicine.dosageFrequency} - ${medicine.dosageStrength}</p>
+                    <div class="reserve-container">
+                        <button class="reserve-btn" data-pharmacy-name="${medicine.name}" data-pharmacy-email="${medicine.email}">
+                            Reserve Here
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            cardsContainer.appendChild(medicineCard);
+        });
+
+        // Reattach reserve event listeners
+        document.querySelectorAll('.reserve-btn').forEach(button => {
+            button.addEventListener('click', (event) => {
+                const pharmacyName = event.target.getAttribute('data-pharmacy-name');
+                const pharmacyEmail = event.target.getAttribute('data-pharmacy-email');
+
+                if (!isLoggedIn) {
+                    openAuthModal();
+                } else {
+                    alert(`Reserving medicine at ${pharmacyName}`);
+                }
+            });
+        });
+    }
+
+    renderCards(medicines);
+
+    const infoBtn = modalContent.querySelector('.see-info-btn');
+    infoBtn.addEventListener('click', () => {
+        alert(`More info about ${pharmacyName}`);
+        // You can open a new modal, fetch more info, or navigate somewhere here
+    });
+
+
+    const searchInput = document.getElementById("searchInput");
+    const clearSearchBtn = document.getElementById("clearSearchBtn");
+
+    searchInput.addEventListener("input", () => {
+        const searchTerm = searchInput.value.toLowerCase();
+        const selectedCategory = filterSelect.value;
+
+        // Show or hide clear icon
+        clearSearchBtn.style.display = searchInput.value ? "block" : "none";
+
+        const filtered = medicines.filter(med =>
+            (selectedCategory === "all" || med.medicineCategory === selectedCategory) &&
+            med.brandName.toLowerCase().includes(searchTerm)
+        );
+        renderCards(filtered);
+    });
+
+    clearSearchBtn.addEventListener("click", () => {
+        searchInput.value = "";
+        clearSearchBtn.style.display = "none";
+        const selectedCategory = filterSelect.value;
+
+        const filtered = medicines.filter(med =>
+            selectedCategory === "all" || med.medicineCategory === selectedCategory
+        );
+        renderCards(filtered);
+    });
+
+    filterSelect.addEventListener("change", () => {
+        const searchTerm = document.getElementById("searchInput").value.toLowerCase();
+        const selectedCategory = filterSelect.value;
+
+        const filtered = medicines.filter(med =>
+            (selectedCategory === "all" || med.medicineCategory === selectedCategory) &&
+            med.brandName.toLowerCase().includes(searchTerm)
+        );
+        renderCards(filtered);
     });
 
     modal.classList.add("modal-visible");
-    document.body.style.overflow = "hidden"; // Prevent scrolling when modal is open
-
-    const reserveButtons = document.querySelectorAll('.reserve-btn');
-    reserveButtons.forEach(button => {
-        button.addEventListener('click', (event) => {
-            const pharmacyName = event.target.getAttribute('data-pharmacy-name');
-            const pharmacyEmail = event.target.getAttribute('data-pharmacy-email');
-
-            if (!isLoggedIn) {
-                // Open the modal if the user is not logged in
-                openAuthModal();
-            } else {
-                // Proceed with the reservation logic (add your reservation functionality here)
-                alert(`Reserving medicine at ${pharmacyName}`);
-            }
-        });
-    });
+    document.body.style.overflow = "hidden";
 }
 
 function showNoMedicinesMessage() {
@@ -304,12 +394,12 @@ function showNoMedicinesMessage() {
 
     modalContent.innerHTML = `
         <div class="no-medicines-message">
-            <p>No medicines available in this pharmacy.</p>
+            <p>No medicines available at this pharmacy.</p>
         </div>
-    `; 
+    `;
 
     modal.classList.add("modal-visible");
-    document.body.style.overflow = "hidden"; // Prevent scrolling when modal is open
+    document.body.style.overflow = "hidden";
 }
 
 function closeMedicineModal() {
