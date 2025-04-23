@@ -81,51 +81,62 @@ document.getElementById('postcode').addEventListener('input', function(event) {
 
 document.getElementById('nextBtn').addEventListener('click', function(event) {
     if (this.innerText === 'Sign Up') {
-        // Password validation
         const password = document.getElementById('password').value;
         const passwordError = document.getElementById('passwordError');
-        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/; // Password must be at least 8 characters, contain at least one letter and one number
-
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
+    
         if (!passwordRegex.test(password)) {
             passwordError.innerText = 'Password must be at least 8 characters, include at least one letter and one number.';
             return;
         } else {
-            passwordError.innerText = ''; // Clear any previous error
+            passwordError.innerText = '';
         }
-
-        // Collect the data from the form
-        const userData = {
-            firstName: document.getElementById('firstName').value,
-            lastName: document.getElementById('lastName').value,
-            email: document.getElementById('signupEmail').value,
-            phone: document.getElementById('phone').value,
-            postcode: document.getElementById('postcode').value,
-            gender: document.getElementById('gender').value,
-            ageRange: document.getElementById('ageRange').value,
-            password: password // Add the password to the user data
-        };
-
-        // Save the data to Firebase
-        saveToFirebase(userData);
-    }
+    
+        const email = document.getElementById('signupEmail').value;
+    
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+    
+                // Send email verification
+                user.sendEmailVerification().then(() => {
+                    notyf.success('Verification email sent! Please check your inbox.');
+    
+                    // Now save the user info in Firestore
+                    const userData = {
+                        uid: user.uid,
+                        firstName: document.getElementById('firstName').value,
+                        lastName: document.getElementById('lastName').value,
+                        email: email,
+                        phone: document.getElementById('phone').value,
+                        postcode: document.getElementById('postcode').value,
+                        gender: document.getElementById('gender').value,
+                        ageRange: document.getElementById('ageRange').value
+                    };
+    
+                    saveToFirebase(userData);
+                }).catch((error) => {
+                    console.error("Error sending verification email:", error);
+                    notyf.error("Failed to send verification email.");
+                });
+            })
+            .catch((error) => {
+                console.error("Sign-up error:", error);
+                notyf.error(error.message);
+            });
+    }    
 });
 
 // Function to save the user data to Firebase
 function saveToFirebase(userData) {
-    const db = firebase.firestore(); // Assuming Firebase is initialized
-
-    // You can create a "sign_up_user" collection and save the data
-    db.collection('sign_up_user').add(userData)
-        .then(function(docRef) {
-            notyf.success('Sign up successful!');
-            console.log("Document written with ID: ", docRef.id);
-            // Optionally, you could close the modal or clear the form here
-
+    console.log("Saving user data with UID:", userData.uid);
+    db.collection('sign_up_user').doc(userData.uid).set(userData)
+        .then(() => {
+            console.log("User data saved to Firestore");
             clearForm();
         })
-        .catch(function(error) {
-            console.error("Error adding document: ", error);
-            alert('An error occurred while signing up.');
+        .catch((error) => {
+            console.error("Error saving to Firestore:", error);
         });
 }
 
@@ -157,41 +168,106 @@ document.getElementById('toggleLoginPassword').addEventListener('click', functio
 
 
 
-document.getElementById('loginBtn').addEventListener('click', async (event) => {
+document.getElementById('loginBtn').addEventListener('click', function(event) {
     event.preventDefault();
 
-    // Collect input data
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
+    const emailError = document.getElementById('emailError');
+    const passwordError = document.getElementById('passwordloginError');
 
-    // Clear previous error messages
-    document.getElementById('emailError').innerHTML = '';
-    document.getElementById('passwordloginError').innerHTML = '';
+    emailError.innerText = '';
+    passwordError.innerText = '';
 
-    // Validate Email
-    const userSnapshot = await db.collection('sign_up_user').where("email", "==", email).get();
+    firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            const user = userCredential.user;
 
-    if (userSnapshot.empty) {
-        // If no user with this email exists
-        document.getElementById('emailError').innerHTML = 'Invalid email address.';
-    } else {
-        // If email exists, validate the password
-        let userFound = false;
-        userSnapshot.forEach(doc => {
-            const userData = doc.data();
-            if (userData.password === password) {
-                // Password matches
-                userFound = true;
-                // Proceed with login
-                localStorage.setItem('userData', JSON.stringify(userData));
-                notyf.success('Login successful!');
-                window.location.href = 'accountuser.html';                
+            if (!user.emailVerified) {
+                notyf.error("Please verify your email before logging in.");
+                firebase.auth().signOut(); // Sign them out
+                return;
+            }
+
+            notyf.success("Login successful!");
+
+            // Clear login form fields
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+
+            // Now you can fetch user data from Firestore
+            db.collection("sign_up_user").doc(user.uid).get().then((doc) => {
+                if (doc.exists) {
+                    const userData = doc.data();
+                    console.log("User Profile:", userData);
+            
+                    // ✅ Store userData in localStorage
+                    localStorage.setItem('userData', JSON.stringify(userData));
+            
+                    // Redirect after storing data
+                    setTimeout(() => {
+                        window.location.href = 'accountuser.html';
+                    }, 1000);
+            
+                } else {
+                    console.log("No user data found.");
+                    notyf.error("No profile data found.");
+                }
+            });
+        })
+        .catch((error) => {
+            console.error("Login failed:", error); // This can stay for debugging
+        
+            const errorCode = error.code || error.message;
+        
+            switch (errorCode) {
+                case 'auth/user-not-found':
+                    emailError.innerText = "No account found with this email.";
+                    break;
+                case 'auth/wrong-password':
+                case 'auth/invalid-credential': // Catch Firebase's newer error
+                case 'INVALID_LOGIN_CREDENTIALS': // Extra safety
+                    passwordError.innerText = "Incorrect password. Please try again.";
+                    break;
+                case 'auth/too-many-requests':
+                    passwordError.innerText = "Too many failed attempts. Please try again later.";
+                    break;
+                case 'auth/invalid-email':
+                    emailError.innerText = "Invalid email format.";
+                    break;
+                default:
+                    passwordError.innerText = "Login failed. Please check your email and password.";
+                    break;
+            }
+        });        
+});
+
+
+document.getElementById('forgotPasswordLink').addEventListener('click', function(event) {
+    event.preventDefault();
+
+    const email = document.getElementById('loginEmail').value;
+    const emailError = document.getElementById('emailError');
+
+    emailError.innerText = ''; // Reset any previous error
+
+    if (!email) {
+        emailError.innerText = "Please enter your email first to reset password.";
+        return;
+    }
+
+    firebase.auth().sendPasswordResetEmail(email)
+        .then(() => {
+            notyf.success("Password reset email sent! Please check your inbox.");
+        })
+        .catch((error) => {
+            console.error("Error sending reset email:", error);
+            if (error.code === 'auth/user-not-found') {
+                emailError.innerText = "No account found with this email.";
+            } else if (error.code === 'auth/invalid-email') {
+                emailError.innerText = "Invalid email address.";
+            } else {
+                emailError.innerText = error.message;
             }
         });
-
-        if (!userFound) {
-            // If password does not match
-            document.getElementById('passwordloginError').innerHTML = 'Incorrect password.';
-        }
-    }
 });

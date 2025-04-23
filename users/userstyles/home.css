@@ -8,6 +8,10 @@
             padding: 0;
             box-sizing: border-box;
             overflow-x: hidden;
+            width: 100%;
+        }
+        * {
+            box-sizing: inherit;
         }
         .content-container {
             display: none;
@@ -879,6 +883,10 @@
                 padding: 8px 12px;
                 font-size: 10px;
             }
+
+            .pharmacy-name-display{
+                font-size: 11px;
+            }
         
             .see-info-btn {
                 font-size: 10px;
@@ -931,7 +939,7 @@
             #pharmacy-info {
                 width: 95%;
                 padding: 20px;
-                height: 70vh; 
+                height: 100%;
                 overflow-y: auto;
             }
 
@@ -988,10 +996,27 @@
             }
         }
 
+        @media (max-width: 768px) {
+            .hero,
+            .about,
+            .contact {
+                padding: 30px 20px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        
+            .hero-content,
+            .about-text,
+            .contact-text {
+                width: 100%;
+            }
+        }        
+
         @media (max-width: 480px) {
-            .hero {
-                height: auto;
-                padding: 20px;
+            .hero,
+            .about,
+            .contact {
+                padding: 20px 15px;
             }
         
             .hero h1 {
@@ -1008,12 +1033,13 @@
             }
             #pharmacy-info {
                 width: 100%;
-                height: 60vh; /* Smaller height for small screens */
+                height: 100%; 
                 overflow-y: auto;
             }
         
             #map {
-                height: 250px; /* Reduce map height for very small screens */
+                width: 100%;
+                height: 100%;
                 margin-top: 10px;
             }
         }
@@ -1133,14 +1159,6 @@
             transform: scale(1.1); /* Slightly enlarge */
         }
 
-        .password-field input {
-            width: calc(100% - 30px); /* Allow space for the eye icon */
-        }
-        
-        .password-field {
-            position: relative;
-        }
-        
         .eye-icon {
             position: absolute;
             right: 10px; /* Position the icon on the right side of the input */
@@ -1220,7 +1238,22 @@
             padding-left: 5px;
             font-weight: 600;
         }
+        .forgot-password {
+            text-align: right;
+            margin-top: 5px;
+        }
         
+        .forgot-password a {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            color: #007BFF;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }        
         /* Optional: Add a red border or background to inputs with invalid data */
         input.invalid {
             border: 2px solid #d9534f; /* Red border for invalid input */

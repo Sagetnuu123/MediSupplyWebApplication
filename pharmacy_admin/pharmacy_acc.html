@@ -38,7 +38,7 @@
             <button data-target="add-essentials"><i class="bx bxs-box"></i><span>Add Essentials</span></button>
         </div>
         <button data-target="pos-content"><i class="bx bx-cart-alt"></i><span>Point of Sales</span></button>
-        <button data-target="stock-content"><i class="bx bx-cube"></i><span>Stock</span></button>
+        <button data-target="report-content"><i class="bx bx-cube"></i><span>Reports</span></button>
 
         <button data-target="reservation-content"><i class="bx bx-calendar-check"></i><span>Reservation</span></button>
         
@@ -1089,65 +1089,37 @@
             </div>                     
         </div>
 
-        <div id="stock-content" class="menu-content" style="display: none;">
-            <h2 class="form-title">Stock Management</h2>
-
-            <div id="stock-main-container" class="stock-main-container">
-                <div class="stock-header">
-                    <div class="search-bar-container">
-                        <input type="text" id="stock-search-bar" placeholder="🔍 Search Medicines" class="stock-search-bar">
-                        <button id="clear-search-btn" class="clear-search-btn" style="display:none;">
-                            <i class="bx bx-x"></i> <!-- "X" Icon for clear -->
-                        </button>
-                    </div>
-                    <div id="medicine-count-container" class="medicine-count-container">
-                        <span id="posted-medicine-list" class="medicine-count">0 Medicines Posted</span>
-                    </div>
-                    <div class="stock-alerts-container">
-                        <span id="stock-alerts" class="stock-alerts-icon">
-                            <i class="bx bx-bell"></i>
-                            <span class="alert-exclamation">!</span>
-                        </span>
-                    </div>
-                </div>
-
-            <div id="stock-cards-container" class="stock-cards-container">
-                <!-- Stock Card Template will be rendered here dynamically -->
-                <div id="loading-indicator" class="loading-indicator">Loading medicines...</div>
-            </div>
-
-        </div>
-
-
-        <div id="stock-main-container" class="stock-main-container">
-            <div class="stock-header">
-                <div class="search-bar-container">
-                    <input type="text" id="product-search-bar" placeholder="🔍 Search Products" class="stock-search-bar">
-                    <button id="product-clear-search-btn" class="clear-search-btn" style="display:none;">
-                        <i class="bx bx-x"></i> <!-- "X" Icon for clear -->
-                    </button>
-                </div>
-                <div class="stock-alerts-container">
-                    <span id="product-stock-alerts" class="stock-alerts-icon">
-                        <i class="bx bx-bell"></i>
-                        <span class="alert-exclamation">!</span>
-                    </span>
-                </div>
-            </div>
-
-        <div id="product-stock-cards-container" class="stock-cards-container">
-            <!-- Stock Card Template will be rendered here dynamically -->
-            <div id="product-loading-indicator" class="loading-indicator">Loading products...</div>
-        </div>
-
-    </div>
+        <div id="report-content" class="menu-content" style="display: none;">
+            <h2 class="form-title">Reports</h2>
         </div>
 
 
 
         <div id="reservation-content" class="menu-content" style="display: none;">
             <h2 class="form-title">Reservation</h2>
+
+            <div class="reservation-container">
+                <div class="reservation-card">
+                    <div class="reservation-half prescribed">
+                        <h3><i class='bx bxs-capsule'></i> Prescribed Medicines</h3>
+                        <div class="medicine-list" id="prescribed-meds">                          
+                            <!-- Add more dynamically -->
+                        </div>
+                    </div>
+                    <div class="reservation-half non-prescribed">
+                        <h3><i class='bx bx-pills'></i> Non-Prescribed Medicines</h3>
+                        <div class="medicine-list" id="non-prescribed-meds">
+                            <!-- Add more dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>            
         </div>
+
+        <div id="zoom-modal" class="zoom-modal">
+            <span class="zoom-close">&times;</span>
+            <img class="zoom-content" id="zoom-img" src="" alt="Zoomed Prescription">
+        </div>        
 
         <div id="archive-medicine" class="menu-content" style="display: none;">
             <h2 class="form-title">Medicine Archive</h2>
@@ -2137,6 +2109,9 @@
         
     </div>
 
+    <!-- SweetAlert2 -->
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/notyf@3.4.0/notyf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
@@ -2200,9 +2175,6 @@
     <script src="pharmacyjs/numberexpiredmed.js"></script>
     <script src="pharmacyjs/customertable.js"></script>
     <script src="pharmacyjs/firstfiveexpmedicines.js"></script>
-    <script src="pharmacyjs/stockmanagement.js"></script>
-    <script src="pharmacyjs/postedmedcount.js"></script>
-    <script src="pharmacyjs/porductstock.js"></script>
     <script src="pharmacyjs/medicinearchive.js"></script>
     <script src="pharmacyjs/displaymedicinearchive.js"></script>
     <script src="pharmacyjs/archiveviewmedicine.js"></script>
@@ -2213,5 +2185,6 @@
     <script src="pharmacyjs/searchessentialarchive.js"></script>
     <script src="pharmacyjs/restoremedicine.js"></script>
     <script src="pharmacyjs/restoreessential.js"></script>
+    <script src="pharmacyjs/reservation.js"></script>
 </body>
 </html>

@@ -3,38 +3,63 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Pharmacy Info</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 2rem;
-        }
-        .info-section {
-            max-width: 700px;
-            margin: auto;
-        }
-        h2 {
-            text-align: center;
-        }
-        .info-group {
-            margin-bottom: 15px;
-        }
-        .label {
-            font-weight: bold;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediSupply System - Pharmacy Info</title>
+    <link rel="icon" type="image/png" href="images/medisupplysystem_logo.png">
+    <link rel="stylesheet" href="userstyles/pharmacy_info.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
 </head>
 <body>
-    <div class="info-section" id="pharmacy-info">
-        <h2>Loading Pharmacy Info...</h2>
+
+   
+    <!-- Enhanced Loading Overlay -->
+    <div id="loading-overlay">
+        <div class="spinner-container">
+            <div class="spinner-ring"></div>
+            <img src="images/medisupplysystem_logo.png" alt="Loading Logo" class="spinner-logo">
+        </div>
     </div>
 
-    <!-- Firebase SDK (v8) -->
+    <div id="pharmacy-map-container">
+        <div id="pharmacy-map"></div>
+    </div>
+
+    <div class="profile-header" id="pharmacy-header">
+        <img id="pharmacy-image">
+        <h2 id="pharmacy-name">Loading Pharmacy Info...</h2>
+    </div>
+
+    <div class="nav-tabs">
+        <button class="tab-btn active" data-tab="overview">Overview</button>
+        <button class="tab-btn" data-tab="owner">Owner Info</button>
+        <button class="tab-btn" data-tab="business">Business Info</button>
+    </div>
+
+    <!-- Fullscreen Map Modal -->
+    <div id="map-fullscreen">
+        <button id="map-close-btn">Close</button>
+        <div id="fullscreen-map"></div>
+    </div>
+
+    <div class="tab-content" id="overview-tab">
+        <!-- Overview content will be loaded here -->
+    </div>
+
+    <div class="tab-content" id="owner-tab" style="display: none;">
+        <!-- Owner info -->
+    </div>
+
+    <div class="tab-content" id="business-tab" style="display: none;">
+        <!-- Business info -->
+    </div>
+
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
     <script>
-        // Your Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyB6_5jc_rz4vrkInjXsQFSXnFYuV2XOZGQ",
             authDomain: "medisupplysystem.firebaseapp.com",
@@ -45,53 +70,141 @@
             appId: "1:176583885465:web:fdd04158416e8ce6002e08"
         };
 
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // Get query params
         const urlParams = new URLSearchParams(window.location.search);
         const email = urlParams.get('email');
         const name = urlParams.get('name');
 
-        async function loadPharmacyInfo() {
-            const container = document.getElementById("pharmacy-info");
+        let map, marker, fullscreenMap;
 
+    function initMap(lat, lng) {
+        // Embedded map
+        map = L.map('pharmacy-map', {
+            zoomControl: false,
+            dragging: false,
+            scrollWheelZoom: false,
+            attributionControl: false
+        }).setView([lat, lng], 15);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19
+        }).addTo(map);
+
+        marker = L.marker([lat, lng]).addTo(map).bindPopup("Pharmacy Location").openPopup();
+
+        // Click to open fullscreen
+        map.on('click', () => openFullscreenMap(lat, lng));
+    }
+
+    function openFullscreenMap(lat, lng) {
+        document.getElementById('map-fullscreen').style.display = 'block';
+
+        fullscreenMap = L.map('fullscreen-map').setView([lat, lng], 17);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19
+        }).addTo(fullscreenMap);
+
+        L.marker([lat, lng]).addTo(fullscreenMap).bindPopup("Pharmacy Location").openPopup();
+    }
+
+    function closeFullscreenMap() {
+        document.getElementById('map-fullscreen').style.display = 'none';
+        if (fullscreenMap) {
+            fullscreenMap.remove();
+        }
+    }
+
+    document.getElementById('map-close-btn').addEventListener('click', closeFullscreenMap);
+
+        async function loadPharmacyInfo() {
             try {
                 const snapshot = await db.collection("register_pharmacy")
                     .where("email", "==", email)
                     .where("pharmacy_name", "==", name)
                     .get();
 
+                const loader = document.getElementById("loading-overlay");
+
                 if (snapshot.empty) {
-                    container.innerHTML = "<h2>Pharmacy not found.</h2>";
+                    document.getElementById("pharmacy-name").innerText = "Pharmacy not found.";
                     return;
                 }
 
                 const data = snapshot.docs[0].data();
 
-                container.innerHTML = `
-                    <h2>${data.pharmacy_name}</h2>
-                    <div class="info-group"><span class="label">License Number:</span> ${data.license_number}</div>
-                    <div class="info-group"><span class="label">Owner:</span> ${data.owners_name}</div>
-                    <div class="info-group"><span class="label">Owner's Address:</span> ${data.owners_address}</div>
-                    <div class="info-group"><span class="label">Email:</span> ${data.email}</div>
-                    <div class="info-group"><span class="label">Type:</span> ${data.pharmacy_type}</div>
-                    <div class="info-group"><span class="label">Address:</span> ${data.street}, ${data.barangay}, ${data.municipality}, ${data.province}, ${data.zipcode}</div>
-                    <div class="info-group"><span class="label">Contact Number:</span> ${data.contact_num}</div>
-                    <div class="info-group"><span class="label">Open Time:</span> ${data.start}</div>
-                    <div class="info-group"><span class="label">Close Time:</span> ${data.close}</div>
-                    <div class="info-group"><span class="label">Days Open:</span> ${data.days_open_from} to ${data.days_open_to}</div>
-                    <div class="info-group"><span class="label">TIN:</span> ${data.TIN}</div>
-                    <div class="info-group"><span class="label">Business Permit:</span> ${data.business_permit}</div>
-                    <div class="info-group"><span class="label">License Expiry:</span> ${data.expiry_date}</div>
-                    <div class="info-group"><span class="label">Registration Date:</span> ${data.date_registration}</div>
+                // Header
+                document.getElementById("pharmacy-name").innerText = data.pharmacy_name;
+                document.getElementById("pharmacy-image").src = data.med_picture || "images/placeholder.jpg";
+
+                const lat = data.latitude;
+                const lng = data.longitude;
+
+                initMap(lat, lng); 
+
+                // Overview
+                document.getElementById("overview-tab").innerHTML = `
+                     <div class="info-group"><i class="fas fa-envelope"></i><div><span class="label">Email:</span> <span class="info-text">${data.email}</span></div></div>
+                    <div class="info-group"><i class="fas fa-clinic-medical"></i><div><span class="label">Type:</span> <span class="info-text">${data.pharmacy_type}</span></div></div>
+                    <div class="info-group"><i class="fas fa-map-marker-alt"></i><div><span class="label">Address:</span> <span class="info-text">${data.street}, ${data.barangay}, ${data.municipality}, ${data.province} - ${data.zipcode}</span></div></div>
+                    <div class="info-group"><i class="fas fa-phone"></i><div><span class="label">Contact:</span> <span class="info-text">${data.contact_num}</span></div></div>
+                    <div class="info-group"><i class="fas fa-clock"></i><div><span class="label">Operating Hours:</span> <span class="info-text">${data.start} - ${data.close}</span></div></div>
+                    <div class="info-group"><i class="fas fa-calendar-alt"></i><div><span class="label">Days Open:</span> <span class="info-text">${data.days_open_from} to ${data.days_open_to}</span></div></div>
                 `;
+
+                // Owner Info
+                document.getElementById("owner-tab").innerHTML = `
+                    <div class="info-group"><i class="fas fa-user"></i><div><span class="label">Owner:</span> <span class="info-text">${data.owners_name}</span></div></div>
+                    <div class="info-group"><i class="fas fa-home"></i><div><span class="label">Owner's Address:</span> <span class="info-text">${data.owners_address}</span></div></div>
+                `;
+
+                // Business Info
+                document.getElementById("business-tab").innerHTML = `
+                    <div class="info-group"><i class="fas fa-id-card"></i><div><span class="label">License #:</span> <span class="info-text">${data.license_number}</span></div></div>
+                    <div class="info-group"><i class="fas fa-file-alt"></i><div><span class="label">Business Permit:</span> <span class="info-text">${data.business_permit}</span></div></div>
+                    <div class="info-group"><i class="fas fa-calendar-times"></i><div><span class="label">License Expiry:</span> <span class="info-text">${data.expiry_date}</span></div></div>
+                    <div class="info-group"><i class="fas fa-calendar-check"></i><div><span class="label">Registration Date:</span> <span class="info-text">${data.date_registration}</span></div></div>
+                `;
+                loader.style.opacity = '0';
+                setTimeout(() => loader.style.display = 'none', 500);
+
             } catch (err) {
-                console.error("Error fetching pharmacy data:", err);
-                container.innerHTML = "<h2>Error loading data.</h2>";
+                console.error("Error loading pharmacy info:", err);
+                document.getElementById("pharmacy-name").innerText = "Error loading pharmacy data.";
+
+                const loader = document.getElementById("loading-overlay");
+                loader.style.opacity = '0';
+                setTimeout(() => loader.style.display = 'none', 500);
+
+                tab.style.opacity = 0;
+                setTimeout(() => {
+                    tab.style.display = "block";
+                    tab.style.opacity = 1;
+                }, 50);
             }
         }
+
+        // Tab navigation
+        document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const tabs = document.querySelectorAll(".tab-content");
+            const buttons = document.querySelectorAll(".tab-btn");
+
+            buttons.forEach(b => b.classList.remove("active"));
+            tabs.forEach(tab => {
+                tab.style.display = "none";
+                tab.style.opacity = 0;
+            });
+
+            btn.classList.add("active");
+            const activeTab = document.getElementById(btn.dataset.tab + "-tab");
+            activeTab.style.display = "grid"; // Maintain grid display
+            setTimeout(() => {
+                activeTab.style.opacity = 1;
+            }, 50);
+        });
+    });
 
         loadPharmacyInfo();
     </script>

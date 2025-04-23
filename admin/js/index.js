@@ -384,7 +384,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // If no email in localStorage, redirect to login page
     if (!userEmail) {
-        window.location.href = "login.html"; // or any other URL to handle unauthenticated users
+        window.location.href = "index.html"; // or any other URL to handle unauthenticated users
         return;
     }
 
@@ -446,7 +446,7 @@ document.querySelector(".logout").addEventListener("click", function() {
             localStorage.removeItem("userPassword");
 
             // Redirect to login page
-            window.location.href = "login.html";
+            window.location.href = "index.html";
         } else if (result.isDismissed) {
             // If the user cancels the logout, show a simple info message
             Swal.fire({

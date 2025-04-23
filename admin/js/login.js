@@ -80,7 +80,7 @@ document.getElementById("signup-form").addEventListener("submit", async function
             // Redirect to dashboard
             showNotification("Login Successful", "success");
             setTimeout(() => {
-                window.location.href = "index.html";
+                window.location.href = "admin.html";
             }, 1500);
         } else {
             // Login failed

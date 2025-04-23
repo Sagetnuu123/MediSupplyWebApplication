@@ -1,0 +1,246 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    background-color: #f4f6f8;
+    color: #333;
+}
+
+.profile-header {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    padding-top: 50px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    top: 0;
+    width: 100%;
+}
+
+#pharmacy-map-container {
+    position: relative;
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+}
+
+/* Embedded Map Style */
+#pharmacy-map {
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.profile-header > *:not(#pharmacy-map) {
+    z-index: 2;
+    position: relative;
+}
+
+/* Fullscreen map style */
+#map-fullscreen {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    background: white;
+}
+
+#map-fullscreen #fullscreen-map {
+    width: 100%;
+    height: 100%;
+}
+
+/* Close button */
+#map-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: #003366;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    z-index: 10000;
+    cursor: pointer;
+}
+
+#map-close-btn:hover {
+    background: #0055aa;
+}
+
+.profile-header img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #003366;
+    margin-bottom: 1rem;
+}
+
+.profile-header h2 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #003366;
+}
+
+.nav-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    background-color: #003366;
+    padding: 0.5rem 0;
+}
+
+.nav-tabs button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 12px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.nav-tabs button.active,
+.nav-tabs button:hover {
+    background-color: rgb(3, 68, 138);
+    border-radius: 5px;
+}
+
+.tab-content {
+    font-family: 'Montserrat', sans-serif;
+    max-width: 1190px;
+    margin: 2rem auto;
+    background: #fff;
+    border-radius: 3px;
+    padding: 2rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    
+    /* Fixed height and scrollable */
+    height: 350px; /* Set your desired fixed height */
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+
+    align-content: start;
+}
+
+.tab-content {
+    transition: opacity 0.3s ease;
+}
+
+.tab-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.tab-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 8px;
+}
+
+.tab-content::-webkit-scrollbar-thumb {
+    background-color: #003366;
+    border-radius: 8px;
+}
+
+.info-group {
+    display: flex;
+    align-items: center;
+    background: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1rem;
+    gap: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+
+    height: auto;
+    min-height: 40px
+}
+
+.info-group:hover {
+    background: #eef3f8;
+}
+
+/* Icon styles */
+.info-group i {
+    font-size: 13px;
+    color: #003366;
+    min-width: 24px;
+    text-align: center;
+}
+
+/* Label and content */
+.label {
+    font-weight: 600;
+    color: #333;
+    margin-right: 0.3rem;
+    font-size: 12px;
+}
+
+.info-text {
+    color: #555;
+    font-size: 12px;
+}
+
+/* Enhanced Loading Spinner Styles */
+#loading-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: #fff;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.5s ease;
+}
+
+.spinner-container {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.spinner-ring {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 6px solid;
+    border-color: #003366 transparent #003366 transparent;
+    animation: spin-ring 1s linear infinite;
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+}
+
+.spinner-logo {
+    width: 64px;
+    height: 64px;
+    z-index: 1;
+    border-radius: 50%;
+    object-fit: contain;
+}
+
+@keyframes spin-ring {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 600px) {
+    .nav-tabs button {
+        width: 100%;
+        text-align: center;
+    }
+}

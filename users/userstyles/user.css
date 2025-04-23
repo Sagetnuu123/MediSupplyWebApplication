@@ -8,6 +8,10 @@
     box-sizing: border-box;
 }
 
+.notyf {
+    font-family: 'Montserrat', sans-serif !important;
+}
+
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f4f7fa;
@@ -15,8 +19,9 @@ body {
 }
 
 header {
+    height: 60px;
     background-color: #ffffff;
-    padding: 10px 20px;
+    padding: 0 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -62,7 +67,7 @@ header {
 .navigation ul {
     list-style: none;
     display: flex;
-    gap: 50px;
+    gap: 40px;
     align-items: center;
 }
 
@@ -75,7 +80,7 @@ header {
     border: none;
     color: rgb(0, 0, 0);
     text-decoration: none;
-    font-size: 16px;
+    font-size: 12px;
     font-weight: 500;
     transition: color 0.3s ease;
     font-family: 'Montserrat', sans-serif;
@@ -86,6 +91,10 @@ header {
     color: #ffcc00;
 }
 
+.nav-spacer {
+    flex-grow: 2;
+}
+
 .user-profile {
     display: flex;
     align-items: center;
@@ -93,8 +102,8 @@ header {
 }
 
 .avatar {
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     background-color: #4caf50; /* Change to your desired background color */
     display: flex;
@@ -102,12 +111,13 @@ header {
     justify-content: center;
     color: white;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 12px;
     text-transform: uppercase;
 }
 
 .username {
-    font-size: 14px;
+    color: black;
+    font-size: 12px;
     font-weight: 500;
     font-family: 'Montserrat', sans-serif;
 }
@@ -120,31 +130,28 @@ header {
 }
 
 main {
-    padding: 80px 40px 40px 40px; 
+    padding-top: 0;
     text-align: center;
-    overflow-y: auto; 
-    height: calc(100vh - 80px);
-}
-
-h1 {
-    font-size: 24px;
-    margin-bottom: 10px;
-    color: #007bff;
-    font-family: 'Montserrat', sans-serif;
-}
-
-p {
-    font-size: 13px;
-    color: #555;
-    letter-spacing: 1px;
+    height: auto;
+    overflow: hidden;
 }
 
 .content {
     display: none; /* Hide all sections by default */
+    padding-top: 200px; /* Same as locateContent */
+    height: calc(100vh - 200px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-color: #f4f7fa;
+    box-sizing: border-box;
 }
 
 #locateContent {
-    display: block; /* Display the Locate content by default */
+    display: block;
+    padding-top: 200px; /* Adjusted to match header (60px) + medicine-header (125px) */
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
 }
 
 button {
@@ -153,104 +160,198 @@ button {
 
 /* Optional: Styling for the active button (if you want to highlight the active section) */
 .active {
-    background-color: #007bff;
     color: white;
 }
 
-.pharmacy-cards-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    padding: 20px;
+.medicine-header {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    z-index: 100;
+    padding: 25px;
+    border-bottom: 1px solid #ddd;
 }
 
-.pharmacy-card {
-    background-color: #ffffff;
-    border-radius: 3px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.medicine-header h1 {
+    font-size: 19px;
+    margin-bottom: 6px;
+    color: #007bff;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.medicine-header p {
+    font-size: 12px;
+    color: #555;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.medicine-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.medicine-controls input,
+.medicine-controls select {
+    padding: 8px 12px;
+    font-size: 13px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    min-width: 200px;
+}
+
+.search-input-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    max-width: 370px;
+}
+
+#searchInput {
+    width: 100%;
+    padding-right: 30px; /* Give space for the icon */
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+}
+
+.clear-search {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: #888;
+    cursor: pointer;
+    display: none; /* Hidden by default */
+    user-select: none;
+}
+
+.clear-search:hover {
+    color: #000;
+}
+
+#filterCategory,
+#filterFormulation {
+    flex: 1;
+    max-width: 250px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+}
+
+.medicine-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, max-content));
+    justify-content: center;
+    gap: 15px;
+    padding: 20px;
+    background-color: #f4f7fa;
+    height: calc(100vh - 185px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-color: #f4f7fa;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: #ccc #f4f7fa;
+}
+
+.medicine-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    transition: transform 0.3s ease;
     display: flex;
     flex-direction: column;
-    transition: transform 0.3s ease-in-out;
+    justify-content: space-between;
+    border: 1px solid #e0e0e0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 350px; 
+    min-height: 350px;
 }
 
-.pharmacy-card:hover {
+.medicine-card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
 }
 
-.pharmacy-image {
+.medicine-image-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 135px;
+    background-color: #f9f9f9; /* Optional: to visually separate */
+}
+
+.medicine-image {
     width: 100%;
-    height: 200px;
+    height: 135px;
     object-fit: cover;
 }
 
-.pharmacy-details {
+.medicine-details {
     padding: 15px;
-}
-
-.pharmacy-name {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
     font-family: 'Montserrat', sans-serif;
-    font-size: 20px;
-    font-weight: 600;
-    color: #003366;
-    margin-bottom: 10px;
+    font-size: 10px;
 }
 
-.pharmacy-address {
-    font-size: 14px;
-    color: #555;
-    margin-bottom: 10px;
+.medicine-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #1e3a5f;
+    margin-bottom: 8px;
 }
 
-.pharmacy-hours {
-    font-size: 14px;
-    color: #007bff;
-    margin-bottom: 10px;
-}
-
-.pharmacy-email {
-    font-size: 14px;
-    color: #333;
-    margin-bottom: 10px;
-}
-
-.pharmacy-buttons {
+.medicine-info-line {
     display: flex;
     justify-content: space-between;
-    gap: 10px; /* Optional, you can adjust the gap between buttons */
-    margin-top: 20px;
+    gap: 10px;
+    border-bottom: 1px solid #f0f0f0;
+    text-align: left;
 }
 
-.pharmacy-location-button,
-.pharmacy-medicines-button {
-    display: inline-block;
-    padding: 10px 20px;
-    font-size: 14px;
-    text-align: center;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: 500;
-    transition: background-color 0.3s ease-in-out;
+.medicine-info-line label {
+    font-weight: 600;
+    color: #444;
+    min-width: 95px;
+    flex-shrink: 0;
 }
 
-.pharmacy-location-button {
-    background-color: #ffcc00;
-    color: #fff;
+.medicine-info-line span {
+    color: #666;
+    flex-grow: 1;
+    text-align: right;
 }
 
-.pharmacy-location-button:hover {
-    background-color: #e6b800;
-}
-
-.pharmacy-medicines-button {
+.find-pharmacy-btn {
     background-color: #007bff;
-    color: #fff;
-}
-
-.pharmacy-medicines-button:hover {
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 8px;
+  }
+  
+  .find-pharmacy-btn:hover {
     background-color: #0056b3;
-}
-
+  }
+  
+  .find-pharmacy-btn i {
+    margin-right: 2px;
+    vertical-align: middle;
+    font-size: 16px;
+  }
 
 @media (max-width: 768px) {
     .navigation ul {
@@ -268,7 +369,24 @@ button {
     }
 
     .navigation ul li button {
-        font-size: 18px;
+        font-size: 12px;
+    }
+
+    .avatar {
+        width: 25px;
+        height: 25px;
+        font-size: 12px;
+    }
+
+    .user-profile {
+        margin-top: 10px; 
+        justify-content: flex-start;
+        color: black;
+        font-size: 12px;
+    }
+
+    .username {
+        font-size: 12px;
     }
 
     .menu-toggle {
@@ -279,30 +397,24 @@ button {
         display: flex;
     }
 
-    .user-profile {
-        display: none;
+    #searchInput,
+    #filterCategory,
+    #filterFormulation {
+        width: 100%;
+        max-width: none;
     }
 
-    .pharmacy-cards-container {
-        grid-template-columns: 1fr; /* Show one card per row on smaller screens */
+    .medicine-details {
+        padding: 15px;
     }
 
-    .pharmacy-card {
-        margin: 0 auto; /* Center the cards */
-    }
-
-    .pharmacy-name {
+    .medicine-name {
         font-size: 18px;
     }
 
-    .pharmacy-address,
-    .pharmacy-hours,
-    .pharmacy-email {
-        font-size: 13px;
-    }
-
-    .pharmacy-location {
-        font-size: 13px;
+    .medicine-header h1,
+    .medicine-header p {
+        display: none; /* Hide header and description */
     }
 }
 
@@ -312,7 +424,445 @@ button {
     }
 }
 
+@media (max-width: 480px) {
+    .medicine-card {
+        max-width: 90vw;
+        margin: 0 auto;
+    }
 
+    .medicine-cards-container {
+        grid-template-columns: 1fr;
+    }
+}
+/* Pharmacy Modal Styling*/
+.pharmacy-modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: -100%;
+    width: 100%;
+    height: 85vh;
+    background-color: #ffffff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transition: top 0.5s ease-in-out;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    overflow-y: auto;
+    padding-top: 40px;
+  }
+
+  .pharmacy-modal.show {
+    display: block;
+    top: 60px; /* Right below the header */
+  }
+  
+  .pharmacy-modal-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0; /* Remove padding here */
+    box-sizing: border-box;
+    position: relative;
+  }
+  
+  /* Inner content has padding now */
+  .pharmacy-content-inner {
+    padding: 20px 20px 30px; /* Add your padding here */
+  }
+  
+  .pharmacy-close-btn {
+    position: fixed;
+    top: 65px; /* Match the modal's top when shown */
+    right: 20px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f1f1f1;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    color: #555;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1001;
+    transition: all 0.3s ease;
+  }
+  
+  .pharmacy-close-btn:hover,
+  .pharmacy-close-btn:focus {
+    background-color: #e0e0e0;
+    border-color: #999;
+    color: #000;
+    transform: scale(1.05);
+  }  
+
+  #pharmacyList.pharmacy-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));  /* Adjusted to 2 or 3 cards per row */
+    gap: 20px;
+    box-sizing: border-box;
+}
+
+.pharmacy-card {
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Montserrat', sans-serif;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    max-width: 100%;
+    min-height: 350px;
+    padding: 16px;
+    gap: 10px;
+}
+
+.pharmacy-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+}
+
+.pharmacy-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-bottom: 1px solid #eee;
+}
+
+.pharmacy-info {
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: left;
+}
+
+.pharmacy-header {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.pharmacy-header span {
+    font-size: 18px;
+    font-weight: bold;
+    color: #222;
+}
+
+.pharmacy-header .distance-info {
+    font-size: 0.65em;
+    color: #555;
+    font-style: italic;
+}
+
+.pharmacy-info-tabs {
+    margin-top: 15px;
+}
+
+.tab-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.tab-btn {
+    font-family: 'Montserrat', sans-serif;
+    padding: 8px 14px;
+    background-color: #f1f1f1;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #555;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 0 0 1px #ccc;
+    font-size: 12px;
+}
+
+.tab-btn:hover {
+    background-color: #eaeaea;
+}
+
+.tab-btn.active {
+    background-color: #007bff;
+    color: white;
+    box-shadow: none;
+}
+
+.tab-content {
+    display: none;
+    border-top: 1px solid #eee;
+    text-align: left; 
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    padding: 10px;
+}
+
+.tab-content.active {
+    display: block;
+    opacity: 1;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 6px 0;
+    font-size: 12px;
+}
+
+.info-row label {
+    flex: 1;
+    font-weight: 600;
+    min-width: 250px;
+    color: #222;
+}
+
+.info-row span {
+    flex: 2;
+    color: #555;
+    font-size: 12px;
+}
+
+.medicine-row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 6px 0;
+    font-size: 12px;
+}
+
+.medicine-row label {
+    flex: 1;
+    font-weight: 600;
+    min-width: 330px;
+    color: #222;
+}
+
+.medicine-row span {
+    flex: 2;
+    color: #555;
+    font-size: 12px;
+}
+
+.qr-label {
+    font-weight: 600;
+    display: inline-block;
+    margin-top: 5px;
+    color: #333;
+    font-size: 12px;
+}
+
+.pharmacy-info-tabs span {
+    font-size: 12px;
+    color: #444;
+    display: block;
+}
+.medicine-info-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.medicine-info-header h3 {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #222;
+    text-align: center;
+}
+
+.medicine-info-row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 6px 0;
+}
+
+.medicine-info-row div {
+    flex: 1;
+    min-width: 120px;
+}
+
+.medicine-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 20px;
+}
+
+.medicine-info-grid div {
+    display: flex;
+    flex-direction: column;
+}
+
+.medicine-info-grid label,
+.medicine-info-row label {
+    flex: 1;
+    font-weight: 600;
+    min-width: 120px;
+    color: #222;
+}
+
+.medicine-info-grid span,
+.medicine-info-row span {
+    font-size: 12px;
+    color: #555;
+}
+
+/* Center the QR code */
+.qr-code-wrapper {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.medicine-image, .qr-code-img {
+    width: 100%;
+    max-width: 220px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    object-fit: contain;
+}
+
+.tab-content h4{
+    color: black;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.reserve-tab-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.reserve-btn {
+    background-color: #28a745;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.reserve-btn:hover {
+    background-color: #218838;
+}
+
+.form-step {
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.form-step.active {
+    display: flex;
+}
+
+.reserve-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-row label {
+    font-weight: 600;
+    color: #333;
+    font-size: 12px;
+}
+
+.form-row input, .form-row select {
+    padding: 8px;
+    font-size: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.form-row select {
+    font-family: 'Montserrat', sans-serif;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    font-size: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg fill='%23333' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px 16px;
+}
+
+.form-row select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.reserve-next-btn,
+.reserve-submit-btn {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #007bff;
+    color: white;
+    padding: 10px 12px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.reserve-next-btn:hover ,
+.reserve-submit-btn:hover {
+    background-color: #0056b3;
+}
+
+@media (max-width: 600px) {
+    .pharmacy-card {
+        padding: 0;
+    }
+
+    .pharmacy-image {
+        height: 160px;
+    }
+
+    .pharmacy-info h3 {
+        font-size: 16px;
+    }
+
+    .pharmacy-info p {
+        font-size: 12px;
+    }
+}
+  
+/* Location Modal Styling*/
 .location-modal {
     display: none; /* Hidden by default */
     position: fixed;
@@ -349,4 +899,38 @@ button {
 
 .modal-button:hover {
     background-color: #9c2323; /* Darker red on hover */
+}
+
+
+/* Account Settings Styling*/
+.account-settings-form {
+    max-width: 400px;
+    margin: 30px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.account-settings-form label {
+    font-weight: 500;
+}
+
+.account-settings-form input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#saveSettingsBtn {
+    padding: 10px 20px;
+    background-color: #003366;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#saveSettingsBtn:hover {
+    background-color: #002244;
 }

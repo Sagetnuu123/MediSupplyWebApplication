@@ -22,7 +22,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     const userLng = position.coords.longitude;
                     const accuracy = position.coords.accuracy;
 
-                    
 
                     console.log("Latitude:", userLat, "Longitude:", userLng);
                     console.log("Accuracy:", accuracy, "meters");
@@ -237,7 +236,7 @@ authmodal.addEventListener("click", (event) => {
 
 
 async function displayMedicines(pharmacyEmail, pharmacyName, pharmacyPicture) {
-    const snapshot = await db.collection("post_medicine_storage")
+    const snapshot = await db.collection("medicine_storage")
         .where("pharmacyEmail", "==", pharmacyEmail)
         .where("pharmacyName", "==", pharmacyName)
         .get();
@@ -259,7 +258,7 @@ function showMedicineModal(medicines, pharmacyName, pharmacyPicture, pharmacyEma
             <div class="pharmacy-header-bar">
                 <div style="display: flex; align-items: center; gap: 15px;">
                     <img src="${pharmacyPicture}" alt="Pharmacy Image" style="width: 35px; height: 35px; object-fit: cover; border-radius: 8px;">
-                    <h3 class="pharmacy-name-display">${pharmacyName} - Medicine Products</h3>
+                    <h3 class="pharmacy-name-display">${pharmacyName} - Available Medicine Products</h3>
                 </div>
                 <button class="see-info-btn">
                 <i class='bx bx-info-circle' style="margin-right: 6px;"></i>

@@ -13,7 +13,7 @@ if (!pharmacyEmail || !pharmacyName) {
     console.warn("No pharmacy is logged in. Restricting data access.");
     customertableBody.innerHTML = `
         <tr id="no-access-row">
-            <td colspan="8" style="text-align: center; padding: 10px; font-weight: bold; color: #888;">
+            <td colspan="6" style="text-align: center; padding: 10px; font-weight: bold; color: #888;">
                 You must be logged in to view medicine records.
             </td>
         </tr>
@@ -73,9 +73,9 @@ function rendercustomerTable() {
         `;
     } else {
         customerpaginatedItems.forEach(customer => {
-            let itemString = customer.items.map(item => {
-                return `${item.productName} (x${item.quantity})`; // Format as "Product Name (x1)"
-            }).join(", ");
+            let itemString = Array.isArray(customer.items)
+            ? customer.items.map(item => `${item.productName} (x${item.quantity})`).join(", ")
+            : "No items";
 
             let row = `
                 <tr>
