@@ -295,7 +295,9 @@ async function fetchPharmacies(medicineName) {
                         <div class="medicine-row"><label>Dosage Frequency:</label><span>${pharmacy.dosageFrequency}</span></div>
                         <div class="medicine-row"><label>Formulation Type:</label><span>${pharmacy.formulationType}</span></div>
                         <div class="medicine-row"><label>Stock Quantity:</label><span>${pharmacy.stockQuantity}</span></div>
-                        <div class="medicine-row"><label>Price:</label><span>₱${pharmacy.discountPrice || pharmacy.sellingPrice}</span></div>
+                        <div class="medicine-row" data-selling-price="${pharmacy.sellingPrice || 0}">
+                        <label>Price:</label><span>₱${pharmacy.discountPrice || pharmacy.sellingPrice}</span></div>
+
                         <div class="medicine-row"><label>Prescription Required:</label><span>${pharmacy.prescriptionRequired}</span></div>
                     </div>
 
@@ -307,7 +309,7 @@ async function fetchPharmacies(medicineName) {
                     </div>
 
                     <div class="tab-content" id="pharmacy-${pharmacy.email}-reserve">
-                    <form class="reserve-form" data-prescription="${pharmacy.prescriptionRequired}">
+                    <form class="reserve-form" data-prescription="${pharmacy.prescriptionRequired}" data-selling-price="${pharmacy.sellingPrice || 0}">
                     <!-- Step 1: Personal Info -->
                     <div class="form-step step-1 active">
                         <h4>Personal Information</h4>
@@ -471,7 +473,16 @@ document.addEventListener("submit", async function (e) {
         const pharmacyEmail = pharmacyCard.getAttribute('data-pharmacy-email');
         const pharmacyName = pharmacyCard.querySelector('.pharmacy-header span').innerText;
         const medicineName = pharmacyCard.querySelector('.medicine-info-header h3').innerText;
-        const quantity = form.querySelector("input[name='quantity']").value;
+        const quantity = parseInt(form.querySelector("input[name='quantity']").value);
+        const sellingPrice = parseFloat(form.getAttribute("data-selling-price"));
+
+        const totalPayment = quantity * sellingPrice;
+
+        if (isNaN(sellingPrice) || isNaN(totalPayment)) {
+            notyf.error("Something went wrong getting the price. Please try again.");
+            isSubmitting = false;
+            return;
+        }        
 
         const userData = {
             firstName: form.querySelector("input[name='firstName']").value,
@@ -508,13 +519,17 @@ document.addEventListener("submit", async function (e) {
         // ✅ Get the medicine image (base64) from the DOM
         const medicineImageElement = pharmacyCard.querySelector(".medicine-image");
         const medicineImageBase64 = medicineImageElement ? medicineImageElement.src : null;
+        const currentUser = firebase.auth().currentUser;
 
         const reservationData = {
+            userUid: currentUser ? currentUser.uid : null,
             userData: userData,
             pharmacyEmail: pharmacyEmail,
             pharmacyName: pharmacyName,
             medicineName: medicineName,
             quantity: quantity,
+            sellingPrice: sellingPrice,
+            totalPayment: totalPayment,
             prescriptionRequired: prescriptionRequired,
             prescriptionImageBase64: base64Prescription,
             medicineImageBase64: medicineImageBase64, // ✅ include this
@@ -523,6 +538,14 @@ document.addEventListener("submit", async function (e) {
 
         db.collection("reservations").add(reservationData)
             .then(() => {
+
+                db.collection("notifications").add({
+                    userUid: currentUser.uid,
+                    message: `Successfully reserved <strong>${medicineName}</strong> at <strong>${pharmacyName}</strong>`,
+                    pharmacyEmail: pharmacyEmail,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
                 notyf.success("Reservation submitted successfully!");
                 closeModal();
             })

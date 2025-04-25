@@ -83,12 +83,38 @@
     
         </section>
         <section class="content" id="reserveContent">
-            <h1>Reserve Section</h1>
-            <p>Reserve appointments for healthcare services.</p>
+            <h2>Recent Reserves</h2>
+            <div id="reservationItems"></div>
         </section>
         <section class="content" id="notifyContent">
-            <h1>Notification Section</h1>
-            <p>Stay up to date with your notifications.</p>
+            <h2>Notification</h2>
+            <div class="notification-container">
+                <!-- Main Wrapper with Border -->
+                <div class="columns-wrapper">
+                    <!-- Left Column: Received Notification -->
+                    <div class="left-column">
+                        <h3 class="sticky-header">Received Notifications</h3>
+                        <div class="notification-message">
+                            <p>Loading Notification</p>
+                        </div>
+                    </div>
+        
+                    <!-- Right Column: Send Notification & Received Notifications -->
+                    <div class="right-column">
+                        <div class="right-column-header">
+                        <button class="send-btn">Send Notification<i class='bx bx-send send-icon'></i></button>
+                        </div>
+                        <div class="received-notifications">
+                            <div class="notifications-list">
+                                <p><strong>Pharmacy:</strong> Your prescription is ready for pickup.</p>
+                                <p><strong>Pharmacy:</strong> New medication available for your health condition.</p>
+                                <p><strong>Pharmacy:</strong> Please check your recent order status.</p>
+                                <!-- Add more notifications as required -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>        
         </section>
         <section class="content" id="accountContent">
             <h1>Account Settings</h1>
@@ -193,5 +219,7 @@
     </script>
     <script src="homejs/usernav.js"></script>
     <script src="homejs/locate.js"></script>
+    <script src="homejs/reservemed.js"></script>
+    <script src="homejs/notification.js"></script>
 </body>
 </html>

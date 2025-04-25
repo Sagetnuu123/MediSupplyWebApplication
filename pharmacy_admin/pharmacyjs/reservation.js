@@ -45,6 +45,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         <div class="medicine-info">
                             <h4>${medicineName}</h4>
                             <p>Quantity: ${quantity}</p>
+                            <p>Selling Price:</strong> ₱${data.sellingPrice?.toFixed(2) || "0.00"}</p>
                             <span class="badge ${prescriptionRequired ? "prescribed-badge" : "non-prescribed-badge"}">
                                 ${prescriptionRequired ? "Prescription" : "OTC"}
                             </span>
@@ -53,7 +54,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                     <div class="user-info">
                         <p><strong>Name:</strong> ${userData.firstName} ${userData.lastName}</p>
-                        <p><strong>Age:</strong> ${userData.age} | <strong>Gender:</strong> ${userData.gender}</p>
+                        <p><strong>Age:</strong> ${userData.age}</p>
+                        <p><strong>Gender:</strong> ${userData.gender}</p>
                         <p><strong>Contact:</strong> ${userData.contactNumber}</p>
                         <p><strong>Address:</strong> ${userData.homeAddress}</p>
                     </div>
@@ -64,6 +66,15 @@ document.addEventListener("DOMContentLoaded", async () => {
                             <img src="${prescriptionImageBase64}" alt="Prescription Image">
                         </div>
                     ` : ""}
+
+                    <div class="payment-details">
+                    <p><strong>Total Payment:</strong> ₱${data.totalPayment?.toFixed(2) || "0.00"}</p>
+                    </div>
+
+                    <div class="reservation-note">
+                        <em><i class='bx bx-info-circle'></i>${status === "accepted" && !paid ? "Ensure payment has been received before marking as paid." :
+                            status !== "accepted" ? "Please review the reservation details carefully before accepting." : ""}</em>
+                    </div>
 
                     <div class="reservation-actions">
                         ${status === "cancelled" ? `<span class="badge" style="background: #d32f2f;">Cancelled</span>` :
@@ -81,6 +92,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 } else {
                     nonPrescribedContainer.appendChild(medicineItem);
                 }
+                setTimeout(() => {
+                    medicineItem.style.animationDelay = `${Math.random() * 0.3}s`;
+                }, 0);                
             });
         }, error => {
             console.error("Error listening for reservation changes:", error);
@@ -98,17 +112,35 @@ document.addEventListener("click", async function (e) {
 
     // ACCEPT
     if (e.target.classList.contains("accept-btn")) {
-        try {
-            await db.collection("reservations").doc(id).update({
-                status: "accepted"
-            });
+        Swal.fire({
+            title: 'Accept Reservation?',
+            text: "Are you sure you want to accept this reservation?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, accept it',
+            cancelButtonText: 'Cancel',
+            customClass: {
+                popup: 'custom-z-index-popup',
+                container: 'custom-z-index-container',
+                title: 'custom-swal-title',
+                confirmButton: 'custom-confirm-btn',
+                cancelButton: 'custom-cancel-btn'
+            }
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    await db.collection("reservations").doc(id).update({
+                        status: "accepted"
+                    });
 
-            notyf.success("Reservation accepted.");
-            updateReservationCard(card, { status: "accepted", paid: false }, id);
-        } catch (err) {
-            console.error(err);
-            notyf.error("Error accepting reservation.");
-        }
+                    notyf.success("Reservation accepted.");
+                    updateReservationCard(card, { status: "accepted", paid: false }, id);
+                } catch (err) {
+                    console.error(err);
+                    notyf.error("Error accepting reservation.");
+                }
+            }
+        });
     }
 
     // CANCEL
@@ -120,6 +152,13 @@ document.addEventListener("click", async function (e) {
             showCancelButton: true,
             confirmButtonText: 'Yes, cancel it!',
             cancelButtonText: 'No',
+            customClass: {
+                popup: 'custom-z-index-popup',
+                container: 'custom-z-index-container',
+                title: 'custom-swal-title',
+                confirmButton: 'custom-confirm-btn danger',
+                cancelButton: 'custom-cancel-btn'
+            }
         }).then(async (result) => {
             if (result.isConfirmed) {
                 await db.collection("reservations").doc(id).update({
@@ -141,6 +180,13 @@ document.addEventListener("click", async function (e) {
             showCancelButton: true,
             confirmButtonText: 'Yes, mark as paid',
             cancelButtonText: 'Cancel',
+            customClass: {
+                popup: 'custom-z-index-popup',
+                container: 'custom-z-index-container',
+                title: 'custom-swal-title',
+                confirmButton: 'custom-confirm-btn',
+                cancelButton: 'custom-cancel-btn'
+              }
         }).then(async (result) => {
             if (result.isConfirmed) {
                 await db.collection("reservations").doc(id).update({
